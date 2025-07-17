@@ -1,0 +1,196 @@
+n,PRECO,M2,PRECOMETRO2,BAIRRO,SITE,CIDADE
+1,520000,197,2639,Barão Geraldo,VivaReal,Campinas
+2,700000,126,5556,Barão Geraldo,VivaReal,Campinas
+3,790000,180,4389,Barão Geraldo,VivaReal,Campinas
+4,850000,168,5060,Barão Geraldo,VivaReal,Campinas
+5,920000,127,7244,Barão Geraldo,VivaReal,Campinas
+6,960000,143,6713,Barão Geraldo,VivaReal,Campinas
+7,1100000,233.5,4711,Barão Geraldo,VivaReal,Campinas
+8,1466000,138,10623,Barão Geraldo,VivaReal,Campinas
+9,2900000,425,6824,Barão Geraldo,VivaReal,Campinas
+10,3300000,413,7994,Barão Geraldo,VivaReal,Campinas
+11,218000,80,2725,Centro,VivaReal,Campinas
+12,235000,35,6714.29,Centro,VivaReal,Campinas
+13,265000,70,3785.71,Centro,VivaReal,Campinas
+14,339000,38,8921.05,Centro,VivaReal,Campinas
+15,365000,122,2991.8,Centro,VivaReal,Campinas
+16,370000,55,6727.27,Centro,VivaReal,Campinas
+17,400000,103,3883.5,Centro,VivaReal,Campinas
+18,520000,80,6500,Centro,VivaReal,Campinas
+19,600000,173,3468.79,Centro,VivaReal,Campinas
+20,1690000,111,15225.23,Centro,VivaReal,Campinas
+21,40000,63,634.92,Cidade Satélite Íris,VivaReal,Campinas
+22,220990,40,5524.75,Cidade Satélite Íris,VivaReal,Campinas
+23,265000,65,4076.92,Cidade Satélite Íris,VivaReal,Campinas
+24,265000,65,4076.92,Cidade Satélite Íris,VivaReal,Campinas
+25,265000,61,4344.26,Cidade Satélite Íris,VivaReal,Campinas
+26,350000,200,1750,Cidade Satélite Íris,VivaReal,Campinas
+27,350000,82,4268.29,Cidade Satélite Íris,VivaReal,Campinas
+28,380000,210,1809.52,Cidade Satélite Íris,VivaReal,Campinas
+29,380000,72,5277.78,Cidade Satélite Íris,VivaReal,Campinas
+30,549000,267,2056.93,Cidade Satélite Íris,VivaReal,Campinas
+31,120000,160,750,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+32,165000,48,3438,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+33,170000,126,1349,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+34,180000,200,900,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+35,185000,250,740,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+36,191000,130,1469,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+37,250000,176,1420,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+38,320000,60,5333,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+39,400000,140,2857,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+40,530000,148.5,3569,Conjunto Habitacional Vida Nova,VivaReal,Campinas
+41,150000,44,3409,Jardim Anchieta,VivaReal,Campinas
+42,195000,51,3824,Jardim Anchieta,VivaReal,Campinas
+43,249000,64,3891,Jardim Anchieta,VivaReal,Campinas
+44,320000,100,3200,Jardim Anchieta,VivaReal,Campinas
+45,440000,248,1774,Jardim Anchieta,VivaReal,Campinas
+46,450000,122,3688,Jardim Anchieta,VivaReal,Campinas
+47,450000,100,4500,Jardim Anchieta,VivaReal,Campinas
+48,599000,179,3345,Jardim Anchieta,VivaReal,Campinas
+49,620000,120,5167,Jardim Anchieta,VivaReal,Campinas
+50,620000,120,5167,Jardim Anchieta,VivaReal,Campinas
+51,95000,50,1900,Jardim Campo Belo,VivaReal,Campinas
+52,95000,50,1900,Jardim Campo Belo,VivaReal,Campinas
+53,210000,250,840,Jardim Campo Belo,VivaReal,Campinas
+54,210000,250,840,Jardim Campo Belo,VivaReal,Campinas
+55,240000,150,1600,Jardim Campo Belo,VivaReal,Campinas
+56,240000,150,1600,Jardim Campo Belo,VivaReal,Campinas
+57,330000,90,3667,Jardim Campo Belo,VivaReal,Campinas
+58,330000,90,3667,Jardim Campo Belo,VivaReal,Campinas
+59,350000,165,2121,Jardim Campo Belo,VivaReal,Campinas
+60,350000,165,2121,Jardim Campo Belo,VivaReal,Campinas
+61,350000,100,3500,Jardim Campo Belo,VivaReal,Campinas
+62,350000,100,3500,Jardim Campo Belo,VivaReal,Campinas
+63,350000,100,3500,Jardim Campo Belo,VivaReal,Campinas
+64,350000,100,3500,Jardim Campo Belo,VivaReal,Campinas
+65,450000,170,2647,Jardim Campo Belo,VivaReal,Campinas
+66,450000,170,2647,Jardim Campo Belo,VivaReal,Campinas
+67,450000,135,3333,Jardim Campo Belo,VivaReal,Campinas
+68,450000,135,3333,Jardim Campo Belo,VivaReal,Campinas
+69,465000,180,2583,Jardim Campo Belo,VivaReal,Campinas
+70,465000,180,2583,Jardim Campo Belo,VivaReal,Campinas
+71,290000,41.5,6988,Jardim Campos Elíseos,VivaReal,Campinas
+72,320000,160,2000,Jardim Campos Elíseos,VivaReal,Campinas
+73,373000,90,4144,Jardim Campos Elíseos,VivaReal,Campinas
+74,420000,84,5000,Jardim Campos Elíseos,VivaReal,Campinas
+75,460000,69,6667,Jardim Campos Elíseos,VivaReal,Campinas
+76,465000,90,5167,Jardim Campos Elíseos,VivaReal,Campinas
+77,490000,189.5,2586,Jardim Campos Elíseos,VivaReal,Campinas
+78,550000,126,4365,Jardim Campos Elíseos,VivaReal,Campinas
+79,780000,219,3562,Jardim Campos Elíseos,VivaReal,Campinas
+80,172000,70,2457.14,Jardim das Bandeiras,VivaReal,Campinas
+81,175000,60,2916.67,Jardim das Bandeiras,VivaReal,Campinas
+82,190000,68,2794.12,Jardim das Bandeiras,VivaReal,Campinas
+83,195000,68,2867.65,Jardim das Bandeiras,VivaReal,Campinas
+84,197000,66,2984.85,Jardim das Bandeiras,VivaReal,Campinas
+85,210000,44,4772.73,Jardim das Bandeiras,VivaReal,Campinas
+86,215000,55,3909.09,Jardim das Bandeiras,VivaReal,Campinas
+87,220000,60,3666.67,Jardim das Bandeiras,VivaReal,Campinas
+88,240000,63,3809.52,Jardim das Bandeiras,VivaReal,Campinas
+89,350000,220,1590.91,Jardim das Bandeiras,VivaReal,Campinas
+90,364000,135,2696,Jardim Novo Campos Elíseos,VivaReal,Campinas
+91,230000,100,2300,Jardim Ouro Verde,VivaReal,Campinas
+92,230000,100,2300,Jardim Ouro Verde,VivaReal,Campinas
+93,250000,100,2500,Jardim Ouro Verde,VivaReal,Campinas
+94,250000,100,2500,Jardim Ouro Verde,VivaReal,Campinas
+95,420000,300,1400,Jardim Ouro Verde,VivaReal,Campinas
+96,640000,72,8889,Jardim Pau Preto,VivaReal,Indaiatuba
+97,890000,129.5,6872,Jardim Pau Preto,VivaReal,Indaiatuba
+98,950000,120,7917,Jardim Pau Preto,VivaReal,Indaiatuba
+99,1050000,96,10938,Jardim Pau Preto,VivaReal,Indaiatuba
+100,1080000,125,8640,Jardim Pau Preto,VivaReal,Indaiatuba
+101,1099050,97,11330,Jardim Pau Preto,VivaReal,Indaiatuba
+102,1100000,97,11340,Jardim Pau Preto,VivaReal,Indaiatuba
+103,1100000,97,11340,Jardim Pau Preto,VivaReal,Indaiatuba
+104,1450000,137,10584,Jardim Pau Preto,VivaReal,Indaiatuba
+105,1600000,139,11511,Jardim Pau Preto,VivaReal,Indaiatuba
+106,350000,52,6730,Jardim Salessi,VivaReal,Itatiba
+107,550000,160,3438,Jardim Salessi,VivaReal,Itatiba
+108,550000,156,3526,Jardim Salessi,VivaReal,Itatiba
+109,600000,136,4412,Jardim Salessi,VivaReal,Itatiba
+110,635000,287,2213,Jardim Salessi,VivaReal,Itatiba
+111,640000,287,2231,Jardim Salessi,VivaReal,Itatiba
+112,640000,287,2231,Jardim Salessi,VivaReal,Itatiba
+113,650000,250,2600,Jardim Salessi,VivaReal,Itatiba
+114,700000,178,3933,Jardim Salessi,VivaReal,Itatiba
+115,1298000,400,3245,Jardim Salessi,VivaReal,Itatiba
+116,95000,380,4000,Jardim São Judas Tadeu,VivaReal,Campinas
+117,290000,62,4677,Jardim São Judas Tadeu,VivaReal,Campinas
+118,293000,62.5,4688,Jardim São Judas Tadeu,VivaReal,Campinas
+119,295000,100,2950,Jardim São Judas Tadeu,VivaReal,Campinas
+120,329000,73,4507,Jardim São Judas Tadeu,VivaReal,Campinas
+121,340000,95,3579,Jardim São Judas Tadeu,VivaReal,Campinas
+122,360000,200,1800,Jardim São Judas Tadeu,VivaReal,Campinas
+123,360000,67,5373,Jardim São Judas Tadeu,VivaReal,Campinas
+124,360000,67,5373,Jardim São Judas Tadeu,VivaReal,Campinas
+125,383000,70,5471,Jardim São Judas Tadeu,VivaReal,Campinas
+126,225000,41,5488,Jardim Yeda,VivaReal,Campinas
+127,234000,48,4875,Jardim Yeda,VivaReal,Campinas
+128,263990,42,6285,Jardim Yeda,VivaReal,Campinas
+129,320000,77,4156,Jardim Yeda,VivaReal,Campinas
+130,320000,77,4156,Jardim Yeda,VivaReal,Campinas
+131,380000,250,1520,Jardim Yeda,VivaReal,Campinas
+132,400000,170,2353,Jardim Yeda,VivaReal,Campinas
+133,495000,128,3867,Jardim Yeda,VivaReal,Campinas
+134,495000,127.5,3882,Jardim Yeda,VivaReal,Campinas
+135,550000,187,2941,Jardim Yeda,VivaReal,Campinas
+136,380000,260,1462,João Aranha,VivaReal,Paulínia
+137,410000,170,2412,João Aranha,VivaReal,Paulínia
+138,430000,100,4300,João Aranha,VivaReal,Paulínia
+139,450000,201,2239,João Aranha,VivaReal,Paulínia
+140,450000,125,3600,João Aranha,VivaReal,Paulínia
+141,480000,250,1920,João Aranha,VivaReal,Paulínia
+142,590000,163,3618,João Aranha,VivaReal,Paulínia
+143,600000,400,1500,João Aranha,VivaReal,Paulínia
+144,600000,200,3000,João Aranha,VivaReal,Paulínia
+145,175000,122.5,1429,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+146,180000,118,1525,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+147,190000,180,1056,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+148,190000,60,3167,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+149,200000,160,1250,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+150,250000,100,2500,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+151,300000,160,1875,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+152,330000,120,2750,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+153,350000,127,2756,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+154,350000,90,3889,Núcleo Residencial Vila Vitória,VivaReal,Campinas
+155,445000,120,3708.33,Parque Residencial Imigrantes,VivaReal,Campinas
+156,450000,78,5769.23,Parque Residencial Imigrantes,VivaReal,Campinas
+157,540000,90,6000,Parque Residencial Imigrantes,VivaReal,Campinas
+158,650000,154,4220.78,Parque Residencial Imigrantes,VivaReal,Campinas
+159,700000,211,3316.59,Parque Residencial Imigrantes,VivaReal,Campinas
+160,750000,270,2777.78,Parque Residencial Imigrantes,VivaReal,Campinas
+161,1300000,290,4482.76,Parque Residencial Imigrantes,VivaReal,Campinas
+162,329000,258,1275.19,Parque São Quirino,VivaReal,Campinas
+163,340000,92,3695.65,Parque São Quirino,VivaReal,Campinas
+164,350000,258,1356.59,Parque São Quirino,VivaReal,Campinas
+165,370000,179,2067.04,Parque São Quirino,VivaReal,Campinas
+166,429450,127,3381.1,Parque São Quirino,VivaReal,Campinas
+167,500000,171,2923.98,Parque São Quirino,VivaReal,Campinas
+168,530000,360,1472.22,Parque São Quirino,VivaReal,Campinas
+169,600000,174,3448.28,Parque São Quirino,VivaReal,Campinas
+170,760000,228,3333.33,Parque São Quirino,VivaReal,Campinas
+171,890000,221,4027.15,Parque São Quirino,VivaReal,Campinas
+172,550000,58,9482.76,Residencial dos Imigrantes,VivaReal,Campinas
+173,600000,90,6666.67,Residencial dos Imigrantes,VivaReal,Campinas
+174,610000,192,3177.08,Residencial dos Imigrantes,VivaReal,Campinas
+175,670000,112,5982,Saltinho,VivaReal,Paulínia
+176,480000,58,8276,São Joaquim,VivaReal,Vinhedo
+177,1190000,145,8207,São Joaquim,VivaReal,Vinhedo
+178,1200000,232,5172,São Joaquim,VivaReal,Vinhedo
+179,1200000,194,6185,São Joaquim,VivaReal,Vinhedo
+180,1290000,200,6450,São Joaquim,VivaReal,Vinhedo
+181,1298000,145,8952,São Joaquim,VivaReal,Vinhedo
+182,1298000,145,8952,São Joaquim,VivaReal,Vinhedo
+183,1350000,145,9310,São Joaquim,VivaReal,Vinhedo
+184,1390000,147,9458,São Joaquim,VivaReal,Vinhedo
+185,1395000,229,6090,São Joaquim,VivaReal,Vinhedo
+186,330000,150,2200,Vila Cruzeiro,VivaReal,Itatiba
+187,379450,77,4928,Vila Cruzeiro,VivaReal,Itatiba
+188,450000,156,2884,Vila Cruzeiro,VivaReal,Itatiba
+189,480000,165,2909,Vila Cruzeiro,VivaReal,Itatiba
+190,549620,130,4228,Vila Cruzeiro,VivaReal,Itatiba
+191,590000,140,4214,Vila Cruzeiro,VivaReal,Itatiba
+192,600000,168,3571,Vila Cruzeiro,VivaReal,Itatiba
+193,649120,250,2596,Vila Cruzeiro,VivaReal,Itatiba
+194,690000,161,4286,Vila Cruzeiro,VivaReal,Itatiba
+195,750000,161,4658,Vila Cruzeiro,VivaReal,Itatiba

@@ -1,0 +1,2922 @@
+install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes")
+
+library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes)
+
+setwd("C:/Users/sarah/Downloads/analiseScoda")
+
+####### Carregar dados #######
+dados2 <- read_csv2("dadosS-planilha-SARAH_codificadaV11.csv", locale = locale(encoding = "latin1"), col_types = cols(.default = col_factor(),
+                            CFP_abertura = col_factor(levels = c("fechada", "meia.fechada", "meia.aberta", "aberta")),
+                            CONT.PREC = col_character(),
+                            OCORRENCIA = col_character(),
+                            CONT.SEGUINTE = col_character(),
+                            ANO.ENTREVISTA = col_integer(),
+                            LOCALIZACAO = col_character(),
+                            IDADE = col_integer(),
+                            INDICE.SOCIO = col_double(),
+                            CLASSE.SOCIAL = col_factor(levels = c("B2", "C1", "C2", "D", "E")),
+                            IDADE.MIGRACAO = col_integer(),
+                            TEMPO.SP = col_integer(),
+                            TEMPO.SP2 = col_factor(levels = c("9-", "10+")),
+                            PROP.VIDA.SP = col_double(),
+                            PROP.VIDA.SP2 = col_factor(levels = c("ate1quarto", "de1a2quartos", "maismetade")),
+                            AMIGOS = col_factor(levels = c("nenhum", "poucos", "metade", "maioria")),
+                            VIZINHOS = col_factor(levels = c("nao", "alguns", "varios")),
+                            COLEGAS.ESTADO = col_factor(levels = c("nao", "alguns", "varios", "NA")),
+                            COLEGAS.NE = col_factor(levels = c("nao", "alguns", "varios", "NA")),
+                            COMIDA  = col_factor(levels = c("nunca", "1xsemana", "1xmes", "tododia")),
+                            MUSICA = col_factor(levels = c("nunca", "as.vezes", "sempre")),
+                            CONVERSA = col_factor(levels = c("nunca", "1xsemana", "1xmes", "todo.dia")),
+                            VOLTA = col_factor(levels = c("nunca", "menos1xano", "1xano")),
+                            ONDE.MORARIA = col_factor(levels = c("SP", "NE", "estado.origem", "outro")),
+                            ESTADUALIDADE = col_integer(),
+                            PAULISTIDADE = col_integer(),
+                            NORDESTINIDADE = col_integer(),
+                            DIF.SP = col_integer(),
+                            DIF.NE = col_integer(),
+                            DIF.FALAR = col_integer(),
+                            INDICE.REDE.EST = col_double(),
+                            INDICE.REDE.NE = col_double(),
+                            INDICE.HABITOS = col_double()
+                                      )
+                   )
+str(dados2)
+head(dados2)
+summary(dados2)
+View(dados2)
+
+
+########################## comandos que não sao mais necessarios #######################
+#Carregar variaveis sociais
+#infs <- read_csv2("dadosINFs2.csv", locale = locale(encoding = "latin1"),
+ #                 col_types = cols(.default = col_factor(),
+  #                                 IDADE = col_integer(),
+   #                                INDICE.SOCIO = col_double(),
+    #                               CLASSE.SOCIAL = col_factor(levels = c("B2", "C1", "C2", "D", "E")),
+      #                             IDADE.MIGRACAO = col_integer(),
+       #                            TEMPO.SP = col_integer(),
+        #                           TEMPO.SP2 = col_factor(levels = c("9-", "10+")),
+         #                          PROP.VIDA.SP = col_double(),
+          #                         PROP.VIDA.SP2 = col_factor(levels = c("ate1quarto", "de1a2quartos", "maismetade")),
+           #                        AMIGOS = col_factor(levels = c("nenhum", "poucos", "metade", "maioria")),
+            #                       VIZINHOS = col_factor(levels = c("nao", "alguns", "varios")),
+             #                      COLEGAS.ESTADO = col_factor(levels = c("nao", "alguns", "varios", "NA")),
+              #                     COLEGAS.NE = col_factor(levels = c("nao", "alguns", "varios", "NA")),
+               #                    COMIDA  = col_factor(levels = c("nunca", "1xsemana", "1xmes", "tododia")),
+                #                   MUSICA = col_factor(levels = c("nunca", "as.vezes", "sempre")),
+                 #                  CONVERSA = col_factor(levels = c("nunca", "1xsemana", "1xmes", "todo.dia")),
+                  #                 VOLTA = col_factor(levels = c("nunca", "menos1xano", "1xano")),
+                   #                ONDE.MORARIA = col_factor(levels = c("SP", "NE", "estado.origem", "outro")),
+                    #               ESTADUALIDADE = col_integer(),
+                     #              PAULISTIDADE = col_integer(),
+                      #             NORDESTINIDADE = col_integer(),
+                       #            DIF.SP = col_integer(),
+                        #           DIF.NE = col_integer(),
+                         #          DIF.FALAR = col_integer(),
+                          #         INDICE.REDE.EST = col_double(),
+                           #        INDICE.REDE.NE = col_double(),
+                            #       INDICE.HABITOS = col_double()
+                             #      )
+                 # )
+#head(infs)
+#summary(infs)
+
+#juntas os dois csv
+#dados2 <- left_join(dados, infs, by = "ARQUIVO")
+#str(dados2)
+#head(dados2)
+#View(dados2)
+
+#write.xlsx(dados2, file = "DadosS-SARAH-completo.xlsx", colNames = T, colWidths = "auto", firstRow = T)
+
+
+####fim####
+
+#################################### VD_AP ################################
+#criar subconjuntoAP
+dadosAP <- filter(dados2, VD_AP %in% c("A", "P")) %>% 
+  droplevels()
+
+dadosAP2 <- filter(dadosAP, !PARTICIPANTE %in% c("IsabelaS")) %>% 
+  droplevels() #conunto de dados sem IsabelaS
+
+
+prop.AP.sem_restricao <- dadosAP2 %>% 
+  count(VD_AP) %>%
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_AP.sem_restricao.png")
+ggplot(prop.AP.sem_restricao, aes(x = VD_AP, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Alveolar", "Palatal"))+
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_light()+
+  theme(legend.position = "none")
+dev.off()
+
+
+
+dadosAP.coronal <- filter(dadosAP2, CFS_pontoc %in% c("coronal")) %>% 
+  droplevels()
+
+#grafico
+# novo
+prop.AP <- dadosAP.coronal %>% 
+  count(VD_AP) %>%
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+prop.AP <- prop.AP %>%
+  group_by(VD_AP) %>%
+  mutate(ocorrencias = n) %>%
+  print()
+
+
+prop.AP <- prop.AP %>%
+  mutate(label = paste0(round(prop * 100, 1), "%\n(", ocorrencias, ")"))
+
+
+png("VD_AP.png")
+ggplot(prop.AP, aes(x = VD_AP, y = prop * 100, fill = VD_AP, label = label)) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Alveolar", "Palatal"))+
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_light()+
+  theme(legend.position = "none")
+dev.off()
+
+
+#################################### VD_AP ~ TONICIDADE ############################
+# novo
+tab.TONICIDADE_AP <- dadosAP.coronal %>% 
+  count(TONICIDADE, VD_AP) %>%
+  group_by(TONICIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+# novo
+
+png("VD_AP-01.tonicidade.png")
+ggplot(tab.TONICIDADE_AP, aes(x = TONICIDADE, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Tonicidade", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Átona", "Tônica")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar", "Palatal"))+
+  theme_light()
+dev.off()
+
+# ainda assim eh necessario fazer tabela com table() para poder fazer o X2 abaixo:
+tab.TONICIDADE_AP_X2 <- with(dadosAP.coronal, table(TONICIDADE, VD_AP))
+tab.TONICIDADE_AP_X2
+
+#teste
+chisq.test(tab.TONICIDADE_AP_X2) #diferenca significativa com A favorecida em silabas atonas e P favorecida em tonicas
+
+mod.TONICIDADE_AP <- glm(VD_AP ~ TONICIDADE, data = dadosAP.coronal, family = binomial) #desfavorecimento da palatal em silaba atona
+summary.lm(mod.TONICIDADE_AP)
+lrm(VD_AP ~ TONICIDADE, data = dadosAP.coronal)
+
+plot(allEffects(mod.TONICIDADE_AP), type = "response")
+
+#################################### VD_AP ~ POSICAO ################################
+# novo
+tab.POSICAO_AP <- dadosAP.coronal %>% 
+  count(POSICAO.S, VD_AP) %>%
+  group_by(POSICAO.S) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+# novo
+png("VD_AP-02.posicao.png")
+ggplot(tab.POSICAO_AP, aes(x = POSICAO.S, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Posição", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Final", "Medial")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar", "Palatal"))+
+  theme_light()
+dev.off()
+
+#tabela de freq
+tab.POSICAO_AP_X2 <- with(dadosAP.coronal, table(POSICAO.S, VD_AP))
+tab.POSICAO_AP_X2
+
+chisq.test(tab.POSICAO_AP_X2) #Diferenca significativa com A favorecida em posicao final e P favorecida em posicao medial
+
+#mod
+mod.POSICAO_AP <- glm(VD_AP ~ POSICAO.S, data = dadosAP.coronal, family = binomial)
+summary(mod.POSICAO_AP) #desfavorecimento de palatal em posicao final com poder de discriminacao aceitavel dos resultados
+lrm(VD_AP ~ POSICAO.S, data = dadosAP.coronal)
+
+plot(allEffects(mod.POSICAO_AP), type = "response")
+
+#################################### VD_AP ~ ESTILO #################################
+tab.ESTILO_AP <- dadosAP.coronal %>% 
+  count(ESTILO, VD_AP) %>%
+  group_by(ESTILO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_AP-03.estilo.png")
+ggplot(tab.ESTILO_AP, aes(x = ESTILO, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Estilo", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Conversa", "Leitura de Palavras")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar", "Palatal"))+
+  theme_light()
+dev.off()
+
+#tabela de freq
+tab.ESTILO_AP_X2 <- with(dadosAP.coronal, table(ESTILO, VD_AP))
+tab.ESTILO_AP_X2
+
+chisq.test(tab.ESTILO_AP_X2) #Sem diferenca significativa 
+
+mod.ESTILO_AP <- glm(VD_AP ~ ESTILO, data = dadosAP.coronal, family = binomial)
+summary(mod.ESTILO_AP)
+lrm(VD_AP ~ ESTILO, data = dadosAP.coronal)
+
+plot(allEffects(mod.ESTILO_AP), type = "response")
+
+
+#################################### VD_AP ~ CONT.FON.SEG ###########################
+tab.CONT.FON.SEG_AP <- with(dadosAP, table(CONT.FON.SEG, VD_AP))
+tab.CONT.FON.SEG_AP
+
+prop.CONT.FON.SEG_AP <- with(dadosAP, prop.table(tab.CONT.FON.SEG_AP, 1))
+prop.CONT.FON.SEG_AP * 100
+
+############## CSF_pontoc
+tab.CFS.C_AP <- dadosAP2 %>% 
+  count(CFS_pontoc, VD_AP) %>%
+  group_by(CFS_pontoc) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-04.cfs_pontoc.png")
+ggplot(tab.CFS.C_AP, aes(x = CFS_pontoc, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Pausa", "Doral/labial", "Coronal")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar", "Palatal"))+
+  theme_light()
+dev.off()
+
+tab.CFS_AP.C_X2 <- with(dadosAP, table(CFS_pontoc, VD_AP))
+tab.CFS_AP.C_X2
+
+chisq.test(tab.CFS_AP.C_X2) #com diferenca significativa, sendo P favorecido por coronal e A favorecido por dorsal e labial e pausa
+chisq.test(tab.CFS_AP.C_X2[c(1, 2),]) #com diferenca significativa entre pausa e dosal.labial
+
+mod.CFS_AP.C <- glm(VD_AP ~ CFS_pontoc, data = dadosAP, family = binomial)
+summary(mod.CFS_AP.C) #P desfavorecido em contexto de pausa e dorsal.labial, favorecido em coronal, com poder excelente de discriminação dos dados
+lrm(VD_AP ~ CFS_pontoc, data = dadosAP)
+plot(allEffects(mod.CFS_AP.C), type = "response")
+
+
+################ CSF_sonor
+tab.CFS_AP.sonor <- with(dadosAP, table(CFS_sonor, VD_AP))
+tab.CFS_AP.sonor
+
+prop.CFS_AP.sonor <- with(dadosAP, prop.table(tab.CFS_AP.sonor, 1))
+prop.CFS_AP.sonor * 100
+
+prop.CFS_AP.sonor.df <- as.data.frame(prop.CFS_AP.sonor * 100)
+prop.CFS_AP.sonor.df
+
+ggplot(prop.CFS_AP.sonor.df, aes(x = CFS_sonor, y = Freq, fill = VD_AP)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  theme_light()
+
+chisq.test(tab.CFS_AP.sonor) #Tem diferenca significativa com P favorecida por contexto seguinte surdo e A favorecida seguida por pausa
+chisq.test(tab.CFS_AP.sonor[c(1,3),]) #tem diferenca signif.
+
+mod.CFS_AP.sonor <- glm(VD_AP ~ CFS_sonor, data = dadosAP, family = binomial)
+summary(mod.CFS_AP.sonor) #P desfavorecida em contexto seguinte de pausa e consoante sonora, com pouco poder de discriminacao dos resultados
+lrm(VD_AP ~ CFS_sonor, data = dadosAP)
+plot(allEffects(mod.CFS_AP.sonor), type = "response")
+
+
+#################################### VD_AP ~ CONT.FON.PREC ###########################
+tab.CONT.FON.PREC_AP <- dadosAP.coronal %>% 
+  count(CONT.FON.PREC, VD_AP) %>%
+  group_by(CONT.FON.PREC) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.CONT.FON.PREC_AP, aes(x = CONT.FON.PREC, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") +
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+
+
+###############Cfp_abertura
+tab.CFP.abertura_AP <- dadosAP.coronal %>% 
+  count(CFP_abertura, VD_AP) %>%
+  group_by(CFP_abertura) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-05.cfp_abertura.png")
+ggplot(tab.CFP.abertura_AP, aes(x = CFP_abertura, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Fechada", "Meio-fechada", "Meio-aberta", "Aberta")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar", "Palatal"))+
+  theme_light()
+dev.off()
+
+tab.CFP.abertura_AP_X2 <- with(dadosAP.coronal, table(CFP_abertura, VD_AP))
+tab.CFP.abertura_AP_X2
+
+chisq.test(tab.CFP.abertura_AP_X2) 
+chisq.test(tab.CFP.abertura_AP_X2[c(1,2),])
+
+mod.CFP.abertura_AP <- glm(VD_AP ~ CFP_abertura, data = dadosAP.coronal, family = binomial)
+summary(mod.CFP.abertura_AP)
+lrm(VD_AP ~ CFP_abertura , data = dadosAP.coronal)
+
+plot(allEffects(mod.CFP.abertura_AP), type = "response")
+
+
+
+########################CFP_anterioridade
+tab.CFP_AP.anterioridade <- dadosAP.coronal %>% 
+  count(CFP_anterioridade, VD_AP) %>%
+  group_by(CFP_anterioridade) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-06.cfp_anterioridade.png")
+ggplot(tab.CFP_AP.anterioridade, aes(x = CFP_anterioridade, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Anterior", "Central", "Posterior")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar", "Palatal"))+
+  theme_light()
+dev.off()
+
+tab.CFP_AP.anterioridade_X2 <- with(dadosAP.coronal, table(CFP_anterioridade, VD_AP))
+tab.CFP_AP.anterioridade_X2
+
+chisq.test(tab.CFP_AP.anterioridade_X2) 
+chisq.test(tab.CFP_AP.anterioridade_X2[c(1,3),]) 
+
+
+mod.CFP_AP.anterioridade <- glm(VD_AP ~ CFP_anterioridade, data = dadosAP.coronal, family = binomial)
+summary(mod.CFP_AP.anterioridade)
+lrm(VD_AP ~ CFP_anterioridade , data = dadosAP.coronal)
+
+plot(allEffects(mod.CFP_AP.anterioridade), type = "response")
+
+
+
+#################################### VD_AP ~ CLASSE.MORFOLOGICA #####################
+tab.CLASSE.MORF_AP <- with(dadosAP.coronal, table(CLASSE.MORFOLOGICA2, VD_AP))
+tab.CLASSE.MORF_AP
+
+prop.CLASSE.MORF_AP <- with(dadosAP.coronal, prop.table(tab.CLASSE.MORF_AP, 1))
+prop.CLASSE.MORF_AP * 100
+
+prop.CLASSE.MORF_AP.df <- as.data.frame(prop.CLASSE.MORF_AP * 100)
+prop.CLASSE.MORF_AP.df
+
+ggplot(prop.CLASSE.MORF_AP.df, aes(x = CLASSE.MORFOLOGICA2 , y = Freq, fill = VD_AP)) +
+  geom_bar(stat = "identity", position = "dodge") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência", fill = "VD") +
+  theme_light()
+
+chisq.test(tab.CLASSE.MORF_AP)
+chisq.test(tab.CLASSE.MORF_AP[c(2,3,4,5,6),]) #sem diferenca pra adverbio, artigo, conjuncao, numeral e pronome -> classes que o s ocorre mais em final de palavra
+chisq.test(tab.CLASSE.MORF_AP[c(1,7),]) #sem diferenca entre adjetivo e substantivo
+
+
+##################### gramaticais X lexicais
+tab.CLASSE.MORF3_AP <- dadosAP.coronal %>% 
+  count(CLASSE.MORFOLOGICA3, VD_AP) %>%
+  group_by(CLASSE.MORFOLOGICA3) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-07.classe_morfologica.png")
+ggplot(tab.CLASSE.MORF3_AP, aes(x = CLASSE.MORFOLOGICA3, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Lexical", "Gramatical")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar", "Palatal"))+
+  theme_light()
+dev.off()
+
+
+tab.CLASSE.MORF3_AP_X2 <- with(dadosAP.coronal, table(CLASSE.MORFOLOGICA3, VD_AP))
+tab.CLASSE.MORF3_AP_X2
+
+chisq.test(tab.CLASSE.MORF3_AP_X2) #Diferenca significativa com P favorecido em classe de palavras lexicais
+
+mod.CLASSE.MORF3_AP <- glm(VD_AP ~ CLASSE.MORFOLOGICA3, data = dadosAP.coronal, family = binomial)
+summary(mod.CLASSE.MORF3_AP) #DuVIDA: desfavorecimento de P em adjetivo#
+lrm(VD_AP ~ CLASSE.MORFOLOGICA3, data = dadosAP.coronal)
+
+plot(allEffects(mod.CLASSE.MORF3_AP), type = "response")
+
+
+#################################### VD_AP ~ SEXO ##########################
+tab.SEXO_AP <- dadosAP.coronal %>% 
+  count(SEXO, VD_AP) %>%
+  group_by(SEXO) %>% 
+  mutate(prop = prop.table(n)) %>%
+  #summarise(total_dados = sum(n), .groups = 'drop') %>%
+  print()
+
+
+tab.SEXO_AP <- tab.SEXO_AP %>%
+  group_by(SEXO, VD_AP) %>%
+  mutate(ocorrencias = n) %>%
+  print()
+
+
+tab.SEXO_AP <- tab.SEXO_AP %>%
+  mutate(label = paste0(round(prop * 100, 1), "%\n(", ocorrencias, ")"))
+
+png("VD_AP-08.sexo.png")
+ggplot(tab.SEXO_AP, aes(x = SEXO, y = prop * 100, fill = VD_AP, label = label)) +
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Gênero", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Masculino", "Feminino")) +
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar", "Palatal"))+
+  theme_light()
+dev.off()
+
+tab.SEXO_AP_X2 <- with(dadosAP.coronal, table(SEXO, VD_AP))
+tab.SEXO_AP_X2
+
+chisq.test(tab.SEXO_AP_X2)
+
+mod.SEXO_AP <- glm(VD_AP ~ SEXO, data = dadosAP.coronal, family = binomial)
+summary(mod.SEXO_AP) #desfavorecimento de P na fala de mulheres com pouco poder de discriminação dos resultados
+lrm(VD_AP ~ SEXO, data = dadosAP.coronal)
+
+plot(allEffects(mod.SEXO_AP), type = "response")
+
+#################################### VD_AP ~ TEMPO.SP ###############################
+tab.TEMPO.SP_AP <- dadosAP.coronal %>% 
+  count(VD_AP, TEMPO.SP) %>%
+  group_by(TEMPO.SP) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_AP-09.tempo_sp.png")
+ggplot(tab.TEMPO.SP_AP[22:42,], aes(x = TEMPO.SP, y = prop * 100, label = round(prop * 100, 1))) +
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Tempo de Residência", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+
+tab.TEMPO.SP_AP_X2 <- with(dadosAP.coronal, table(TEMPO.SP, VD))
+tab.TEMPO.SP_AP_X2
+
+mod.TEMPO.SP_AP <- glm(VD_AP ~ TEMPO.SP, data = dadosAP.coronal, family = binomial)
+summary(mod.TEMPO.SP_AP) #DuVIDA: Desfavorecimento de P para zero?
+lrm(VD_AP ~ TEMPO.SP, data = dadosAP.coronal)
+plot(allEffects(mod.TEMPO.SP_AP), type = "response")
+
+#################################### VD_AP ~ TEMPO.SP2 #############################
+tab.TEMPO.SP2_AP <- dadosAP.coronal %>% 
+  count(TEMPO.SP2, VD_AP) %>%
+  group_by(TEMPO.SP2) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.TEMPO.SP2_AP, aes(x = TEMPO.SP2, y = prop * 100, fill = VD_AP,label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Tempo de Residência", y = "Proporção", fill = "VD") +
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+
+
+tab.TEMPO.SP2_AP_X2 <- with(dadosAP, table(TEMPO.SP2, VD_AP))
+tab.TEMPO.SP2_AP_X2
+
+chisq.test(tab.TEMPO.SP2_AP_X2) #diferenca significativa, sendo quem esta mais tempo em SP produz menos a palatal e mais a alveolar do que quem está há menos tempo
+
+mod.TEMPO.SP2_AP <- glm(VD_AP ~ TEMPO.SP2, data = dadosAP.coronal, family = binomial)
+summary(mod.TEMPO.SP2_AP) #desfavorecimento de P para falantes com menos de 9 anos em sp com pouco poder de discriminação
+lrm(VD_AP ~ TEMPO.SP2, data = dadosAP.coronal)
+
+plot(allEffects(mod.TEMPO.SP2_AP), type = "response")
+
+#################################### VD_AP ~ IDADE.MIGRACAO ################# 
+tab.IDADE.MIGRACAO_AP <- dadosAP.coronal %>% 
+  count(VD_AP, IDADE.MIGRACAO) %>%
+  group_by(IDADE.MIGRACAO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-10.idade_migracao.png")
+ggplot(tab.IDADE.MIGRACAO_AP[24:46,], aes(x = IDADE.MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Idade de Migração", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.IDADE.MIGRACAO_AP <- glm(VD_AP ~ IDADE.MIGRACAO, data = dadosAP.coronal, family = binomial)
+summary(mod.IDADE.MIGRACAO_AP) #desfavorecimento da P para 9 anos com pouco poder de discriminação
+lrm(VD_AP ~ IDADE.MIGRACAO, data = dadosAP.coronal)
+
+plot(allEffects(mod.IDADE.MIGRACAO_AP), type = "response")
+
+#################################### VD_AP ~ IDADE.MIGRACAO2 ##############
+tab.IDADE.MIGRACAO2_AP <- dadosAP.coronal %>% 
+  count(IDADE.MIGRACAO2, VD_AP) %>%
+  group_by(IDADE.MIGRACAO2) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.IDADE.MIGRACAO2_AP, aes(x = IDADE.MIGRACAO2, y = prop * 100, fill = VD_AP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Idade de Migração", y = "Proporção", fill = "VD") +
+  scale_x_discrete(labels = c("Gramatical", "Lexical")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+
+tab.IDADE.MIGRACAO2_AP_X2 <- with(dadosAP.coronal, table(IDADE.MIGRACAO2, VD_AP))
+tab.IDADE.MIGRACAO2_AP_X2
+
+
+chisq.test(tab.IDADE.MIGRACAO2_AP_X2) #diferenca significativa, sendo que quem migou com 19 anos ou menos produz mais a A e menos a P do que quem migrou com 20 anos ou mais
+
+mod.IDADE.MIGRACAO2_AP <- glm(VD_AP ~ IDADE.MIGRACAO2, data = dadosAP.coronal, family = binomial)
+summary(mod.IDADE.MIGRACAO2_AP) #Desfavorecimento de P para falantes que migraram com 19- anos, com pouco poder de discriminacao
+lrm(VD_AP ~ IDADE.MIGRACAO2, data = dadosAP.coronal)
+
+plot(allEffects(mod.IDADE.MIGRACAO2_AP), type = "response")
+
+#################################### VD_AP ~ PROP.VIDA.SP ##########################
+tab.PROP.VIDA.SP_AP <- with(dadosAP.coronal, table(PROP.VIDA.SP, VD_AP))
+tab.PROP.VIDA.SP_AP
+
+prop.PROP.VIDA.SP_AP <- with(dadosAP.coronal, prop.table(tab.PROP.VIDA.SP_AP, 1))
+prop.PROP.VIDA.SP_AP * 100
+
+prop.PROP.VIDA.SP_AP.df <- as.data.frame(prop.PROP.VIDA.SP_AP * 100)
+prop.PROP.VIDA.SP_AP.df
+
+ggplot(prop.PROP.VIDA.SP_AP.df[30:58,], aes(x=as.numeric(PROP.VIDA.SP), y=Freq)) +
+  geom_point() +
+  stat_smooth(method=lm, se=TRUE, color="blue") +
+  theme_light()
+#cf. method = loess
+
+mod.PROP.VIDA.SP_AP <- glm(VD_AP ~ PROP.VIDA.SP, data = dadosAP.coronal, family = binomial)
+summary(mod.PROP.VIDA.SP_AP) #Desfavorecimento de P 
+lrm(VD_AP ~ PROP.VIDA.SP, data = dadosAP.coronal)
+
+plot(allEffects(mod.PROP.VIDA.SP_AP), type = "response")
+
+#################################### VD_AP ~ INDICE.SOCIO ######################
+tab.INDICE.SOCIO_AP <- dadosAP.coronal %>% 
+  count(VD_AP, INDICE.SOCIO) %>%
+  group_by(INDICE.SOCIO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-11.indice_socio.png")
+ggplot(tab.INDICE.SOCIO_AP[24:46,], aes(x = INDICE.SOCIO, y = prop * 100, label = round(prop * 100, 1))) +
+  geom_point(stat = "identity", color = "black") +
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice Socioeconômico", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+
+mod.INDICE.SOCIO_AP <- glm(VD_AP ~ INDICE.SOCIO, data = dadosAP.coronal, family = binomial)
+summary(mod.INDICE.SOCIO_AP)
+lrm(VD_AP ~ INDICE.SOCIO, data = dadosAP.coronal)
+
+plot(allEffects(mod.INDICE.SOCIO_AP), type = "response")
+
+#################################### VD_AP ~ CLASSE.SOCIAL #########################
+tab.CLASSE.SOCIAL_AP <- with(dadosAP.coronal, table(CLASSE.SOCIAL, VD_AP))
+tab.CLASSE.SOCIAL_AP
+
+#tabelas de prop
+prop.CLASSE.SOCIAL_AP <- with(dadosAP.coronal, prop.table(tab.CLASSE.SOCIAL_AP, 1))
+prop.CLASSE.SOCIAL_AP * 100
+
+prop.CLASSE.SOCIAL_AP.df <- as.data.frame(prop.CLASSE.SOCIAL_AP * 100)
+prop.CLASSE.SOCIAL_AP.df
+
+#grafico
+ggplot(prop.CLASSE.SOCIAL_AP.df, aes(x = CLASSE.SOCIAL, y = Freq, fill = VD_AP)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  labs(x = "Classe Social", y = "Proporção de Ocorrência", fill = "VD") +
+  theme_light()
+
+#teste
+chisq.test(tab.CLASSE.SOCIAL_AP) #TEM diferenca significativa
+chisq.test(tab.CLASSE.SOCIAL_AP[c(2,4),])
+chisq.test(tab.CLASSE.SOCIAL_AP[c(3,4),])
+chisq.test(tab.CLASSE.SOCIAL_AP[c(2,4),])
+
+########################## CLASSE.SOCIAL.BC
+tab.CLASSE.SOCIAL.BC_AP <- with(dadosAP.coronal, table(CLASSE.SOCIAL.BC, VD_AP))
+tab.CLASSE.SOCIAL.BC_AP
+
+#tabelas de prop
+prop.CLASSE.SOCIAL.BC_AP <- with(dadosAP.coronal, prop.table(tab.CLASSE.SOCIAL.BC_AP, 1))
+prop.CLASSE.SOCIAL.BC_AP * 100
+
+prop.CLASSE.SOCIAL.BC_AP.df <- as.data.frame(prop.CLASSE.SOCIAL.BC_AP * 100)
+prop.CLASSE.SOCIAL.BC_AP.df
+
+#grafico
+ggplot(prop.CLASSE.SOCIAL.BC_AP.df, aes(x = CLASSE.SOCIAL.BC, y = Freq, fill = VD_AP)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  labs(x = "Classe Social", y = "Proporção de Ocorrência", fill = "VD")+
+  theme_light()
+
+chisq.test(tab.CLASSE.SOCIAL.BC_AP) #Diferença significativa com P favorecida mais pela classe m?dia (B1C1 x C2DE)
+
+mod.CLASSE.SOCIAL.BC_AP <- glm(VD_AP ~ CLASSE.SOCIAL.BC, data = dadosAP.coronal, family = binomial)
+summary(mod.CLASSE.SOCIAL.BC_AP) #P desfavorecido pela classe baixa
+lrm(VD_AP ~ CLASSE.SOCIAL.BC, data = dadosAP.coronal)
+
+plot(allEffects(mod.CLASSE.SOCIAL.BC_AP), type = "response")
+
+################################# CLASSE.SOCIAL.BCC
+tab.CLASSE.SOCIAL.BCC_AP <- with(dadosAP.coronal, table(CLASSE.SOCIAL.BCC, VD_AP))
+tab.CLASSE.SOCIAL.BCC_AP
+
+#tabelas de prop
+prop.CLASSE.SOCIAL.BCC_AP <- with(dadosAP.coronal, prop.table(tab.CLASSE.SOCIAL.BCC_AP, 1))
+prop.CLASSE.SOCIAL.BCC_AP * 100
+
+prop.CLASSE.SOCIAL.BCC_AP.df <- as.data.frame(prop.CLASSE.SOCIAL.BCC_AP * 100)
+prop.CLASSE.SOCIAL.BCC_AP.df
+
+#grafico
+ggplot(prop.CLASSE.SOCIAL.BCC_AP.df, aes(x = CLASSE.SOCIAL.BCC, y = Freq, fill = VD_AP)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  theme_light()
+
+chisq.test(tab.CLASSE.SOCIAL.BCC_AP) #SEM diferença significativa (B1C1C2 X DE)
+
+mod.CLASSE.SOCIAL.BCC_AP <- glm(VD_AP ~ CLASSE.SOCIAL.BCC, data = dadosAP.coronal, family = binomial)
+summary(mod.CLASSE.SOCIAL.BCC_AP)
+lrm(VD_AP ~ CLASSE.SOCIAL.BCC, data = dadosAP.coronal)
+
+plot(allEffects(mod.CLASSE.SOCIAL.BCC_AP), type = "response")
+
+#################################### VD_AP ~ PAULISTIDADE #######################
+tab.PAULISTIDADE_AP <- dadosAP.coronal %>% 
+  count(VD_AP, PAULISTIDADE) %>%
+  group_by(PAULISTIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-12.paulistidade.png")
+ggplot(tab.PAULISTIDADE_AP[10:18,], aes(x = PAULISTIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Paulistidade", y = "Proporção de Palatalização") +
+  theme_light()
+dev.off()
+
+mod.PAULISTIDADE_AP <- glm(VD_AP ~ PAULISTIDADE, data = dadosAP.coronal, family = binomial)
+summary(mod.PAULISTIDADE_AP) 
+lrm(VD_AP ~ PAULISTIDADE, data = dadosAP.coronal)
+
+plot(allEffects(mod.PAULISTIDADE_AP), type = "response")
+
+#################################### VD_AP ~ NORDESTINIDADE ###################
+tab.NORDESTINIDADE_AP <- dadosAP.coronal %>% 
+  count(VD_AP, NORDESTINIDADE) %>%
+  group_by(NORDESTINIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-13.nordestinidade.png")
+ggplot(tab.NORDESTINIDADE_AP[8:14,], aes(x = NORDESTINIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Nordestinidade", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.NORDESTINIDADE_AP <- glm(VD_AP ~ NORDESTINIDADE, data = dadosAP.coronal, family = binomial)
+summary(mod.NORDESTINIDADE_AP)
+lrm(VD_AP ~ NORDESTINIDADE, data = dadosAP.coronal)
+
+plot(allEffects(mod.NORDESTINIDADE_AP), type = "response")
+
+#################################### VD_AP ~ ESTADUALIDADE ######################################
+tab.ESTADUALIDADE_AP <- dadosAP.coronal %>% 
+  count(VD_AP, ESTADUALIDADE) %>%
+  group_by(ESTADUALIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-13.estadualidade.png")
+ggplot(tab.ESTADUALIDADE_AP[6:10,], aes(x = ESTADUALIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Estadualidade", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.ESTADUALIDADE_AP <- glm(VD_AP ~ ESTADUALIDADE, data = dadosAP.coronal, family = binomial)
+summary(mod.ESTADUALIDADE_AP) 
+lrm(VD_AP ~ ESTADUALIDADE, data = dadosAP.coronal)
+
+plot(allEffects(mod.ESTADUALIDADE_AP), type = "response")
+
+#################################### VD_AP ~ INDICE.REDE.EST ################################
+tab.INDICE.REDE.EST_AP <- dadosAP.coronal%>% 
+  count(VD_AP, INDICE.REDE.EST) %>%
+  group_by(INDICE.REDE.EST) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-14.indice_rede_est.png")
+ggplot(tab.INDICE.REDE.EST_AP[12:22,], aes(x = INDICE.REDE.EST, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") +
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice de Rede - Estado", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.INDICE.REDE.EST_AP <- glm(VD_AP ~ INDICE.REDE.EST, data = dadosAP.coronal, family = binomial)
+summary(mod.INDICE.REDE.EST_AP)
+lrm(VD_AP ~ INDICE.REDE.EST, data = dadosAP.coronal)
+
+plot(allEffects(mod.INDICE.REDE.EST_AP), type = "response")
+
+#################################### VD_AP ~ INDICE.REDE.NE #################################
+tab.INDICE.REDE.NE_AP <- dadosAP.coronal %>% 
+  count(VD_AP, INDICE.REDE.NE) %>%
+  group_by(INDICE.REDE.NE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_AP-15.indice_rede_ne.png")
+ggplot(tab.INDICE.REDE.NE_AP[12:22,], aes(x = INDICE.REDE.NE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") +
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice  de Rede - Nordeste", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+
+mod.INDICE.REDE.NE_AP <- glm(VD_AP ~ INDICE.REDE.NE, data = dadosAP.coronal, family = binomial)
+summary(mod.INDICE.REDE.NE_AP)
+lrm(VD_AP ~ INDICE.REDE.NE, data = dadosAP.coronal)
+
+plot(allEffects(mod.INDICE.REDE.NE_AP), type = "response")
+
+#################################### VD_AP ~ INDICE.HABITOS #################################
+tab.INDICE.HABITOS_AP <- dadosAP.coronal %>% 
+  count(VD_AP, INDICE.HABITOS) %>%
+  group_by(INDICE.HABITOS) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_AP-16.indice_habitos.png")
+ggplot(tab.INDICE.HABITOS_AP[12:22,], aes(x = INDICE.HABITOS, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice  de Hábitos", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.INDICE.HABITOS_AP <- glm(VD_AP ~ INDICE.HABITOS, data = dadosAP.coronal, family = binomial)
+summary(mod.INDICE.HABITOS_AP)
+lrm(VD_AP ~ INDICE.HABITOS, data = dadosAP.coronal)
+
+plot(allEffects(mod.INDICE.HABITOS_AP), type = "response")
+
+#################################### VD_AP ~ PRIMEIROS MODELOS ###################
+#mod 1 com CFP_abertura, CFS_pontoc
+mod1 <- glm(VD_AP ~ TONICIDADE + POSICAO.S + CFP_abertura + CFS_pontoc + CLASSE.MORFOLOGICA2 + SEXO + TEMPO.SP2 + IDADE.MIGRACAO2 + ESCOLARIDADE + CLASSE.SOCIAL.BC, data = dadosAP, family = binomial)
+summary(mod1)
+lrm(VD_AP ~ TONICIDADE + POSICAO.S + CFP_abertura + CFS_pontoc + CLASSE.MORFOLOGICA2 + SEXO + TEMPO.SP2 + IDADE.MIGRACAO2 + ESCOLARIDADE + CLASSE.SOCIAL.BC, data = dadosAP)
+ 
+###########Intercept -> p, tonica, final, alta, pausa, adjetivo, feminino, 9-, 19-, ate1quarto, fund, baixa.
+#P favorecida em posião medial, quando seguido por coronal, em falantes que estao em sao paulo ha menos de 9 anos e que migraram com mais de 20 anos
+#P desfavorecido em dorsal.labial
+#sem diferenca significativa para tonicidade, CFP, classe morfologica, sexo, escolaridade e classe social em relação ao intercept
+
+####DÚVIDA: COMO INSERIR AS VARIÁVEIS CONTÍNUAS? ###
+#mod2 com CFP_abertura e CFS_sonor
+mod2 <- glm(VD_AP ~ TONICIDADE + POSICAO.S + CFP_abertura + CFS_sonor + CLASSE.MORFOLOGICA2 + SEXO + TEMPO.SP2 + IDADE.MIGRACAO2 + ESCOLARIDADE + CLASSE.SOCIAL.BC, data = dadosAP, family = binomial)
+summary(mod2)
+lrm(VD_AP ~ TONICIDADE + POSICAO.S + CFP_abertura + CFS_sonor + CLASSE.MORFOLOGICA2 + SEXO + TEMPO.SP2 + IDADE.MIGRACAO2 + ESCOLARIDADE + CLASSE.SOCIAL.BC, data = dadosAP)
+# P favorecido em sílaba tonica, em posição medial, com contexto precedente vogal media.baixa, com contexto seguinte surdo, em quem está menos de 9 anos em sp e em quem migrou com mais de 20 anos  
+
+#mod3 com CFP_anterioridade e CFS_sonor
+mod3 <- glm(VD_AP ~ TONICIDADE + POSICAO.S + CFP_anterioridade + CFS_sonor + CLASSE.MORFOLOGICA2 + SEXO + TEMPO.SP2 + IDADE.MIGRACAO2 + ESCOLARIDADE + CLASSE.SOCIAL.BC, data = dadosAP, family = binomial)
+summary(mod3)
+lrm(VD_AP ~ TONICIDADE + POSICAO.S + CFP_anterioridade + CFS_sonor + CLASSE.MORFOLOGICA2 + SEXO + TEMPO.SP2 + IDADE.MIGRACAO2 + ESCOLARIDADE + CLASSE.SOCIAL.BC, data = dadosAP)
+# P favorecido em sílaba tônica, em posição medial, com contexto precedente vogal posterior, com contexto seguinte surdo, por quem tá a menos de 9 anos em sp e por quem migrou com mais de 20 anos
+
+
+#COM VARIAVEIS CONTINUAS
+
+#mod4 CFP TRACO
+mod4 <- glm(VD_AP ~ TONICIDADE + POSICAO.S + CFP_tracoposicao1 + CFS_pontoc +  CLASSE.MORFOLOGICA2 + SEXO + TEMPO.SP2 + IDADE.MIGRACAO2 + ESCOLARIDADE + CLASSE.SOCIAL.BC + INDICE.SOCIO + PAULISTIDADE + NORDESTINIDADE + INDICE.REDE.EST + INDICE.REDE.NE + INDICE.HABITOS + ESTADUALIDADE, data = dadosAP, family = binomial)
+summary(mod4)
+lrm(VD_AP ~ TONICIDADE + POSICAO.S +  CFP_tracoposicao1 + CFS_pontoc + CLASSE.MORFOLOGICA2 + SEXO + TEMPO.SP2 + IDADE.MIGRACAO2 + ESCOLARIDADE + CLASSE.SOCIAL.BC + INDICE.SOCIO + PAULISTIDADE + NORDESTINIDADE + INDICE.REDE.EST + INDICE.REDE.NE + INDICE.HABITOS + ESTADUALIDADE, data = dadosAP)
+
+#################################### Analise Multivariada2
+mod5 <- glm(VD_AP ~ TONICIDADE + 
+              POSICAO.S + 
+              CFP_anterioridade + 
+              CFS_pontoc +  
+              CLASSE.MORFOLOGICA2 + 
+              SEXO + 
+              TEMPO.SP2 + 
+              IDADE.MIGRACAO2 + 
+              ESCOLARIDADE2 + 
+              INDICE.SOCIO + 
+              PAULISTIDADE + 
+              NORDESTINIDADE + 
+              INDICE.REDE.EST + 
+              INDICE.HABITOS + 
+              ESTADUALIDADE, 
+            data = dadosAP, family = binomial)
+summary(mod5)
+
+lrm(VD_AP ~ TONICIDADE + 
+      POSICAO.S +  
+      CFP_anterioridade + 
+      CFS_pontoc + 
+      CLASSE.MORFOLOGICA2 + 
+      SEXO + 
+      TEMPO.SP2 + 
+      IDADE.MIGRACAO2 + 
+      ESCOLARIDADE2 + 
+      INDICE.SOCIO + 
+      PAULISTIDADE + 
+      NORDESTINIDADE + 
+      INDICE.REDE.EST + 
+      INDICE.HABITOS + 
+      ESTADUALIDADE, 
+    data = dadosAP)
+drop1(mod5, test = "F")
+
+plot(allEffects(mod5), type = "response", ask = T)
+
+mod5b <- glmer(VD_AP ~ TONICIDADE + 
+                 POSICAO.S + 
+                 CFP_abertura + 
+                 CFS_pontoc +  
+                 CLASSE.MORFOLOGICA2 + 
+                 SEXO + 
+                 TEMPO.SP2 + 
+                 IDADE.MIGRACAO2 + 
+                 ESCOLARIDADE2 + 
+                 INDICE.SOCIO + 
+                 PAULISTIDADE + 
+                 NORDESTINIDADE + 
+                 INDICE.REDE.EST +
+                 INDICE.HABITOS + 
+                 ESTADUALIDADE + 
+                 (1|PARTICIPANTE), data = dadosAP, family = binomial)
+summary(mod5b)
+
+car::vif(mod5b)
+
+mod6 <- glm(VD_AP ~ TONICIDADE + 
+              POSICAO.S + 
+              CFP_abertura + 
+              CFS_pontoc +  
+              CLASSE.MORFOLOGICA2 + 
+              SEXO + 
+              TEMPO.SP2 + 
+              IDADE.MIGRACAO2 + 
+              ESCOLARIDADE2 + 
+              INDICE.SOCIO + 
+              PAULISTIDADE + 
+              NORDESTINIDADE + 
+              INDICE.REDE.EST + 
+              INDICE.HABITOS + 
+              ESTADUALIDADE, 
+            data = dadosAP, family = binomial)
+summary(mod6)
+
+#################################### Analise Multivariada3
+mod7 <- glmer(VD_AP ~ TONICIDADE + 
+        POSICAO.S +
+        ESTILO +
+        CFS_pontoc +
+        CFP_abertura +
+        CLASSE.MORFOLOGICA3 + 
+        SEXO + 
+        TEMPO.SP + 
+        IDADE.MIGRACAO + 
+        INDICE.SOCIO + 
+        PAULISTIDADE + 
+        ESTADUALIDADE +
+        INDICE.REDE.EST +
+        INDICE.HABITOS  + 
+        (1|ITEM.LEXICAL) +
+        (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(mod7)
+lrm(VD_AP ~ TONICIDADE + 
+      POSICAO.S +
+      ESTILO +
+      CFS_pontoc +
+      CFP_abertura +
+      CLASSE.MORFOLOGICA3 + 
+      SEXO + 
+      TEMPO.SP + 
+      IDADE.MIGRACAO + 
+      INDICE.SOCIO + 
+      PAULISTIDADE + 
+      ESTADUALIDADE +
+      INDICE.REDE.EST +
+      INDICE.HABITOS +
+      (1|ITEM.LEXICAL) +
+      (1|PARTICIPANTE), data = dadosAP.coronal)
+car::vif(mod7)
+
+plot(allEffects(mod7), type = "response", ask = T, xlab = "Idade de Migração", ylab = "Proporção de Palatalização", main = "")
+
+
+mod7b <- glmer(VD_AP ~ TONICIDADE + 
+                POSICAO.S + 
+                CFP_abertura + 
+                CFS_pontoc +  
+                CLASSE.MORFOLOGICA3 + 
+                SEXO + 
+                TEMPO.SP + 
+                IDADE.MIGRACAO + 
+                INDICE.SOCIO + 
+                PAULISTIDADE + 
+                INDICE.REDE.EST +
+                INDICE.HABITOS + 
+                ESTADUALIDADE + 
+                (1|ITEM.LEXICAL) +
+                (1|PARTICIPANTE), data = dadosAP2, family = binomial)
+summary(mod7b)
+plot(allEffects(mod7b), type = "response", ask = T, xlab = "Gênero", ylab = "Proporção de Palatalização", main = "")
+
+#################################### MOD_AP ~ ANALISE 1 (coronal) ###################
+modAP.8a <- glmer(VD_AP ~ TONICIDADE + 
+                POSICAO.S +
+                CFP_abertura +
+                CLASSE.MORFOLOGICA3 + 
+                SEXO + 
+                TEMPO.SP + 
+                IDADE.MIGRACAO + 
+                INDICE.SOCIO + 
+                PAULISTIDADE + 
+                NORDESTINIDADE +
+                INDICE.REDE.NE +
+                INDICE.HABITOS  + 
+                (1|ITEM.LEXICAL) +
+                (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(modAP.8a)
+
+lrm(VD_AP ~ TONICIDADE + 
+      POSICAO.S +
+      ESTILO +
+      CFP_abertura +
+      CLASSE.MORFOLOGICA3 + 
+      SEXO + 
+      TEMPO.SP + 
+      IDADE.MIGRACAO + 
+      INDICE.SOCIO + 
+      PAULISTIDADE + 
+      ESTADUALIDADE +
+      INDICE.REDE.EST +
+      INDICE.HABITOS, data = dadosAP.coronal)
+
+
+car::vif(modAP.8a)
+#plot(allEffects(modAP.8), type = "response", ask = T, xlab = "Idade de Migração", ylab = "Proporção de Palatalização", main = "")
+
+
+modAP.8b <- glmer(VD_AP ~ TONICIDADE + 
+                   POSICAO.S +
+                   ESTILO +
+                   CFP_abertura +
+                   CLASSE.MORFOLOGICA3 + 
+                   SEXO + 
+                   TEMPO.SP + 
+                   IDADE.MIGRACAO + 
+                   (1|ITEM.LEXICAL) +
+                   (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(modAP.8b)
+lrm(VD_AP ~ TONICIDADE + 
+                    POSICAO.S +
+                    ESTILO +
+                    CFP_abertura +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO, data = dadosAP.coronal)
+car::vif(modAP.8b)
+
+#################################### MOD_AP ~ ANALISE 2 (coronal) ###################
+modAP.9 <- glmer(VD_AP ~ TONICIDADE + 
+                         POSICAO.S +
+                         ESTILO +
+                         CFP_abertura +
+                         CLASSE.MORFOLOGICA3 + 
+                         SEXO + 
+                         TEMPO.SP + 
+                         IDADE.MIGRACAO +
+                         INDICE.SOCIO + 
+                         (1|ITEM.LEXICAL) +
+                         (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(modAP.9)
+lrm(VD_AP ~ TONICIDADE + 
+      POSICAO.S +
+      ESTILO +
+      CFP_abertura +
+      CLASSE.MORFOLOGICA3 + 
+      SEXO + 
+      TEMPO.SP + 
+      IDADE.MIGRACAO +
+      INDICE.SOCIO, data = dadosAP.coronal)
+car::vif(teste.interacaoAP.1)
+
+#################################### MOD_AP ~ ANALISE 3 (coronal) ###################
+modAP.10 <- glmer(VD_AP ~ TONICIDADE + 
+                    POSICAO.S +
+                    CFP_abertura +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO +
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(modAP.10)
+lrm(VD_AP ~ TONICIDADE + 
+      POSICAO.S +
+      CFP_abertura +
+      CLASSE.MORFOLOGICA3 + 
+      SEXO + 
+      TEMPO.SP + 
+      IDADE.MIGRACAO, data = dadosAP.coronal)
+
+#################################### MOD_AP ~ MODELO TODAS VARIAVEIS####
+modAP.todasvariaveis <- glmer(VD_AP ~ TONICIDADE + 
+               POSICAO.S +
+               ESTILO +
+               CFP_abertura +
+               CLASSE.MORFOLOGICA3 + 
+               SEXO + 
+               TEMPO.SP + 
+               IDADE.MIGRACAO + 
+               INDICE.SOCIO + 
+               PAULISTIDADE + 
+               NORDESTINIDADE +
+               INDICE.REDE.NE +
+               INDICE.HABITOS  + 
+               (1|ITEM.LEXICAL) +
+               (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(modAP.todasvariaveis)
+
+#################################### MOD_AP ~ MODELO VARIAVEIS COM CORRELACAO####
+modAP <- glmer(VD_AP ~ TONICIDADE + 
+                      POSICAO.S +
+                      CFP_abertura +
+                      CLASSE.MORFOLOGICA3 + 
+                      SEXO + 
+                      TEMPO.SP + 
+                      IDADE.MIGRACAO + 
+                      (1|ITEM.LEXICAL) +
+                      (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(modAP)
+
+
+#################################### MOD_ AP ~ TESTE ORTOGONALIDADE #########################
+#Único modelo que não aponta falha ao convergir --> sem estilo, CFP_abertura e classe.morgologica 3
+
+
+teste.ortogonalidade.VD_AP1 <- glmer(VD_AP ~ TONICIDADE + 
+                                       POSICAO.S +
+                                       SEXO + 
+                                       TEMPO.SP + 
+                                       IDADE.MIGRACAO + 
+                                       (1|ITEM.LEXICAL) +
+                                       (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.ortogonalidade1)
+
+
+
+teste.ortogonalidade2 <- glmer(VD_AP ~ TONICIDADE + 
+                                 POSICAO.S +
+                                 ESTILO +
+                                 SEXO + 
+                                 TEMPO.SP + 
+                                 IDADE.MIGRACAO + 
+                                 (1|ITEM.LEXICAL) +
+                                 (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.ortogonalidade2)
+
+
+
+teste.ortogonalidade3 <- glmer(VD_AP ~ TONICIDADE + 
+                                 POSICAO.S +
+                                 CFP_abertura +
+                                 SEXO +
+                                 TEMPO.SP + 
+                                 IDADE.MIGRACAO + 
+                                 (1|ITEM.LEXICAL) +
+                                 (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.ortogonalidade3)
+
+
+
+teste.ortogonalidade4 <- glmer(VD_AP ~ TONICIDADE + 
+                                 POSICAO.S +
+                                 CLASSE.MORFOLOGICA3 +
+                                 SEXO + 
+                                 TEMPO.SP + 
+                                 IDADE.MIGRACAO + 
+                                 (1|ITEM.LEXICAL) +
+                                 (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.ortogonalidade4)
+
+teste.ortogonalidade5 <- glmer(VD_AP ~ TONICIDADE + 
+                                 POSICAO.S +
+                                 CLASSE.MORFOLOGICA3 +
+                                 CFP_abertura +
+                                 SEXO + 
+                                 TEMPO.SP + 
+                                 IDADE.MIGRACAO + 
+                                 (1|ITEM.LEXICAL) +
+                                 (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.ortogonalidade5)
+
+
+#################################### MOD_AP ~ TESTE INTERECAO ###################
+
+#INDICE.SOCIO --> sem mudança de correlação e sem correlação com indice.socio
+teste.interacaoAP.1 <- glmer(VD_AP ~ TONICIDADE + 
+                    POSICAO.S +
+                    CFP_abertura +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO +
+                    INDICE.SOCIO + 
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.interacaoAP.1)
+
+
+
+#PAULISTIDADE --> altera a correlação com tempo em sp
+teste.interacaoAP.2 <- glmer(VD_AP ~ TONICIDADE + 
+                    POSICAO.S +
+                    CFP_abertura +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO +
+                    PAULISTIDADE + 
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.interacaoAP.2)
+
+cor.test(dadosAP.coronal$PAULISTIDADE, dadosAP.coronal$TEMPO.SP) -> #r:0.35
+
+
+#nordestinidade --> altera a correlação de tempo.sp e idade de migração
+teste.interacaoAP.3 <- glmer(VD_AP ~ TONICIDADE + 
+                    POSICAO.S +
+                    CFP_abertura +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO +
+                    NORDESTINIDADE + 
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.interacaoAP.3)
+
+cor.test(dadosAP.coronal$ESTADUALIDADE, dadosAP.coronal$TEMPO.SP)
+
+cor.test(dadosAP.coronal$ESTADUALIDADE, dadosAP.coronal$IDADE.MIGRACAO)
+
+
+
+#INDICE.REDE.NE --> alteração de correlação com tempo.sp
+teste.interacaoAP.4 <- glmer(VD_AP ~ TONICIDADE + 
+                    POSICAO.S +
+                    CFP_abertura +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO +
+                    INDICE.REDE.NE + 
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.interacaoAP.4)
+
+cor.test(dadosAP.coronal$INDICE.REDE.EST, dadosAP.coronal$TEMPO.SP)
+
+#INDICE.HABITOS --> alteração em tempo.sp e idade de migração
+teste.interacaoAP.5 <- glmer(VD_AP ~ TONICIDADE + 
+                    POSICAO.S +
+                    CFP_abertura +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO +
+                    INDICE.HABITOS + 
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosAP.coronal, family = binomial)
+summary(teste.interacaoAP.5)
+
+
+
+
+
+
+
+
+
+
+
+
+####fim####
+
+
+#################################### VD_0S #############################################
+dados0S <- filter(dados2, VD_0S %in% c("0", "S")) %>% 
+  droplevels() 
+
+dados0S2 <- filter(dados0S, !PARTICIPANTE %in% c("IsabelaS")) %>% 
+  droplevels() #conunto de dados sem IsabelaS
+
+dados0S.semplural <- filter(dados0S2, MORFEMA.PLURAL != "sim" & MORFEMA.PLURAL != "mos") %>% 
+  droplevels()
+
+#tabelas
+tab.VD_0S.semplural <- with(dados0S.semplural, table(VD_0S))
+tab.VD_0S.semplural
+
+#grafico
+propVD_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S) %>%
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+propVD_0S.semplural <- propVD_0S.semplural %>%
+  group_by(VD_0S) %>%
+  mutate(ocorrencias = n) %>%
+  print()
+
+
+propVD_0S.semplural <- propVD_0S.semplural %>%
+  mutate(label = paste0(round(prop * 100, 1), "%\n(", ocorrencias, ")"))
+
+
+png("VD_0S.png")
+ggplot(propVD_0S.semplural, aes(x = VD_0S, y = prop * 100, fill = VD_0S, label = label)) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Demais Variantes", "Zero fonético"))+
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_light()+
+  theme(legend.position = "none")
+dev.off()
+
+
+
+
+#################################### VD_0S ~ TONICIDADE #################################
+#graficos
+tab.TONICIDADE_0S.semplural <- dados0S.semplural %>% 
+  count(TONICIDADE, VD_0S) %>%
+  group_by(TONICIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-01.tonicidade.png")
+ggplot(tab.TONICIDADE_0S.semplural, aes(x = TONICIDADE, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Tonicidade", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Átona", "Tônica")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+
+#tabela com table() para X2
+tab.TONICIDADE_0S_X2.semplural <- with(dados0S.semplural, table(TONICIDADE, VD_0S))
+tab.TONICIDADE_0S_X2.semplural
+
+#teste
+chisq.test(tab.TONICIDADE_0S_X2.semplural) 
+
+mod.TONICIDADE_0S <- glm(VD_0S ~ TONICIDADE, data = dados0S.semplural, family = binomial) #zero Fonético no intercept
+summary.lm(mod.TONICIDADE_0S)
+lrm(VD_0S ~ TONICIDADE, data = dados0S.semplural)
+plot(allEffects(mod.TONICIDADE_0S), type = "response")
+
+
+#################################### VD_0S ~ POSICAO ####################################
+tab.POSICAO_0S.semplural <- dados0S.semplural %>% 
+  count(POSICAO.S, VD_0S) %>%
+  group_by(POSICAO.S) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_0S-02.posicao.png")
+ggplot(tab.POSICAO_0S.semplural, aes(x = POSICAO.S, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Posição", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Final", "Medial")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.POSICAO_0S_X2.semplural <- with(dados0S.semplural, table(POSICAO.S, VD_0S))
+tab.POSICAO_0S_X2.semplural
+
+#teste
+chisq.test(tab.POSICAO_0S_X2.semplural) #TEM DIFERENCA SIGNFICIATICA
+
+mod.POSICAO_0S <- glm(VD_0S ~ POSICAO.S, data = dados0S.semplural, family = binomial) #zero Fonético no intercept
+summary.lm(mod.POSICAO_0S)
+lrm(VD_0S ~ POSICAO.S, data = dados0S.semplural)
+plot(allEffects(mod.POSICAO_0S), type = "response")
+
+#################################### VD_0S ~ ESTILO ####################################
+#graficos
+tab.ESTILO_0S.semplural <- dados0S.semplural %>% 
+  count(ESTILO, VD_0S) %>%
+  group_by(ESTILO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_0S-03.estilo.png")
+ggplot(tab.ESTILO_0S.semplural, aes(x = ESTILO, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Estilo", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Conversa", "Lista de Palavras")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.ESTILO_0S_X2.semplural <- with(dados0S.semplural, table(ESTILO, VD_0S))
+tab.ESTILO_0S_X2.semplural
+
+#teste
+chisq.test(tab.ESTILO_0S_X2.semplural) #TEM DIFERENCA SIGNFICIATICA
+
+
+mod.ESTILO_0S <- glm(VD_0S ~ ESTILO, data = dados0S.semplural, family = binomial) #zero Fonético no intercept
+summary.lm(mod.ESTILO_0S)
+lrm(VD_0S ~ ESTILO, data = dados0S.semplural)
+plot(allEffects(mod.ESTILO_0S), type = "response")
+
+#################################### VD_0S ~ CONT.FON.SEG #############################
+tab.CONT.FON.SEG_0S.semplural <- dados0S.semplural %>% 
+  count(CONT.FON.SEG, VD_0S) %>%
+  group_by(CONT.FON.SEG) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.CONT.FON.SEG_0S.semplural, aes(x = CONT.FON.SEG, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência", fill = "VD") +
+  #scale_x_discrete(labels = c("Pausa", "Dorsal e Labial", "Coronal")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+
+
+####CFS_PONTO C
+tab.CFS_pontoc_0S.semplural <- dados0S.semplural %>% 
+  count(CFS_pontoc, VD_0S) %>%
+  group_by(CFS_pontoc) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-04.cfs_pontoc.png")
+ggplot(tab.CFS_pontoc_0S.semplural, aes(x = CFS_pontoc, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Pausa", "Dorsal e Labial", "Coronal")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.CFS_pontoc_0S_X2.semplural <- with(dados0S.semplural, table(CFS_pontoc, VD_0S))
+tab.CFS_pontoc_0S_X2.semplural
+
+#teste
+chisq.test(tab.CFS_pontoc_0S_X2.semplural) #TEM diferenca significativa -> zero Fonético favorecido por Dorsal/Labial 
+
+chisq.test(tab.CFS_pontoc_0S_X2.semplural[c(1,3),]) #NAO
+chisq.test(tab.CFS_pontoc_0S_X2.semplural[c(2,3),]) #sim
+
+
+
+#mod. regressao
+mod.CFS_pontoc_0S.semplural <- glm(VD_0S ~ CFS_pontoc, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.CFS_pontoc_0S.semplural)
+lrm(VD_0S ~ CFS_pontoc, data = dados0S.semplural)
+plot(allEffects(mod.CFS_pontoc_0S.semplural), type = "response")
+
+
+####CFS_sonoridade
+tab.CFS_sonor_0S.semplural <- dados0S.semplural %>% 
+  count(CFS_sonor, VD_0S) %>%
+  group_by(CFS_sonor) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_0S-05.cfs_sonor.png")
+ggplot(tab.CFS_sonor_0S.semplural, aes(x = CFS_sonor, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Pausa", "Surda", "Sonora")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+
+#tabela com table() para X2
+tab.CFS_sonor_0S_X2.semplural <- with(dados0S.semplural, table(CFS_sonor, VD_0S))
+tab.CFS_sonor_0S_X2.semplural
+
+#teste
+chisq.test(tab.CFS_sonor_0S_X2.semplural) #TEM diferenca significativa -> sonora favorece zero fonpetico
+chisq.test(tab.CFS_sonor_0S_X2.semplural[c(1,2),]) #SIM
+
+mod.CFS_sonor_0S.semplural <- glm(VD_0S ~ CFS_sonor, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.CFS_sonor_0S.semplural)
+lrm(VD_0S ~ CFS_sonor, data = dados0S.semplural) #indice c maior que em ponto_c
+plot(allEffects(mod.CFS_sonor_0S.semplural), type = "response")
+
+
+#################################### VD_0S ~ CONT.FON.PREC ############################
+#graficos
+tab.CONT.FON.PREC_0S.semplural <- dados0S.semplural %>% 
+  count(CONT.FON.PREC, VD_0S) %>%
+  group_by(CONT.FON.PREC) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.CONT.FON.PREC_0S.semplural, aes(x = CONT.FON.PREC, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") +
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+
+
+####CFP_ABERTURA
+tab.CFP_abertura_0S.semplural <- dados0S.semplural %>% 
+  count(CFP_abertura, VD_0S) %>%
+  group_by(CFP_abertura) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-06.cfp_abertura.png")
+ggplot(tab.CFP_abertura_0S.semplural, aes(x = CFP_abertura, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Fechada", "Meio fechada", "Meio aberta", "Aberta")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.CFP_abertura_0S_X2.semplural <- with(dados0S.semplural, table(CFP_abertura, VD_0S))
+tab.CFP_abertura_0S_X2.semplural
+
+#teste
+chisq.test(tab.CFP_abertura_0S_X2.semplural) #TEM diferenca significativa -> zero fonpetico favorecida por vogais fechadas e meio abertasçãçã
+chisq.test(tab.CFP_abertura_0S_X2.semplural[c(1,2),]) #SIM
+chisq.test(tab.CFP_abertura_0S_X2.semplural[c(1,4),]) #NAO
+
+#mod. regressao
+mod.CFP_abertura_0S.semplural <- glm(VD_0S ~ CFP_abertura, data = dados0S.semplural, family = binomial) #zero Fonético no intercept
+summary.lm(mod.CFP_abertura_0S.semplural)
+lrm(VD_0S ~ CFP_abertura, data = dados0S.semplural)
+plot(allEffects(mod.CFP_abertura_0S.semplural), type = "response")
+
+
+########CFP_anterioridade
+tab.CFP_anterioridade_0S.semplural <- dados0S.semplural %>% 
+  count(CFP_anterioridade, VD_0S) %>%
+  group_by(CFP_anterioridade) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-07.cfp_anterioridade.png")
+ggplot(tab.CFP_anterioridade_0S.semplural, aes(x = CFP_anterioridade, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Anterior", "Central", "Posterior")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.CFP_anterioridade_0S_X2.semplural <- with(dados0S.semplural, table(CFP_anterioridade, VD_0S))
+tab.CFP_anterioridade_0S_X2.semplural
+
+#teste
+chisq.test(tab.CFP_anterioridade_0S_X2.semplural) #SIM
+
+#mod. regressao
+mod.CFP_anterioridade_0S.semplural <- glm(VD_0S ~ CFP_anterioridade, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.CFP_anterioridade_0S.semplural)
+lrm(VD_0S ~ CFP_anterioridade, data = dados0S.semplural)
+plot(allEffects(mod.CFP_anterioridade_0S.semplural), type = "response")
+
+#################################### VD_0S ~ CLASSE.MORFOLOGICA ########################
+#graficos
+tab.CLASSE.MORFOLOGICA2_0S.semplural <- dados0S.semplural %>% 
+  count(CLASSE.MORFOLOGICA2, VD_0S) %>%
+  group_by(CLASSE.MORFOLOGICA2) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-08.classe_morfologica2.png")
+ggplot(tab.CLASSE.MORFOLOGICA2_0S.semplural, aes(x = CLASSE.MORFOLOGICA2, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência", fill = "VD") + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+
+tab.CLASSE.MORFOLOGICA3_0S.semplural <- dados0S.semplural %>% 
+  count(CLASSE.MORFOLOGICA3, VD_0S) %>%
+  group_by(CLASSE.MORFOLOGICA3) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-09.classe_morfologica3.png")
+ggplot(tab.CLASSE.MORFOLOGICA3_0S.semplural, aes(x = CLASSE.MORFOLOGICA3, y = prop * 100, fill = VD_0S, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("lexical", "Gramatical")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.CLASSE.MORFOLOGICA3_0S_X2.semplural <- with(dados0S.semplural, table(CLASSE.MORFOLOGICA3, VD_0S))
+tab.CLASSE.MORFOLOGICA3_0S_X2.semplural
+
+#teste
+chisq.test(tab.CLASSE.MORFOLOGICA3_0S_X2.semplural) #TEM diferenca significativa -> classes gramaticais favorecem o uso do zero Fonético 
+
+
+mod.CLASSE.MORFOLOGICA3_0S <- glm(VD_0S ~ CLASSE.MORFOLOGICA3, data = dados0S.semplural, family = binomial) #zero Fonético no intercept
+summary.lm(mod.CLASSE.MORFOLOGICA3_0S)
+lrm(VD_0S ~ CLASSE.MORFOLOGICA3, data = dados0S.semplural)
+plot(allEffects(mod.CLASSE.MORFOLOGICA3_0S), type = "response")
+
+
+
+#################################### VD_0S ~ SEXO ################################
+#graficos
+tab.SEXO_0S.semplural <- dados0S.semplural %>% 
+  count(SEXO, VD_0S) %>%
+  group_by(SEXO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+tab.SEXO_0S.semplural <- tab.SEXO_0S.semplural %>%
+  group_by(SEXO, VD_0S) %>%
+  mutate(ocorrencias = n) %>%
+  print()
+
+
+tab.SEXO_0S.semplural <- tab.SEXO_0S.semplural %>%
+  mutate(label = paste0(round(prop * 100, 1), "%\n(", ocorrencias, ")"))
+
+
+png("VD_0S-10.genero.png")
+ggplot(tab.SEXO_0S.semplural, aes(x = SEXO, y = prop * 100, fill = VD_0S, label = label)) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Gênero", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Masculino", "Feminino")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Demais variantes", "Zero Fonético"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.SEXO_0S_X2.semplural <- with(dados0S.semplural, table(SEXO, VD_0S))
+tab.SEXO_0S_X2.semplural
+
+#teste
+chisq.test(tab.SEXO_0S_X2.semplural) #TEM diferenca significativa -> zero fonetico favorecido por homens
+
+mod.SEXO_0S.semplural <- glm(VD_0S ~ SEXO, data = dados0S.semplural, family = binomial) #zero fonetico no intercept
+summary.lm(mod.SEXO_0S.semplural)
+lrm(VD_0S ~ SEXO, data = dados0S.semplural)
+plot(allEffects(mod.SEXO_0S.semplural), type = "response")
+
+
+
+#################################### VD_0S ~ TEMPO.SP ############################
+tab.TEMPO.SP_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, TEMPO.SP) %>%
+  group_by(TEMPO.SP) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-11.tempo_sp.png")
+ggplot(tab.TEMPO.SP_0S.semplural[22:41,], aes(x = TEMPO.SP, y = prop * 100, label = round(prop * 100, 1))) +
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Tempo de Residência", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.TEMPO.SP_0S.semplural <- glm(VD_0S ~ TEMPO.SP, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.TEMPO.SP_0S.semplural) #NAO tem diferenca significativa 
+lrm(VD_0S ~ TEMPO.SP, data = dados0S.semplural)
+plot(allEffects(mod.TEMPO.SP_0S.semplural), type = "response")
+
+
+
+#################################### VD_0S ~ IDADE.MIGRACAO ######################
+tab.IDADE.MIGRACAO_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, IDADE.MIGRACAO) %>%
+  group_by(IDADE.MIGRACAO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_0S-12.idade_migracao.png")
+ggplot(tab.IDADE.MIGRACAO_0S.semplural[24:45,], aes(x = IDADE.MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Idade de Migração", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+
+mod.IDADE.MIGRACAO_0S.semplural <- glm(VD_0S ~ IDADE.MIGRACAO, data = dados0S.semplural, family = binomial) #zero fonetico no intercept
+summary.lm(mod.IDADE.MIGRACAO_0S.semplural) #TEM diferenca significativa -> quanto maior a idade de migração maior o uso do zero Fonético
+lrm(VD_0S ~ IDADE.MIGRACAO, data = dados0S.semplural)
+plot(allEffects(mod.IDADE.MIGRACAO_0S.semplural), type = "response")
+
+#################################### VD_0S ~ INDICE.SOCIO ########################
+tab.INDICE.SOCIO_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, INDICE.SOCIO) %>%
+  group_by(INDICE.SOCIO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-13.indice_socio.png")
+ggplot(tab.INDICE.SOCIO_0S.semplural[24:44,], aes(x = INDICE.SOCIO, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice Socioeconômico", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+
+mod.INDICE.SOCIO_0S.semplural <- glm(VD_0S ~ INDICE.SOCIO, data = dados0S.semplural, family = binomial) #zero Fonético no intercept
+summary.lm(mod.INDICE.SOCIO_0S.semplural) #TEM diferenca significativa -> quanto maior o indice socio menor o uso de zero Fonético
+lrm(VD_0S ~ INDICE.SOCIO, data = dados0S.semplural)
+plot(allEffects(mod.INDICE.SOCIO_0S.semplural), type = "response")
+
+#################################### VD_0S ~ PAULISTIDADE ########################
+tab.PAULISTIDADE_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, PAULISTIDADE) %>%
+  group_by(PAULISTIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-14.paulistidade.png")
+ggplot(tab.PAULISTIDADE_0S.semplural[10:18,], aes(x = PAULISTIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Paulistidade", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.PAULISTIDADE_0S.semplural <- glm(VD_0S ~ PAULISTIDADE, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.PAULISTIDADE_0S.semplural) #TEM diferenca significativa -> zero fonetico desfavorecido quanto maior o reconhecimento como paulista
+lrm(VD_0S ~ PAULISTIDADE, data = dados0S.semplural)
+plot(allEffects(mod.PAULISTIDADE_0S.semplural), type = "response")
+
+
+#################################### VD_0S ~ NORDESTINIDADE ######################
+tab.NORDESTINIDADE_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, NORDESTINIDADE) %>%
+  group_by(NORDESTINIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_0S-15.nordestinidade.png")
+ggplot(tab.NORDESTINIDADE_0S.semplural[8:14,], aes(x = NORDESTINIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Nordestinidade", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.NORDESTINIDADE_0S.semplural <- glm(VD_0S ~ NORDESTINIDADE, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.NORDESTINIDADE_0S.semplural) #NAO tem diferenca significativa
+lrm(VD_0S ~ NORDESTINIDADE, data = dados0S.semplural)
+plot(allEffects(mod.NORDESTINIDADE_0S.semplural), type = "response")
+
+
+#################################### VD_0S ~ ESTADUALIDADE #######################
+tab.ESTADUALIDADE_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, ESTADUALIDADE) %>%
+  group_by(ESTADUALIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.ESTADUALIDADE_0S.semplural[6:10,], aes(x = ESTADUALIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Estadualidade", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+
+mod.ESTADUALIDADE_0S.semplural <- glm(VD_0S ~ ESTADUALIDADE, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.ESTADUALIDADE_0S.semplural) #TEM diferenca significativa -> quanto maior reconhecimento como alagoano/paraibano maior o uso de zero Fonético
+lrm(VD_0S ~ ESTADUALIDADE, data = dados0S.semplural)
+plot(allEffects(mod.ESTADUALIDADE_0S.semplural), type = "response")
+
+#################################### VD_0S ~ INDICE.REDE.EST #####################
+tab.INDICE.REDE.EST_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, INDICE.REDE.EST) %>%
+  group_by(INDICE.REDE.EST) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.INDICE.REDE.EST_0S.semplural[12:22,], aes(x = INDICE.REDE.EST, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice  de Rede - Estado", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+
+mod.INDICE.REDE.EST_0S.semplural <- glm(VD_0S ~ INDICE.REDE.EST, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.INDICE.REDE.EST_0S.semplural) #SEM diferenca significativa
+lrm(VD_0S ~ INDICE.REDE.EST, data = dados0S.semplural)
+plot(allEffects(mod.INDICE.REDE.EST_0S.semplural), type = "response")
+
+#################################### VD_0S ~ INDICE.REDE.NE ######################
+tab.INDICE.REDE.NE_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, INDICE.REDE.NE) %>%
+  group_by(INDICE.REDE.NE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-16.indice_rede_ne.png")
+ggplot(tab.INDICE.REDE.NE_0S.semplural[12:22,], aes(x = INDICE.REDE.NE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice  de Rede - Nordeste", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.INDICE.REDE.NE_0S.semplural <- glm(VD_0S ~ INDICE.REDE.NE, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.INDICE.REDE.NE_0S.semplural) #TEM diferenca significativa -> quanto maior o reconhecimento como nordestino maior o uso de zero Fonético
+lrm(VD_0S ~ INDICE.REDE.NE, data = dados0S.semplural)
+plot(allEffects(mod.INDICE.REDE.NE_0S.semplural), type = "response")
+
+
+#################################### VD_0S ~ INDICE.HABITOS#################
+tab.INDICE.HABITOS_0S.semplural <- dados0S.semplural %>% 
+  count(VD_0S, INDICE.HABITOS) %>%
+  group_by(INDICE.HABITOS) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_0S-17.indice_habitos.png")
+ggplot(tab.INDICE.HABITOS_0S.semplural[12:22,], aes(x = INDICE.HABITOS, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice  de Hábitos", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.INDICE.HABITOS_0S.semplural <- glm(VD_0S ~ INDICE.HABITOS, data = dados0S.semplural, family = binomial) #aspirada no intercept
+summary.lm(mod.INDICE.HABITOS_0S.semplural) #TEM diferenca significativa -> quanto maior a frequencia de habitos nordestinos maior o uso de zero fonetico
+lrm(VD_0S ~ INDICE.HABITOS, data = dados0S.semplural)
+plot(allEffects(mod.INDICE.HABITOS_0S.semplural), type = "response")
+
+
+#################################### Analises Multivariadas 1 ##################
+
+mod0S.semplural <- glmer(VD_0S ~ TONICIDADE + 
+                           POSICAO.S +
+                           ESTILO +
+                           CFS_sonor +
+                           CFP_abertura +
+                           CLASSE.MORFOLOGICA3 + 
+                           SEXO + 
+                           TEMPO.SP + 
+                           IDADE.MIGRACAO + 
+                           INDICE.SOCIO + 
+                           PAULISTIDADE + 
+                           NORDESTINIDADE +
+                           INDICE.REDE.NE +
+                           INDICE.HABITOS  + 
+                           (1|ITEM.LEXICAL) +
+                           (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(mod0S.semplural)
+
+#################################### Analises Multivariadas 2 ##################
+
+mod0S.semplural2 <- glmer(VD_0S ~ TONICIDADE + 
+                            POSICAO.S +
+                            ESTILO +
+                            CFS_sonor +
+                            CFP_abertura +
+                            CLASSE.MORFOLOGICA3 + 
+                            SEXO + 
+                            TEMPO.SP + 
+                            IDADE.MIGRACAO + 
+                            (1|ITEM.LEXICAL) +
+                            (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(mod0S.semplural2)
+
+lrm(VD_0S ~ TONICIDADE + 
+      POSICAO.S +
+      ESTILO +
+      CFS_sonor +
+      CFP_abertura +
+      CLASSE.MORFOLOGICA3 + 
+      SEXO + 
+      TEMPO.SP + 
+      IDADE.MIGRACAO + 
+      INDICE.SOCIO, data = dados0S.semplural)
+car::vif(mod0S.3)
+
+#################################### Analises Multivariadas 3 ##################
+
+mod0S.semplural3 <- glmer(VD_0S ~ TONICIDADE + 
+                            POSICAO.S +
+                            ESTILO +
+                            CFS_sonor +
+                            CFP_abertura +
+                            CLASSE.MORFOLOGICA3 + 
+                            SEXO + 
+                            TEMPO.SP + 
+                            IDADE.MIGRACAO +
+                            INDICE.SOCIO +
+                            (1|ITEM.LEXICAL) +
+                            (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(mod0S.semplural3)
+
+lrm(VD_0S ~ TONICIDADE + 
+      POSICAO.S +
+      ESTILO +
+      CFS_sonor +
+      CFP_abertura +
+      CLASSE.MORFOLOGICA3 + 
+      SEXO + 
+      TEMPO.SP + 
+      IDADE.MIGRACAO + 
+      INDICE.SOCIO, data = dados0S.semplural)
+car::vif(mod0S.semplural3)
+#################################### Analises Multivariadas 3 ##################
+
+mod0S.semplural4 <- glmer(VD_0S ~ TONICIDADE + 
+                            POSICAO.S +
+                            ESTILO +
+                            CFS_sonor +
+                            CFP_abertura +
+                            CLASSE.MORFOLOGICA3 + 
+                            SEXO + 
+                            TEMPO.SP + 
+                            IDADE.MIGRACAO +
+                            (1|ITEM.LEXICAL) +
+                            (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(mod0S.semplural4)
+
+lrm(VD_0S ~ TONICIDADE + 
+      POSICAO.S +
+      ESTILO +
+      CFS_sonor +
+      CFP_abertura +
+      CLASSE.MORFOLOGICA3 + 
+      SEXO + 
+      TEMPO.SP + 
+      IDADE.MIGRACAO + 
+      INDICE.SOCIO, data = dados0S.semplural)
+car::vif(mod0S.semplural3)
+
+plot(allEffects(mod0S.semplural4), type = "response")
+plot(allEffects(mod0S.semplural4), type = "response", ask = T)
+#, xlab = "Gênero", ylab = "Proporção de Palatalização", main = "")
+
+
+################################# ANALISES TESTE INTERAÇÃO #####################
+
+#INDICE.SOCIO --> sem alteração
+teste.interacao0S.semplural1 <- glmer(VD_0S ~ TONICIDADE + 
+                                        POSICAO.S +
+                                        ESTILO +
+                                        CFS_sonor +
+                                        CFP_abertura +
+                                        CLASSE.MORFOLOGICA3 + 
+                                        SEXO + 
+                                        TEMPO.SP + 
+                                        IDADE.MIGRACAO + 
+                                        INDICE.SOCIO +
+                                        (1|ITEM.LEXICAL) +
+                                        (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(teste.interacao0S.semplural1)
+
+#PAULISTIDADE --> sem alteração
+teste.interacao0S.semplural2 <- glmer(VD_0S ~ TONICIDADE + 
+                                        POSICAO.S +
+                                        ESTILO +
+                                        CFS_sonor +
+                                        CFP_abertura +
+                                        CLASSE.MORFOLOGICA3 + 
+                                        SEXO + 
+                                        TEMPO.SP + 
+                                        IDADE.MIGRACAO + 
+                                        PAULISTIDADE +
+                                        (1|ITEM.LEXICAL) +
+                                        (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(teste.interacao0S.semplural2)
+
+#NORDESTINIDADE --> sem alteração de correlação
+teste.interacao0S.semplural3 <- glmer(VD_0S ~ TONICIDADE + 
+                                        POSICAO.S +
+                                        ESTILO +
+                                        CFS_sonor +
+                                        CFP_abertura +
+                                        CLASSE.MORFOLOGICA3 + 
+                                        SEXO + 
+                                        TEMPO.SP + 
+                                        IDADE.MIGRACAO + 
+                                        NORDESTINIDADE +
+                                        (1|ITEM.LEXICAL) +
+                                        (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(teste.interacao0S.semplural3)
+
+
+#INDICE.REDE.NE --> sem alteração
+teste.interacao0S.semplural4 <- glmer(VD_0S ~ TONICIDADE + 
+                                        POSICAO.S +
+                                        ESTILO +
+                                        CFS_sonor +
+                                        CFP_abertura +
+                                        CLASSE.MORFOLOGICA3 + 
+                                        SEXO + 
+                                        TEMPO.SP + 
+                                        IDADE.MIGRACAO + 
+                                        INDICE.REDE.NE +
+                                        (1|ITEM.LEXICAL) +
+                                        (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(teste.interacao0S.semplural4)
+
+
+
+#INDICE.HABITOS --> sem alteração
+teste.interacao0S.semplural5 <- glmer(VD_0S ~ TONICIDADE + 
+                                        POSICAO.S +
+                                        ESTILO +
+                                        CFS_sonor +
+                                        CFP_abertura +
+                                        CLASSE.MORFOLOGICA3 + 
+                                        SEXO + 
+                                        TEMPO.SP + 
+                                        IDADE.MIGRACAO + 
+                                        INDICE.HABITOS +
+                                        (1|ITEM.LEXICAL) +
+                                        (1|PARTICIPANTE), data = dados0S.semplural, family = binomial)
+summary(teste.interacao0S.semplural5)
+
+##########FIM ###########
+
+
+
+
+
+
+################################### VD_HAP ######################
+
+dadosHAP <- filter(dados2, VD_HAP %in% c("H", "AP")) %>% 
+  droplevels()
+
+
+dadosHAP2 <- filter(dadosHAP, !PARTICIPANTE %in% c("IsabelaS", "AmandaP", "DanielS", "ClaudineiP" , "MarleneN", "MilenaP", "MoniqueR", "PenelopeM", "RitaS", "RosemaraA", "WalterN")) %>% 
+  droplevels()
+
+dadosHAP2.sonora <- filter(dadosHAP2, CFS_sonor %in% c("sonora")) %>% 
+  droplevels()
+
+prop.HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP) %>%
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+prop.HAP <- prop.HAP %>%
+  group_by(VD_HAP) %>%
+  mutate(ocorrencias = n) %>%
+  print()
+
+
+prop.HAP <- prop.HAP %>%
+  mutate(label = paste0(round(prop * 100, 1), "%\n(", ocorrencias, ")"))
+
+
+png("VD_HAP.png")
+ggplot(prop.HAP, aes(x = VD_HAP, y = prop * 100, fill = VD_HAP, label = label)) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Alveolar e Palatal", "Aspirada"))+
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_light()+
+  theme(legend.position = "none")
+dev.off()
+
+
+
+
+#################################### VD_HAP ~ PARTICIPANTE #######
+tab.PARTICIPANTE_HAP <- dadosHAP %>% 
+  count(PARTICIPANTE, VD_HAP) %>%
+  group_by(PARTICIPANTE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP.participante.png")
+ggplot(tab.PARTICIPANTE_HAP, aes(x = PARTICIPANTE, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "PARTICIPANTE", y = "Proporção de Ocorrência", fill = "VD") + 
+  #scale_x_discrete(labels = c("Átona", "Tônica")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  coord_flip()+  
+  theme_light()
+dev.off()
+
+
+
+tab.PARTICIPANTE_HAP2 <- dadosHAP2.sonora %>% 
+  count(PARTICIPANTE, VD_HAP) %>%
+  group_by(PARTICIPANTE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.PARTICIPANTE_HAP, aes(x = PARTICIPANTE, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "PARTICIPANTE", y = "Proporção de Ocorrência", fill = "VD") + 
+  #scale_x_discrete(labels = c("Átona", "Tônica")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  coord_flip()+  
+  theme_light()
+
+
+#################################### VD_HAP ~ TONICIDADE ####################
+#graficos
+tab.TONICIDADE_HAP <- dadosHAP2.sonora %>% 
+  count(TONICIDADE, VD_HAP) %>%
+  group_by(TONICIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP-01.tonicidade.png")
+ggplot(tab.TONICIDADE_HAP, aes(x = TONICIDADE, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Tonicidade", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Átona", "Tônica")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.TONICIDADE_HAP_X2 <- with(dadosHAP2.sonora, table(TONICIDADE, VD_HAP))
+tab.TONICIDADE_HAP_X2
+
+#teste
+chisq.test(tab.TONICIDADE_HAP_X2) #TEM diferenca significativa com silaba tonica favorecendo aspirada
+
+mod.TONICIDADE_HAP <- glm(VD_HAP ~ TONICIDADE, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.TONICIDADE_HAP)
+lrm(VD_HAP ~ TONICIDADE, data = dadosHAP2.sonora)
+plot(allEffects(mod.TONICIDADE_HAP), type = "response")
+
+#################################### VD_HAP ~ POSICAO ##################################
+#graficos
+tab.POSICAO_HAP <- dadosHAP2.sonora %>% 
+  count(POSICAO.S, VD_HAP) %>%
+  group_by(POSICAO.S) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_HAP-02.posicao.png")
+ggplot(tab.POSICAO_HAP, aes(x = POSICAO.S, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Posição", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Final", "Medial")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.POSICAO_HAP_X2 <- with(dadosHAP2.sonora, table(POSICAO.S, VD_HAP))
+tab.POSICAO_HAP_X2
+
+#teste
+chisq.test(tab.POSICAO_HAP_X2) #TEM diferenca significativa --> MEDIAL favorece H
+
+mod.POSICAO_HAP <- glm(VD_HAP ~ POSICAO.S, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.POSICAO_HAP)
+lrm(VD_HAP ~ POSICAO.S, data = dadosHAP2.sonora)
+plot(allEffects(mod.POSICAO_HAP), type = "response")
+
+
+#################################### VD_HAP ~ ESTILO ####################################
+#graficos
+tab.ESTILO_HAP <- dadosHAP2.sonora %>% 
+  count(ESTILO, VD_HAP) %>%
+  group_by(ESTILO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP-03.estilo.png")
+ggplot(tab.ESTILO_HAP, aes(x = ESTILO, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Estilo", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Conversa", "Palavras")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.ESTILO_HAP_X2 <- with(dadosHAP2.sonora, table(ESTILO, VD_HAP))
+tab.ESTILO_HAP_X2
+
+ #teste
+chisq.test(tab.ESTILO_HAP_X2) #NAO TEM diferenca significativa --> poucos dados
+
+mod.ESTILO_HAP <- glm(VD_HAP ~ ESTILO, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.ESTILO_HAP)
+lrm(VD_HAP ~ ESTILO, data = dadosHAP2.sonora)
+plot(allEffects(mod.ESTILO_HAP), type = "response")
+
+#################################### VD_HAP ~ CONT.FON.SEG #############################
+
+tab.CONT.FON.SEG_HAP <- dadosHAP %>% 
+  count(CONT.FON.SEG, VD_HAP) %>%
+  group_by(CONT.FON.SEG) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+####CFS_PONTO C
+tab.CFS_pontoc_HAP <- dadosHAP2.sonora %>% 
+  count(CFS_pontoc, VD_HAP) %>%
+  group_by(CFS_pontoc) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.CFS_pontoc_HAP, aes(x = CFS_pontoc, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência", fill = "VD") +
+  #scale_x_discrete(labels = c("Pausa", "Dorsal e Labial", "Coronal")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+
+#tabela com table() para X2
+tab.CFS_pontoc_HAP_X2 <- with(dadosHAP2.sonora, table(CFS_pontoc, VD_HAP))
+tab.CFS_pontoc_HAP_X2
+
+#teste
+chisq.test(tab.CFS_pontoc_HAP_X2)
+#chisq.test(tab.CFS_pontoc_HAP_X2[c(2,3),]) #NÃO TEM
+
+
+####CFS_sonoridade
+tab.CFS_sonor_HAP <- dadosHAP2 %>% 
+  count(CFS_sonor, VD_HAP) %>%
+  group_by(CFS_sonor) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_HAP-04.CFS_sonor.png")
+ggplot(tab.CFS_sonor_HAP, aes(x = CFS_sonor, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Pausa", "Consoante Surda", " Consoante Sonora")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.CFS_sonor_HAP_X2 <- with(dadosHAP, table(CFS_sonor, VD_HAP))
+tab.CFS_sonor_HAP_X2
+
+#teste
+chisq.test(tab.CFS_sonor_HAP_X2) #TEM diferenca significativa -> sonora favorece aspirada -> manter o que foi feito para AP e trabalhar com ponto de c?
+
+#mod. regressao
+mod.CFS_pontoc_HAP <- glm(VD_HAP ~ CFS_pontoc, data = dadosHAP, family = binomial) #aspirada no intercept
+summary.lm(mod.CFS_pontoc_HAP)
+lrm(VD_HAP ~ CFS_pontoc, data = dadosHAP)
+plot(allEffects(mod.CFS_pontoc_HAP), type = "response")
+
+mod.CFS_sonor_HAP <- glm(VD_HAP ~ CFS_sonor, data = dadosHAP, family = binomial) #aspirada no intercept
+summary.lm(mod.CFS_sonor_HAP)
+lrm(VD_HAP ~ CFS_sonor, data = dadosHAP) #maior índice C
+plot(allEffects(mod.CFS_sonor_HAP), type = "response")
+
+
+#################################### VD_HAP ~ CONT.FON.PREC ############################
+#graficos
+tab.CONT.FON.PREC_HAP <- dadosHAP2.sonora %>% 
+  count(CONT.FON.PREC, VD_HAP) %>%
+  group_by(CONT.FON.PREC) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.CONT.FON.PREC_HAP, aes(x = CONT.FON.PREC, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") +
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+
+
+####CFP_ABERTURA
+tab.CFP_abertura_HAP <- dadosHAP2.sonora %>% 
+  count(CFP_abertura, VD_HAP) %>%
+  group_by(CFP_abertura) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP-05.cfp_abertura.png")
+ggplot(tab.CFP_abertura_HAP, aes(x = CFP_abertura, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") +
+  scale_x_discrete(labels = c("Fechada", "Meio fechada", "Meio aberta", "Aberta")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.CFP_abertura_HAP_X2 <- with(dadosHAP2.sonora, table(CFP_abertura, VD_HAP))
+tab.CFP_abertura_HAP_X2
+
+#teste
+chisq.test(tab.CFP_abertura_HAP_X2) #TEM diferenca significativa -> aspirada favorecida por vogais fechadas e meio.fechadas --> poucos dados?
+chisq.test(tab.CFP_abertura_HAP_X2[c(1,2),]) #NAO
+chisq.test(tab.CFP_abertura_HAP_X2[c(3,4),]) #NAO
+
+#mod. regressao
+mod.CFP_abertura_HAP <- glm(VD_HAP ~ CFP_abertura, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.CFP_abertura_HAP)
+lrm(VD_HAP ~ CFP_abertura, data = dadosHAP2.sonora)
+plot(allEffects(mod.CFP_abertura_HAP), type = "response")
+
+
+
+########CFP_anterioridade
+tab.CFP_anterioridade_HAP <- dadosHAP2.sonora %>% 
+  count(CFP_anterioridade, VD_HAP) %>%
+  group_by(CFP_anterioridade) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_HAP-06.cfp_anterioridade.png")
+ggplot(tab.CFP_anterioridade_HAP, aes(x = CFP_anterioridade, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Anterior", "Central", "Posterior")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.CFP_anterioridade_HAP_X2 <- with(dadosHAP2.sonora, table(CFP_anterioridade, VD_HAP))
+tab.CFP_anterioridade_HAP_X2
+
+#teste
+chisq.test(tab.CFP_anterioridade_HAP_X2) #TEM diferenca significativa -> f=aspirada favorecida por anterior
+chisq.test(tab.CFP_anterioridade_HAP_X2[c(2,3),]) #NAO
+chisq.test(tab.CFP_anterioridade_HAP_X2[c(1,3),]) #SIM
+
+
+#mod. regressao
+mod.CFP_anterioridade_HAP <- glm(VD_HAP ~ CFP_anterioridade, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.CFP_anterioridade_HAP)
+lrm(VD_HAP ~ CFP_anterioridade, data = dadosHAP2.sonora) #maior indice C
+plot(allEffects(mod.CFP_anterioridade_HAP), type = "response")
+
+#################################### VD_HAP ~ CLASSE.MORFOLOGICA ########################
+#graficos
+tab.CLASSE.MORFOLOGICA2_HAP <- dadosHAP2.sonora %>% 
+  count(CLASSE.MORFOLOGICA2, VD_HAP) %>%
+  group_by(CLASSE.MORFOLOGICA2) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_HAP-07.classe_morfologica2.png")
+ggplot(tab.CLASSE.MORFOLOGICA2_HAP, aes(x = CLASSE.MORFOLOGICA2, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência", fill = "VD") + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+
+tab.CLASSE.MORFOLOGICA3_HAP <- dadosHAP2.sonora %>% 
+  count(CLASSE.MORFOLOGICA3, VD_HAP) %>%
+  group_by(CLASSE.MORFOLOGICA3) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_HAP-08.classe_morfologica3.png")
+ggplot(tab.CLASSE.MORFOLOGICA3_HAP, aes(x = CLASSE.MORFOLOGICA3, y = prop * 100, fill = VD_HAP, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("lexical", "Gramatical")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  coord_cartesian(xlim =c(Sys.Date() - NA, NA), ylim = c(0, 20))+
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+
+#tabela com table() para X2
+tab.CLASSE.MORFOLOGICA3_HAP_X2 <- with(dadosHAP2.sonora, table(CLASSE.MORFOLOGICA3, VD_HAP))
+tab.CLASSE.MORFOLOGICA3_HAP_X2
+
+#teste
+chisq.test(tab.CLASSE.MORFOLOGICA3_HAP_X2) #SEM diferenca significativa 
+
+
+mod.CLASSE.MORFOLOGICA3_HAP <- glm(VD_HAP ~ CLASSE.MORFOLOGICA3, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.CLASSE.MORFOLOGICA3_HAP)
+lrm(VD_HAP ~ CLASSE.MORFOLOGICA3, data = dadosHAP2.sonora)
+plot(allEffects(mod.CLASSE.MORFOLOGICA3_HAP), type = "response")
+
+
+
+#################################### VD_HAP ~ SEXO ################################
+tab.SEXO_HAP <- dadosHAP2.sonora %>% 
+  count(SEXO, VD_HAP) %>%
+  group_by(SEXO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+tab.SEXO_HAP <- tab.SEXO_HAP %>%
+  group_by(SEXO, VD_HAP) %>%
+  mutate(ocorrencias = n) %>%
+  print()
+
+
+tab.SEXO_HAP <- tab.SEXO_HAP %>%
+  mutate(label = paste0(round(prop * 100, 1), "%\n(", ocorrencias, ")"))
+
+
+
+
+png("VD_HAP-09.sexo.png")
+ggplot(tab.SEXO_HAP, aes(x = SEXO, y = prop * 100, fill = VD_HAP, label = label)) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Gênero", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Masculino", "Feminino")) + 
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variantes", labels = c("Alveolar e Palatal", "Aspirada"))+
+  theme_light()
+dev.off()
+
+#tabela com table() para X2
+tab.SEXO_HAP_X2 <- with(dadosHAP2.sonora, table(SEXO, VD_HAP))
+tab.SEXO_HAP_X2
+
+#teste
+chisq.test(tab.SEXO_HAP_X2) #SEM diferenca significativa
+
+mod.SEXO_HAP <- glm(VD_HAP ~ SEXO, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.SEXO_HAP)
+lrm(VD_HAP ~ SEXO, data = dadosHAP2.sonora)
+plot(allEffects(mod.SEXO_HAP), type = "response")
+
+
+#################################### VD_HAP ~ TEMPO.SP ############################
+tab.TEMPO.SP_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, TEMPO.SP) %>%
+  group_by(TEMPO.SP) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP-10.tempo_residencia.png")
+ggplot(tab.TEMPO.SP_HAP[16:30,], aes(x = TEMPO.SP, y = prop * 100, label = round(prop * 100, 1))) +
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Tempo de Residência", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.TEMPO.SP_HAP <- glm(VD_HAP ~ TEMPO.SP, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.TEMPO.SP_HAP) #TEM diferenca significativa -> aspirada desfavorecida quanto maior o tempo de residencia em SP
+lrm(VD_HAP ~ TEMPO.SP, data = dadosHAP2.sonora)
+plot(allEffects(mod.TEMPO.SP_HAP), type = "response")
+
+#################################### VD_HAP ~ IDADE.MIGRACAO ######################
+tab.IDADE.MIGRACAO_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, IDADE.MIGRACAO) %>%
+  group_by(IDADE.MIGRACAO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_HAP-11.idade_migracao.png")
+ggplot(tab.IDADE.MIGRACAO_HAP[19:36,], aes(x = IDADE.MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) +
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Idade de Migração", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.IDADE.MIGRACAO_HAP <- glm(VD_HAP ~ IDADE.MIGRACAO, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.IDADE.MIGRACAO_HAP) #NÃO TEM diferenca significativa
+lrm(VD_HAP ~ IDADE.MIGRACAO, data = dadosHAP2.sonora)
+plot(allEffects(mod.IDADE.MIGRACAO_HAP), type = "response")
+
+#################################### VD_HAP ~ INDICE.SOCIO ########################
+tab.INDICE.SOCIO_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, INDICE.SOCIO) %>%
+  group_by(INDICE.SOCIO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP-12.indice_socio.png")
+ggplot(tab.INDICE.SOCIO_HAP[19:35,], aes(x = INDICE.SOCIO, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice Socioeconômico", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.INDICE.SOCIO_HAP <- glm(VD_HAP ~ INDICE.SOCIO, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.INDICE.SOCIO_HAP) #TEM diferenca significativa -> aspirada desfavorecida quanto maior o Indice socioeconomico
+lrm(VD_HAP ~ INDICE.SOCIO, data = dadosHAP2.sonora)
+plot(allEffects(mod.INDICE.SOCIO_HAP), type = "response")
+
+#################################### VD_HAP ~ PAULISTIDADE ########################
+tab.PAULISTIDADE_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, PAULISTIDADE) %>%
+  group_by(PAULISTIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP-13.paulistidade.png")
+ggplot(tab.PAULISTIDADE_HAP[9:16,], aes(x = PAULISTIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Paulistidade", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.PAULISTIDADE_HAP <- glm(VD_HAP ~ PAULISTIDADE, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.PAULISTIDADE_HAP) #NÃO TEM diferenca significativa -> diferente da analise anterior que aspirada desfavorecida quanto maior o reconhecimento como Paulista
+lrm(VD_HAP ~ PAULISTIDADE, data = dadosHAP2.sonora)
+plot(allEffects(mod.PAULISTIDADE_HAP), type = "response")
+
+
+#################################### VD_HAP ~ NORDESTINIDADE ######################
+tab.NORDESTINIDADE_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, NORDESTINIDADE) %>%
+  group_by(NORDESTINIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+png("VD_HAP-14.nordestinidade.png")
+ggplot(tab.NORDESTINIDADE_HAP[5:8,], aes(x = NORDESTINIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Nordestinidade", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.NORDESTINIDADE_HAP <- glm(VD_HAP ~ NORDESTINIDADE, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.NORDESTINIDADE_HAP) #TEM diferenca significativa diferente da analise anterior
+lrm(VD_HAP ~ NORDESTINIDADE, data = dadosHAP2.sonora)
+plot(allEffects(mod.NORDESTINIDADE_HAP), type = "response")
+
+
+#################################### VD_HAP ~ ESTADUALIDADE #######################
+tab.ESTADUALIDADE_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, ESTADUALIDADE) %>%
+  group_by(ESTADUALIDADE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.ESTADUALIDADE_HAP[5:8,], aes(x = ESTADUALIDADE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Estadualidade", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+
+mod.ESTADUALIDADE_HAP <- glm(VD_HAP ~ ESTADUALIDADE, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.ESTADUALIDADE_HAP) #NÃO TEM diferença significativa -> diferente da analise anterior que aspirada favorecida quanto maior o reconhecimento com o estado de origem do falante
+lrm(VD_HAP ~ ESTADUALIDADE, data = dadosHAP2.sonora)
+plot(allEffects(mod.ESTADUALIDADE_HAP), type = "response")
+
+#################################### VD_HAP ~ INDICE.REDE.EST #####################
+tab.INDICE.REDE.EST_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, INDICE.REDE.EST) %>%
+  group_by(INDICE.REDE.EST) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+ggplot(tab.INDICE.REDE.EST_HAP[12:22,], aes(x = INDICE.REDE.EST, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice  de Rede - Estado", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+
+mod.INDICE.REDE.EST_HAP <- glm(VD_HAP ~ INDICE.REDE.EST, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.INDICE.REDE.EST_HAP) #SEM diferenca significativa
+lrm(VD_HAP ~ INDICE.REDE.EST, data = dadosHAP2.sonora)
+plot(allEffects(mod.INDICE.REDE.EST_HAP), type = "response")
+
+#################################### VD_HAP ~ INDICE.REDE.NE ######################
+tab.INDICE.REDE.NE_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, INDICE.REDE.NE) %>%
+  group_by(INDICE.REDE.NE) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP-15.indice_rede_ne.png")
+ggplot(tab.INDICE.REDE.NE_HAP[12:22,], aes(x = INDICE.REDE.NE, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice  de Rede - Nordeste", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+mod.INDICE.REDE.NE_HAP <- glm(VD_HAP ~ INDICE.REDE.NE, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.INDICE.REDE.NE_HAP) #SEM diferenca significativa
+lrm(VD_HAP ~ INDICE.REDE.NE, data = dadosHAP2.sonora)
+plot(allEffects(mod.INDICE.REDE.NE_HAP), type = "response")
+
+
+#################################### VD_HAP ~ INDICE.HABITOS#################
+tab.INDICE.HABITOS_HAP <- dadosHAP2.sonora %>% 
+  count(VD_HAP, INDICE.HABITOS) %>%
+  group_by(INDICE.HABITOS) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+png("VD_HAP-16.indice_habitos.png")
+ggplot(tab.INDICE.HABITOS_HAP[12:22,], aes(x = INDICE.HABITOS, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="blue")+
+  labs(x = "Índice  de Hábitos", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+
+mod.INDICE.HABITOS_HAP <- glm(VD_HAP ~ INDICE.HABITOS, data = dadosHAP2.sonora, family = binomial) #aspirada no intercept
+summary.lm(mod.INDICE.HABITOS_HAP) #SEM diferenca significativa
+Flrm(VD_HAP ~ INDICE.HABITOS, data = dadosHAP2.sonora)
+plot(allEffects(mod.INDICE.HABITOS_HAP), type = "response")
+
+#################################### Analises multivariadas1 #############################################
+
+modHAP.a <- glmer(VD_HAP ~ TONICIDADE + 
+                    POSICAO.S +
+                    ESTILO +
+                    CFP_anterioridade +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO + 
+                    INDICE.SOCIO +
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(modHAP.a)
+car::vif(modHAP.a)
+
+
+modHAP.b <- glmer(VD_HAP ~ TONICIDADE + 
+                    POSICAO.S +
+                    ESTILO +
+                    CFP_anterioridade +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO + 
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(modHAP.b)
+
+
+
+
+modHAP.c <- glmer(VD_HAP ~ TONICIDADE + 
+                   POSICAO.S +
+                   ESTILO +
+                   CFP_anterioridade +
+                   CLASSE.MORFOLOGICA3 + 
+                   SEXO + 
+                   TEMPO.SP + 
+                   IDADE.MIGRACAO + 
+                   INDICE.SOCIO + 
+                   PAULISTIDADE + 
+                   NORDESTINIDADE+
+                   INDICE.REDE.NE +
+                   INDICE.HABITOS  + 
+                   (1|ITEM.LEXICAL) +
+                   (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(modHAP.c) ##INSERI NORDESTINIDADE NO LUGAR DE ESTADUALIDADE E RESULTADO PRA SEXO MUDOU
+
+#################################### Analises multivariadas 2 #############################################
+
+modHAP1 <- glmer(VD_HAP ~ TONICIDADE + 
+                    POSICAO.S +
+                    CLASSE.MORFOLOGICA3 + 
+                    SEXO + 
+                    TEMPO.SP + 
+                    IDADE.MIGRACAO + 
+                    (1|ITEM.LEXICAL) +
+                    (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(modHAP1)
+
+
+#################################### TESTE INTEREÇÃO VARIÁVEIS EM CINZA###################
+
+#INDICE.SOCIO --> alteração correlação com IDADE.MIGRAÇAO e correlação com INDICE SOCIO
+teste.interacaoHAP.1 <- glmer(VD_HAP ~ TONICIDADE + 
+                               POSICAO.S +
+                               CLASSE.MORFOLOGICA3 + 
+                               SEXO + 
+                               TEMPO.SP + 
+                               IDADE.MIGRACAO + 
+                               INDICE.SOCIO +
+                               (1|ITEM.LEXICAL) +
+                               (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(teste.interacaoHAP.1)
+car::vif(teste.interacaoHAP.1)
+
+teste.interacaoHAP.1b <- glmer(VD_HAP ~ TONICIDADE + 
+                                POSICAO.S +
+                                CLASSE.MORFOLOGICA3 + 
+                                SEXO + 
+                                TEMPO.SP + 
+                                IDADE.MIGRACAO * 
+                                INDICE.SOCIO +
+                                (1|ITEM.LEXICAL) +
+                                (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(teste.interacaoHAP.1b)
+
+#PAULISTIDADE --> SEM ALTERAÇÃO DE CORRELAÇÃO
+teste.interacaoHAP.2 <- glmer(VD_HAP ~ TONICIDADE + 
+                               POSICAO.S +
+                               ESTILO +
+                               CFP_anterioridade +
+                               CLASSE.MORFOLOGICA3 + 
+                               SEXO + 
+                               TEMPO.SP + 
+                               IDADE.MIGRACAO + 
+                               PAULISTIDADE +
+                               (1|ITEM.LEXICAL) +
+                               (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(teste.interacaoHAP.2)
+
+
+
+#ESTADUALIDADE --> sem alteração de correlação
+teste.interacaoHAP.3 <- glmer(VD_HAP ~ TONICIDADE + 
+                               POSICAO.S +
+                               ESTILO +
+                               CFP_anterioridade +
+                               CLASSE.MORFOLOGICA3 + 
+                               SEXO + 
+                               TEMPO.SP + 
+                               IDADE.MIGRACAO + 
+                               ESTADUALIDADE +
+                               (1|ITEM.LEXICAL) +
+                               (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(teste.interacaoHAP.3)
+
+
+
+#Nordestinidade --> sem alteração de correlação
+teste.interacaoHAP.3b <- glmer(VD_HAP ~ TONICIDADE + 
+                                POSICAO.S +
+                                ESTILO +
+                                CFP_anterioridade +
+                                CLASSE.MORFOLOGICA3 + 
+                                SEXO + 
+                                TEMPO.SP + 
+                                IDADE.MIGRACAO + 
+                                NORDESTINIDADE +
+                                (1|ITEM.LEXICAL) +
+                                (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(teste.interacaoHAP.3b)
+
+
+#INDICE.REDE.NE --> sem alteração de correlação
+teste.interacaoHAP.4 <- glmer(VD_HAP ~ TONICIDADE + 
+                               POSICAO.S +
+                               ESTILO +
+                               CFP_anterioridade +
+                               CLASSE.MORFOLOGICA3 + 
+                               SEXO + 
+                               TEMPO.SP + 
+                               IDADE.MIGRACAO + 
+                               INDICE.REDE.NE +
+                               (1|ITEM.LEXICAL) +
+                               (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(teste.interacaoHAP.4)
+
+
+
+
+#INDICE.HABITOS --> alteração de correlação com IDADE.MIGRACAO
+teste.interacaoHAP.5 <- glmer(VD_HAP ~ TONICIDADE + 
+                               POSICAO.S +
+                               ESTILO +
+                               CFP_anterioridade +
+                               CLASSE.MORFOLOGICA3 + 
+                               SEXO + 
+                               TEMPO.SP + 
+                               IDADE.MIGRACAO + 
+                               INDICE.HABITOS +
+                               (1|ITEM.LEXICAL) +
+                               (1|PARTICIPANTE), data = dadosHAP2.sonora, family = binomial)
+summary(teste.interacaoHAP.5)
+
+
+
+
+
+
+####FIM####
+
+
+####fim####
+
+
+
+
+#################################### VD ###################################
+dadosVD <- filter(dados2, !PARTICIPANTE %in% c("IsabelaS")) %>% 
+  droplevels()
+
+prop.VD <- dadosVD %>% 
+  count(VD) %>%
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+prop.VD <- prop.VD %>%
+  group_by(VD) %>%
+  mutate(ocorrencias = n) %>%
+  print()
+
+
+prop.VD <- prop.VD %>%
+  mutate(label = paste0(round(prop * 100, 1), "%\n(", ocorrencias, ")"))
+
+
+png("VD.png")
+ggplot(prop.VD, aes(x = VD, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "black") + 
+  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_light()+
+  theme(legend.position = "none")
+dev.off()
+
+
+
+############### ANALISE DE PARTICIPANTES POR INDICE SOCIO ###########
+
+png("histograma-indice.socio.png")
+dadosVD %>%
+  ggplot(aes(x=INDICE.SOCIO)) +
+  geom_histogram(binwidth=0.08, fill = "#fee5d9", color="#000000", alpha=0.9) +
+  labs(x = "Indice Socioeconômico", y = "Frequência" )+
+ # scale_fill_brewer(palette = "Reds")+
+  theme_light()+
+  theme(plot.title = element_text(size=15))
+dev.off()
+
+
+prop.part.indice <- dadosVD %>% 
+  count(PARTICIPANTE, INDICE.SOCIO) %>%
+  mutate(prop = prop.table(n)) %>% 
+  print()
+
+
+ggplot(tab.INDICE.SOCIO_AP, aes(x= INDICE.SOCIO))+
+  geom_histogram(binwidth=0.08)+
+  theme_light()+
+  theme()
+
+
+
+
+
+png("indice.socio-participante.png")
+ggplot(prop.part.indice, aes(x = INDICE.SOCIO, y = PARTICIPANTE, fill = PARTICIPANTE, label = round(prop * 100, 1))) + 
+  geom_bar(stat = "identity", color = "black") + 
+  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  #scale_fill_viridis_d()+
+  theme_light()+
+  theme(legend.position = "none")
+dev.off()
+
