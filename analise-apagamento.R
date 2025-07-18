@@ -15,7 +15,7 @@ S0.prop_VD <- dados_S0 %>%
 ggplot(S0.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  scale_x_discrete(labels = c("Realização", "Apagamento"))+
+  scale_x_discrete(labels = c("Realização", "S0agamento"))+
   geom_text(aes(label = label), vjust = -0.3, size = 4) + 
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(labels = percent_format(accuracy = 1), 
@@ -124,7 +124,7 @@ ggplot(S0.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD, 
 
 
 (S0.tab_CFP_abertura2 <- with(dados_S0, table(CFP_abertura2, VD)))
-chisq.test(S0.tab_CFP_abertura2)
+chisq.test(S0.tab_CFP_abertura2) # tem diferença entre todos os niveis inclusive 1 e 2
 
 # CONT.FON.SEG ####
 S0.prop_CONT_FON_SEG <- dados_S0 %>% 
@@ -171,6 +171,7 @@ ggplot(S0.prop_CFS_sonoridade, aes(x = CFS_sonoridade, y = prop * 100, fill = VD
 
 (S0.tab_CFS_sonoridade <- with(dados_S0, table(CFS_sonoridade, VD)))
 chisq.test(S0.tab_CFS_sonoridade)
+chisq.test(S0.tab_CFS_sonoridade[c(1,3),])
 
 
 
@@ -199,6 +200,32 @@ ggplot(S0.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100,
 (S0.tab_CLASSE_MORFOLOGICA3 <- with(dados_S0, table(CLASSE_MORFOLOGICA3, VD)))
 chisq.test(S0.tab_CLASSE_MORFOLOGICA3)
 
+
+# ESTILO ####
+S0.prop_ESTILO <- dados_S0 %>%
+  filter(CFS_pontoc2 == "coronal") %>% 
+  count(VD, ESTILO) %>%
+  group_by(ESTILO) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
+
+ggplot(S0.prop_ESTILO, aes(x = ESTILO, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9))
+
+
+(S0.tab_ESTILO <- with(dados_S0, table(ESTILO, VD)))
+chisq.test(S0.tab_ESTILO)
 
 # GENERO ####
 S0.prop_GENERO <- dados_S0 %>%

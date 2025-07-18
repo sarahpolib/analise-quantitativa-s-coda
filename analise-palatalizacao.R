@@ -4,33 +4,6 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% V1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 
-# DISTRIBUIÇÃO GERAL ####
-distribuicao.geral <- dados2 %>% 
-  count(VD) %>%
-  mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
-  print()
-
-distribuicao.geral %>%   
-  ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
-  scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(aes(label = label), 
-            vjust = -0.2,
-            size = 3.5) +
-  scale_fill_brewer(palette = "Reds")+
-  scale_y_continuous(labels = percent_format(accuracy = 1), 
-                     expand = expansion(mult = c(0, 0.15))) + #aumenta espaço no topo
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
-    legend.position = "none")
-
-
 # CONT.FON.SEG ####
 
 AP.prop_CONT_FON_SEG <- dados_AP %>% 
@@ -87,7 +60,7 @@ ggplot(AP.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) +
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Alveolar", "Palatal"))+
-  geom_text(aes(label = label), vjust = -0.3, size = 4) + 
+  geom_text(aes(label = label), vjust = -0.3, size = 3.5) + 
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(labels = percent_format(accuracy = 1), 
                      expand = expansion(mult = c(0, 0.15))) + #aumenta espaço no topo
@@ -200,7 +173,7 @@ ggplot(AP.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD, 
 
 
 (AP.tab_CFP_abertura2 <- with(dados_AP, table(CFP_abertura2, VD)))
-chisq.test(AP.tab_CFP_abertura2)
+chisq.test(AP.tab_CFP_abertura2[c(1,2),]) #sem diferença entre fechada e meio fechada
 
 
 # CLASSE MORFOLOGICA ####
@@ -229,9 +202,34 @@ ggplot(AP.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100,
 (AP.tab_CLASSE_MORFOLOGICA3 <- with(dados_AP, table(CLASSE_MORFOLOGICA3, VD)))
 chisq.test(AP.tab_CLASSE_MORFOLOGICA3)
 
+# ESTILO ####
+AP.prop_ESTILO <- dados_AP %>%
+  filter(CFS_pontoc2 == "coronal") %>% 
+  count(VD, ESTILO) %>%
+  group_by(ESTILO) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
+
+ggplot(AP.prop_ESTILO, aes(x = ESTILO, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9))
+
+
+(AP.tab_ESTILO <- with(dados_AP, table(ESTILO, VD)))
+chisq.test(AP.tab_ESTILO)
+
 
 # GENERO ####
-
 AP.prop_GENERO <- dados_AP %>%
   filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, GENERO) %>%
@@ -259,8 +257,6 @@ chisq.test(AP.tab_GENERO)
 
 
 # IDADE DE MIGRACAO ####
-
-
 AP.prop_IDADE_MIGRACAO <- dados_AP %>% 
   filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, IDADE_MIGRACAO) %>%
@@ -282,8 +278,6 @@ summary(AP.mod_IDADE_MIGRACAO)
 lrm(VD ~ IDADE_MIGRACAO, data = dados_AP)
 
 plot(allEffects(AP.mod_IDADE_MIGRACAO), type = "response")
-
-
 
 # TEMPO DE RESIDENCIA ####
 AP.prop_TEMPO_RESIDENCIA <- dados_AP %>% 
@@ -308,8 +302,14 @@ lrm(VD ~ TEMPO_RESIDENCIA, data = dados_AP)
 
 plot(allEffects(AP.mod_TEMPO_RESIDENCIA), type = "response")
 
-
 # MODELAGEM DE BARBOSA(2023) ####
+sort(unique(dados_AP$IDADE_MIGRACAO))
+dados_AP$PARTICIPANTE[which(dados_AP$IDADE_MIGRACAO == 45)]
+
+
+
+dados_AP
+
 modAP1 <- glmer(VD ~ TONICIDADE + 
                  POSICAO_S +
                  CFP_abertura +
@@ -333,4 +333,100 @@ check_model(modAP1)
 check_outliers(modAP1)
 
 # INDICE SOCIOECONOMICO ####
+## Variáveis Sociais ####
+### Escolaridade ####
+AP.prop_ESCOLARIDADE2 <- dados_AP %>%
+  filter(CFS_pontoc2 == "coronal") %>% 
+  count(VD, ESCOLARIDADE2) %>%
+  group_by(ESCOLARIDADE2) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
+
+ggplot(AP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9))
+
+
+(AP.tab_ESCOLARIDADE2 <- with(dados_AP, table(ESCOLARIDADE2, VD)))
+chisq.test(AP.tab_ESCOLARIDADE2)
+chisq.test(AP.tab_ESCOLARIDADE2[c(1,3),])
+
+#escolaridade1
+#chisq.test(AP.tab_ESCOLARIDADE[c(1,2),]) #sem diferença pra fund1 e 2
+#chisq.test(AP.tab_ESCOLARIDADE[c(4,5),]) #sem diferença pra superior e pósgrad 
+
+### Ocupação ####
+AP.prop_INDICE_OCUPACAO <- dados_AP %>%
+  filter(CFS_pontoc2 == "coronal") %>% 
+  count(VD, INDICE_OCUPACAO) %>%
+  group_by(INDICE_OCUPACAO) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
+
+ggplot(AP.prop_INDICE_OCUPACAO[9:16,], aes(x = INDICE_OCUPACAO, y = prop * 100, label = round(prop * 100, 1))) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="red")+
+  #labs(x = "Idade de Migração", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+
+ggplot(AP.prop_INDICE_OCUPACAO, aes(x = INDICE_OCUPACAO, y = prop * 100, fill = VD, label = label)) +
+  geom_bar(stat = "identity", color = "white") + 
+  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9))
+
+
+AP.mod_INDICE_OCUPACAO <- glm(VD ~ INDICE_OCUPACAO, data = dados_AP, family = binomial)
+summary(AP.mod_INDICE_OCUPACAO)
+lrm(VD ~ INDICE_OCUPACAO, data = dados_AP)
+plot(allEffects(AP.mod_INDICE_OCUPACAO), type = "response")
+
+
+### Renda Individual ####
+AP.prop_RENDA_IND <- dados_AP %>%
+  filter(CFS_pontoc2 == "coronal") %>% 
+  count(VD, RENDA_IND) %>%
+  group_by(RENDA_IND) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
+
+ggplot(AP.prop_RENDA_IND, aes(x = RENDA_IND, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9))
+
+
+(AP.tab_RENDA_IND <- with(dados_AP, table(RENDA_IND, VD)))
+chisq.test(AP.tab_RENDA_IND)
+chisq.test(AP.tab_RENDA_IND[c(1,2),])
+chisq.test(AP.tab_RENDA_IND[c(4,5),])
+chisq.test(AP.tab_RENDA_IND[c(2,4),])
 
