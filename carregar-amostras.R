@@ -215,3 +215,4 @@ ggplot(aes(x = VD, y = prop, fill = VD, label = label)) +
     axis.title.x = element_text(size = 9),  # tamanho do título eixo X
     axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "none")
+
