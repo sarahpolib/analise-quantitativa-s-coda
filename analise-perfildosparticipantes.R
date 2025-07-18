@@ -124,13 +124,13 @@ escolaridade %>%
 
 ## Escolaridade dos pais ####
 escolaridade_pai <- dados2 %>% 
-  distinct(PARTICIPANTE, ESCOLA_PAI) %>%  #garante 1 linha por participante
-  count(ESCOLA_PAI) %>% 
-  arrange(ESCOLA_PAI) %>% 
+  distinct(PARTICIPANTE, ESCOLA_PAI2) %>%  #garante 1 linha por participante
+  count(ESCOLA_PAI2) %>% 
+  arrange(ESCOLA_PAI2) %>% 
   print()
 
 escolaridade_pai %>% 
-  ggplot(aes(x = factor(ESCOLA_PAI), y = n, label = n)) +
+  ggplot(aes(x = factor(ESCOLA_PAI2), y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FC9272") +
   labs(x = "ESCOLARIDADE PAI",
        y = "Número de Participantes")+
@@ -145,13 +145,13 @@ escolaridade_pai %>%
 
 
 escolaridade_mae <- dados2 %>% 
-  distinct(PARTICIPANTE, ESCOLA_MAE) %>%  #garante 1 linha por participante
-  count(ESCOLA_MAE) %>% 
-  arrange(ESCOLA_MAE) %>% 
+  distinct(PARTICIPANTE, ESCOLA_MAE2) %>%  #garante 1 linha por participante
+  count(ESCOLA_MAE2) %>% 
+  arrange(ESCOLA_MAE2) %>% 
   print()
 
 escolaridade_mae %>% 
-  ggplot(aes(x = factor(ESCOLA_MAE), y = n, label = n)) +
+  ggplot(aes(x = factor(ESCOLA_MAE2), y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FC9272") +
   labs(x = "ESCOLARIDADE Mãe",
        y = "Número de Participantes")+
@@ -163,6 +163,19 @@ escolaridade_mae %>%
         axis.title.x = element_text(size = 9),  # tamanho do título eixo X
         axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
         legend.position = "none")
+
+
+table(infs2$ESCOLARIDADE2, infs2$ESCOLA_PAI2)
+
+ggplot(infs2, aes(x = ESCOLARIDADE, fill = ESCOLA_PAI)) +
+  geom_bar(position = "fill") +
+  labs(y = "Proporção", fill = "Escolaridade do Pai")
+
+table(infs2$ESCOLARIDADE2, infs2$ESCOLA_MAE2)
+
+ggplot(infs2, aes(x = ESCOLARIDADE2, fill = ESCOLA_MAE)) +
+  geom_bar(position = "fill") +
+  labs(y = "Proporção", fill = "Escolaridade da Mãe")
 
 ## Renda ####
 renda_individual <- dados2 %>% 
@@ -185,7 +198,51 @@ renda_individual %>%
         axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
         legend.position = "none")
 
+### Renda X Escolaridade ####
+
+table(infs2$ESCOLARIDADE2, infs2$RENDA_IND)
+
+ggplot(infs2, aes(x = ESCOLARIDADE2, fill = RENDA_IND)) +
+  geom_bar(position = "fill") +
+  labs(y = "Proporção", fill = "Escolaridade da Mãe")
+
+
+table(infs2$ESCOLARIDADE2, infs2$RENDA_FAM)
+
+ggplot(infs2, aes(x = ESCOLARIDADE2, fill = RENDA_FAM)) +
+  geom_bar(position = "fill") +
+  labs(y = "Proporção", fill = "Escolaridade da Mãe")
+
+
+### Renda X Ocupação ####
+
+table(infs2$INDICE_OCUPACAO, infs2$RENDA_IND)
+
+ggplot(infs2, aes(x = INDICE_OCUPACAO, fill = RENDA_IND)) +
+  geom_bar(position = "fill")
+#  labs(y = "Proporção", fill = "Escolaridade da Mãe")
+
+
+
 ## Preço do m2 do bairro ####
+table(infs2$media_m2, infs2$RENDA_IND)
+
+ggplot(infs2, aes(x = RENDA_IND, y = media_m2)) +
+  geom_bar(stat = "identity")
+
+
+table(infs2$NBANHEIROS, infs2$media_m2)
+
+ggplot(infs2, aes(x = media_m2, y = NBANHEIROS)) +
+  geom_point()
+
+table(infs2$media_m2, infs2$NBANHEIROS)
+
+ggplot(infs2, aes(x = NBANHEIROS, y = media_m2)) +
+  geom_bar(stat = "identity")
+
+
+
 media_m2_bairro %>% 
   ggplot(aes(x = BAIRRO, y = media_m2)) +
   geom_bar(stat = "identity", color = "white", fill = "#FC9272") +
@@ -200,6 +257,21 @@ media_m2_bairro %>%
         axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
         legend.position = "none")+
   coord_flip()  # deixa os nomes dos bairros legíveis
+
+
+dados2 %>% 
+ggplot(aes(x = NBANHEIROS, y = BAIRRO, fill = media_m2)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  geom_text(aes(label = scales::percent(media_m2, accuracy = 0.1)), size = 4) +
+  labs(
+    x = "Escolaridade do Pai",
+    y = "Escolaridade do Participante",
+    fill = "Proporção"
+  ) +
+  theme_minimal()
+
+
 
 
 ## Renda por bairro ####
@@ -221,6 +293,17 @@ renda_bairro %>%
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+
+dados2 %>%
+  filter(!is.na(RENDA_IND), !is.na(BAIRRO)) %>% 
+  distinct(PARTICIPANTE, BAIRRO, RENDA_IND) %>%
+  count(BAIRRO, RENDA_IND, name = "n_participantes") %>% 
+  ggplot(aes(x = RENDA_IND, y = BAIRRO, size = n_participantes, color = RENDA_IND)) +
+  geom_point(alpha = 0.7) +
+  scale_size(range = c(3, 12)) +
+  theme_minimal() +
+  #theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Bairro", y = "Renda individual", size = "Nº de pessoas")
 
 
 ## Comodos ####

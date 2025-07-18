@@ -232,6 +232,32 @@ ggplot(HAP.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100
 (HAP.tab_CLASSE_MORFOLOGICA3 <- with(dados_HAP, table(CLASSE_MORFOLOGICA3, VD)))
 chisq.test(HAP.tab_CLASSE_MORFOLOGICA3)
 
+# ESTILO ####
+HAP.prop_ESTILO <- dados_HAP %>%
+  filter(CFS_pontoc2 == "coronal") %>% 
+  count(VD, ESTILO) %>%
+  group_by(ESTILO) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
+
+ggplot(HAP.prop_ESTILO, aes(x = ESTILO, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9))
+
+
+(HAP.tab_ESTILO <- with(dados_HAP, table(ESTILO, VD)))
+chisq.test(HAP.tab_ESTILO)
+
 
 # GENERO ####
 HAP.prop_GENERO <- dados_HAP %>%

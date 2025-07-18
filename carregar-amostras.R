@@ -10,6 +10,7 @@
 
 library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance)
 
+rm(list = ls())
 
 # Carregar dados ####
 setwd("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa")
@@ -84,8 +85,11 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
   mutate(across(where(is.character), as.factor))
 
 #mudar nível de variaveis
-infs2$RENDA_IND <- factor(infs2$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM"))
-levels(dados2$RENDA_IND)
+infs$RENDA_IND <- factor(infs$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM"))
+levels(infs$RENDA_IND)
+
+infs$RENDA_FAM <- factor(infs$RENDA_FAM, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM", "20+SM"))
+levels(infs$RENDA_FAM)
 
 head(infs)
 str(infs)
@@ -150,13 +154,13 @@ mutate(CFP_abertura2 = case_when(
     CONT_FON_SEG %in% c("b", "d","g", "l", "m", "n", "v") ~ "sonora",
     CONT_FON_SEG %in% c("f", "h", "k", "p", "t") ~ "surda"),
     CFS_sonoridade = factor(CFS_sonoridade, levels = c("pausa", "sonora", "surda"))
-    )
-levels(dados2$CONT_FON_SEG)
+  )
+levels(dados2$ESCOLARIDADE)
 
 
 ### PALATALIZAÇÃO ####
 dados_AP <- dados2 %>% 
-  filter(VD %in% c("A", "P")) %>% 
+  filter(VD %in% c("P", "A")) %>% 
   droplevels()
 
 levels(dados_AP$VD)
@@ -171,7 +175,7 @@ dados_S0 <- dados2 %>%
                            S = c("A", "P", "H"), 
                            `0` = "0")) %>% 
          droplevels()
-levels(dados_apagamento$MORFEMA.PLURAL)
+levels(dados_S0$MORFEMA.PLURAL)
 
 
 ### ASPIRAÇÃO ####
@@ -182,7 +186,7 @@ dados_HAP <- dados2 %>%
                            H = "H")) %>% 
   droplevels()
 
-levels(dados_aspiracao$VD) 
+levels(dados_HAP$VD) 
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 
