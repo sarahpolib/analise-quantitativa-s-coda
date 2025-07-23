@@ -235,19 +235,21 @@ S0.prop_GENERO <- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+
+png("VD_S0-genero.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_GENERO, aes(x = GENERO, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  labs(x = "Gênero", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Feminino", "Masculino"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variante", labels = c("Realização", "Apagamento"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
     axis.title.x = element_text(size = 9),  # tamanho do título eixo X
     axis.title.y = element_text(size = 9))
-
+dev.off()
 
 (S0.tab_GENERO <- with(dados_S0, table(GENERO, VD)))
 chisq.test(S0.tab_GENERO)
@@ -261,14 +263,14 @@ S0.prop_IDADE_MIGRACAO <- dados_S0 %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 51)
 
-#png("VD_S0-10.idade_migracao.png")
+png("VD_S0-idade-migracao.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_IDADE_MIGRACAO[27:51,], aes(x = IDADE_MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
-  #labs(x = "Idade de Migração", y = "Proporção de Palatalização") +
+  labs(x = "Idade de Migração", y = "Proporção de Apagamento") +
   #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
   theme_light()
-#dev.off()
+dev.off()
 
 S0.mod_IDADE_MIGRACAO <- glm(VD ~ IDADE_MIGRACAO, data = dados_S0, family = binomial)
 summary(S0.mod_IDADE_MIGRACAO)

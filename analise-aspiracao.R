@@ -294,14 +294,14 @@ HAP.prop_IDADE_MIGRACAO <- dados_HAP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 47)
 
-#png("VD_HAP-10.idade_migracao.png")
+png("VD_HAP-idade-migracao.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(HAP.prop_IDADE_MIGRACAO[27:47,], aes(x = IDADE_MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
-  #labs(x = "Idade de Migração", y = "Proporção de Palatalização") +
+  labs(x = "Idade de Migração", y = "Proporção de Aspiração") +
   #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
   theme_light()
-#dev.off()
+dev.off()
 
 HAP.mod_IDADE_MIGRACAO <- glm(VD ~ IDADE_MIGRACAO, data = dados_HAP, family = binomial)
 summary(HAP.mod_IDADE_MIGRACAO)
@@ -358,5 +358,4 @@ car::vif(modHAP1)
 check_model(modHAP1)
 #check_outliers(modHAP1)
 
-# INDICE SOCIOECONOMICO ####
 
