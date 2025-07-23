@@ -197,11 +197,13 @@ distribuicao.geral <- dados2 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
   print()
 
+
+png("VD.png", width = 6.5, height = 4.5, units = "in", res = 300)
 distribuicao.geral %>%   
 ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(aes(label = label), 
             vjust = -0.2,
             size = 3.5) +
@@ -215,4 +217,5 @@ ggplot(aes(x = VD, y = prop, fill = VD, label = label)) +
     axis.title.x = element_text(size = 9),  # tamanho do título eixo X
     axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "none")
+dev.off()
 
