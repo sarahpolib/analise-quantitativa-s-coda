@@ -64,7 +64,7 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
                                   INDICE_OCUPACAO_SONHOS = col_integer(),
                                   IDADE_MIGRACAO = col_integer(),
                                   TEMPO_RESIDENCIA = col_integer(),
-                                  NPESSOAS = col_integer(),
+                                  #NPESSOAS = col_integer(),
                                   NRENDA = col_integer(),
                                   INDICE_OCUPACAO_PAI = col_integer(),
                                   INDICE_OCUPACAO_MAE = col_integer(),
