@@ -333,8 +333,7 @@ check_model(modAP1)
 check_outliers(modAP1)
 
 # INDICE SOCIOECONOMICO ####
-## Variáveis Sociais ####
-### Escolaridade ####
+## Escolaridade ####
 AP.prop_ESCOLARIDADE2 <- dados_AP %>%
   filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, ESCOLARIDADE2) %>%
@@ -359,7 +358,7 @@ ggplot(AP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, 
 
 (AP.tab_ESCOLARIDADE2 <- with(dados_AP, table(ESCOLARIDADE2, VD)))
 chisq.test(AP.tab_ESCOLARIDADE2)
-chisq.test(AP.tab_ESCOLARIDADE2[c(1,3),])
+chisq.test(AP.tab_ESCOLARIDADE2[c(2,3),])
 
 #escolaridade1
 #chisq.test(AP.tab_ESCOLARIDADE[c(1,2),]) #sem diferença pra fund1 e 2
@@ -389,7 +388,7 @@ ggplot(AP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, labe
 
 
 (AP.tab_ESCOLA_PAI2<- with(dados_AP, table(ESCOLA_PAI2, VD)))
-chisq.test(AP.tab_ESCOLA_PAI) #sim
+chisq.test(AP.tab_ESCOLA_PAI2) #sim
 chisq.test(AP.tab_ESCOLA_PAI2[c(1,2),]) 
 chisq.test(AP.tab_ESCOLA_PAI2[c(2,3),]) 
 chisq.test(AP.tab_ESCOLA_PAI2[c(3,4),]) 
@@ -417,11 +416,24 @@ ggplot(AP.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop * 100, fill = VD, labe
     axis.title.y = element_text(size = 9))
 
 
+AP.grafico_escolaridade_mae <- AP.prop_ESCOLA_MAE2 %>% 
+  filter(VD == "P") %>% 
+  ggplot(aes(x = ESCOLA_MAE2, y = prop * 100, group = VD, color = VD, label = label)) + 
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 3, vjust = -0.5) +
+  scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  theme_minimal()
+AP.grafico_escolaridade_mae
+
+
 (AP.tab_ESCOLA_MAE2<- with(dados_AP, table(ESCOLA_MAE2, VD)))
 chisq.test(AP.tab_ESCOLA_MAE2) #sim
 chisq.test(AP.tab_ESCOLA_MAE2[c(1,2),])
 chisq.test(AP.tab_ESCOLA_MAE2[c(2,3),]) 
-chisq.test(AP.tab_ESCOLA_PAI[c(3,4),])
+chisq.test(AP.tab_ESCOLA_MAE2[c(2,4),])
 
 
 ### Ocupação ####
@@ -473,20 +485,6 @@ ggplot(AP.prop_INDICE_OUTRO_CARGO[10:16,], aes(x = INDICE_OUTRO_CARGO, y = prop 
   stat_smooth(method=lm, se=TRUE, color="red")+
   #labs(x = "Índice de Ocupação", y = "Proporção de Palatalização") +
   theme_light()
-
-ggplot(AP.prop_INDICE_OUTRO_CARGO, aes(x = INDICE_OUTRO_CARGO, y = prop * 100, fill = VD, label = label)) +
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
-
 
 AP.mod_INDICE_OUTRO_CARGO <- glm(VD ~ INDICE_OUTRO_CARGO, data = dados_AP, family = binomial)
 summary(AP.mod_INDICE_OUTRO_CARGO)
@@ -547,17 +545,18 @@ chisq.test(AP.tab_OCUPACAO_DIST) #sim
 chisq.test(AP.tab_OCUPACAO_DIST[c(2,3),])
 
 ### Ocupação locomoção ####
-AP.prop_OCUPACAO_LOCOMOCAO <- dados_AP %>%
+#analise de locomoção com todos os itens foi transformada na seguinte OCUPACAO_LOCOMOCAO2
+AP.prop_OCUPACAO_LOCOMOCAO2 <- dados_AP %>%
   filter(CFS_pontoc2 == "coronal") %>% 
-  count(VD, OCUPACAO_LOCOMOCAO) %>%
-  group_by(OCUPACAO_LOCOMOCAO) %>% 
+  count(VD, OCUPACAO_LOCOMOCAO2) %>%
+  group_by(OCUPACAO_LOCOMOCAO2) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
 
 
-ggplot(AP.prop_OCUPACAO_LOCOMOCAO, aes(x = OCUPACAO_LOCOMOCAO, y = prop * 100, fill = VD, label = label)) + 
+ggplot(AP.prop_OCUPACAO_LOCOMOCAO2, aes(x = OCUPACAO_LOCOMOCAO2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
@@ -573,9 +572,9 @@ ggplot(AP.prop_OCUPACAO_LOCOMOCAO, aes(x = OCUPACAO_LOCOMOCAO, y = prop * 100, f
     axis.title.y = element_text(size = 9))
 
 
-(AP.tab_OCUPACAO_DIST<- with(dados_AP, table(OCUPACAO_DIST, VD)))
-chisq.test(AP.tab_OCUPACAO_DIST) #sim
-chisq.test(AP.tab_OCUPACAO_DIST[c(2,3),])
+(AP.tab_OCUPACAO_LOCOMOCAO2 <- with(dados_AP, table(OCUPACAO_LOCOMOCAO2, VD)))
+chisq.test(AP.tab_OCUPACAO_LOCOMOCAO2) #sim
+chisq.test(AP.tab_OCUPACAO_LOCOMOCAO2[c(2,3),])
 
 
 ### Ocupação dos Pais ####
@@ -622,17 +621,17 @@ plot(allEffects(AP.mod_INDICE_OCUPACAO_MAE), type = "response")
 
 
 ### Mega sena ####
-AP.prop_MEGA_SENA <- dados_AP %>%
+AP.prop_MEGA_SENA2 <- dados_AP %>%
   filter(CFS_pontoc2 == "coronal") %>% 
-  count(VD, MEGA_SENA) %>%
-  group_by(MEGA_SENA) %>% 
+  count(VD, MEGA_SENA2) %>%
+  group_by(MEGA_SENA2) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
 
 
-ggplot(AP.prop_MEGA_SENA, aes(x = MEGA_SENA, y = prop * 100, fill = VD, label = label)) + 
+ggplot(AP.prop_MEGA_SENA2, aes(x = MEGA_SENA2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
@@ -648,9 +647,46 @@ ggplot(AP.prop_MEGA_SENA, aes(x = MEGA_SENA, y = prop * 100, fill = VD, label = 
     axis.title.y = element_text(size = 9))
 
 
-(AP.tab_MEGA_SENA<- with(dados_AP, table(MEGA_SENA, VD)))
-chisq.test(AP.tab_MEGA_SENA) #sim
-chisq.test(AP.tab_MEGA_SENA[c(4,3),])
+(AP.tab_MEGA_SENA2 <- with(dados_AP, table(MEGA_SENA2, VD)))
+chisq.test(AP.tab_MEGA_SENA2) #sim
+chisq.test(AP.tab_MEGA_SENA2[c(1,2),])
+chisq.test(AP.tab_MEGA_SENA2[c(2,3),])
+chisq.test(AP.tab_MEGA_SENA2[c(1,3),])
+chisq.test(AP.tab_MEGA_SENA2[c(3,4),])
+chisq.test(AP.tab_MEGA_SENA2[c(4,5),])
+chisq.test(AP.tab_MEGA_SENA2[c(3,5),])
+
+
+### Mega sena ####
+AP.prop_MEGASENA_TRABALHAR2 <- dados_AP %>%
+  filter(CFS_pontoc2 == "coronal") %>% 
+  count(VD, MEGASENA_TRABALHAR2) %>%
+  group_by(MEGASENA_TRABALHAR2) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
+
+
+
+ggplot(AP.prop_MEGASENA_TRABALHAR2, aes(x = MEGASENA_TRABALHAR2, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar", "Palatal"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(
+      color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(
+      color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9))
+
+
+(AP.tab_MEGASENA_TRABALHAR2 <- with(dados_AP, table(MEGASENA_TRABALHAR2, VD)))
+chisq.test(AP.tab_MEGASENA_TRABALHAR2) #nao
+
 
 ### Renda Individual ####
 AP.prop_RENDA_IND <- dados_AP %>%
@@ -945,6 +981,7 @@ chisq.test(AP.tab_LAZER_CARACTERISTICA) #tem correlação
 chisq.test(AP.tab_LAZER_CARACTERISTICA[c(1,2),])
 chisq.test(AP.tab_LAZER_CARACTERISTICA[c(2,3),])
 chisq.test(AP.tab_LAZER_CARACTERISTICA[c(3,4),])
+chisq.test(AP.tab_LAZER_CARACTERISTICA[c(1,4),])
 
 
 ### Lazer Campinas####
@@ -974,8 +1011,8 @@ ggplot(AP.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERIST
 chisq.test(AP.tab_LAZER_CAMPINAS_CARACTERISTICA) #tem correlação
 chisq.test(AP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(1,2),])
 chisq.test(AP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(2,3),])
-chisq.test(AP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(3,4),]) #falantes que nfalaram quenão tem e que não sae não tem correlação
-
+chisq.test(AP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(3,4),]) #falantes que nfalaram que não tem e que não sae não tem correlação
+chisq.test(AP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(2,5),])
 
 
 ### Viagem ####
@@ -1033,11 +1070,12 @@ ggplot(AP.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop * 100, fill = VD, la
 
 (AP.tab_VIAGEM_LUGAR <- with(dados_AP, table(VIAGEM_LUGAR, VD)))
 chisq.test(AP.tab_VIAGEM_LUGAR) #tem correlação
+chisq.test(AP.tab_VIAGEM_LUGAR[c(1,3),])
+chisq.test(AP.tab_VIAGEM_LUGAR[c(4,5),])
 chisq.test(AP.tab_VIAGEM_LUGAR[c(2,3),])
 
 
 ### Viagem vontade ####
-
 AP.prop_LAZER_VIAGEM_VONTADE2 <- dados_AP %>%
   filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, LAZER_VIAGEM_VONTADE2) %>%
@@ -1063,7 +1101,8 @@ ggplot(AP.prop_LAZER_VIAGEM_VONTADE2, aes(x = LAZER_VIAGEM_VONTADE2, y = prop * 
 (AP.tab_LAZER_VIAGEM_VONTADE2 <- with(dados_AP, table(LAZER_VIAGEM_VONTADE2, VD)))
 chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2) #tem correlação
 chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2[c(1,2),])
-chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2[c(3,4),])
+chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2[c(2,3),])
+chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2[c(1,4),])
 
 
 ### Infancia ####
@@ -1089,8 +1128,9 @@ ggplot(AP.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop * 100, fill 
     axis.title.y = element_text(size = 9))
 
 
-(AP.tab_LAZER_VIAGEM_VONTADE2 <- with(dados_AP, table(LAZER_VIAGEM_VONTADE2, VD)))
-chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2) #tem correlação
+(AP.prop_INFANCIA_MEMORIA <- with(dados_AP, table(INFANCIA_MEMORIA, VD)))
+chisq.test(AP.prop_INFANCIA_MEMORIA) #tem correlação
+chisq.test(AP.prop_INFANCIA_MEMORIA[c(1,2),])
 
 
 

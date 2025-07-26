@@ -160,7 +160,7 @@ levels(dados2$ESCOLARIDADE)
 
 ### PALATALIZAÇÃO ####
 dados_AP <- dados2 %>% 
-  filter(VD %in% c("P", "A")) %>% 
+  filter(VD %in% c("P", "A")) %>%
   droplevels()
 
 levels(dados_AP$VD)
@@ -182,8 +182,8 @@ levels(dados_S0$MORFEMA.PLURAL)
 dados_HAP <- dados2 %>% 
   filter(VD %in% c("A", "H", "P")) %>% 
   mutate(VD = fct_collapse(VD,
-                           AP = c("A", "P"), 
-                           H = "H")) %>% 
+                           H = "H",
+                           AP = c("A", "P"))) %>%
   droplevels()
 
 levels(dados_HAP$VD) 
