@@ -236,7 +236,7 @@ S0.prop_GENERO <- dados_S0 %>%
   print()
 
 
-png("VD_S0-genero.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_S0-genero.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_GENERO, aes(x = GENERO, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Gênero", y = "Proporção de Ocorrência") + 
@@ -263,7 +263,7 @@ S0.prop_IDADE_MIGRACAO <- dados_S0 %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 51)
 
-png("VD_S0-idade-migracao.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_S0-idade-migracao.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_IDADE_MIGRACAO[27:51,], aes(x = IDADE_MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
@@ -287,7 +287,7 @@ S0.prop_TEMPO_RESIDENCIA <- dados_S0 %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 45)
 
-#png("VD_S0-10.idade_migracao.png")
+#png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_S0-10.idade_migracao.png")
 ggplot(S0.prop_TEMPO_RESIDENCIA[24:45,], aes(x = TEMPO_RESIDENCIA, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+

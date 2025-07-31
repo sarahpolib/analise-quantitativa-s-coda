@@ -88,8 +88,15 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
 infs$RENDA_IND <- factor(infs$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM"))
 levels(infs$RENDA_IND)
 
+infs$RENDA_IND <- fct_collapse(infs$RENDA_IND, "4a9/10a19SM" = c("4a9SM", "10a19SM"))
+levels(infs$RENDA_IND)
+
+
 infs$RENDA_FAM <- factor(infs$RENDA_FAM, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM", "20+SM"))
 levels(infs$RENDA_FAM)
+
+
+#juntar 4a9sm com 10 a 19
 
 head(infs)
 str(infs)
@@ -198,7 +205,7 @@ distribuicao.geral <- dados2 %>%
   print()
 
 
-png("VD.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD.png", width = 6.5, height = 4.5, units = "in", res = 300)
 distribuicao.geral %>%   
 ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
@@ -217,5 +224,37 @@ ggplot(aes(x = VD, y = prop, fill = VD, label = label)) +
     axis.title.x = element_text(size = 9),  # tamanho do título eixo X
     axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "none")
+dev.off()
+
+
+# DISTRIBUIÇÃO GERAL POR PARTICIPANTE####
+distribuicao.geral.participante <- dados2 %>% 
+  count(PARTICIPANTE, VD) %>%
+  group_by(PARTICIPANTE) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
+  print()
+
+
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD-participante.png", width = 6.5, height = 4.5, units = "in", res = 300)
+distribuicao.geral.participante %>%   
+  ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(aes(label = label), 
+            vjust = -0.2,
+            size = 3.5) +
+  facet_wrap(. ~ PARTICIPANTE)+
+  scale_fill_brewer(palette = "Reds")+
+  scale_y_continuous(labels = percent_format(accuracy = 1), 
+                     expand = expansion(mult = c(0, 0.15))) + #espaço no topo para texto
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+    legend.position = "bottom")
 dev.off()
 

@@ -45,6 +45,28 @@ ggplot(dados_grafico, aes(x = BAIRRO, y = media_m2)) +
   )
 
 
+## Bairo região ####
+
+tab.BAIRO.REGIAO <- infs2 %>%
+  filter(!is.na(BAIRRO.REGIAO)) %>%
+  distinct(PARTICIPANTE, BAIRRO.REGIAO) %>% 
+  count(BAIRRO.REGIAO) %>% 
+  print()
+
+ggplot(tab.BAIRO.REGIAO, aes(x = BAIRRO.REGIAO, y = n)) +
+  geom_bar(stat = "identity", color = "white", fill = "#FC9272") +
+  labs(x = "Região",
+      y = "Número de Participantes")+
+  geom_text(aes(label = paste0("(", n, ")")), vjust = -0.2, size = 3.5) +
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        legend.position = "none")
+
+
+
 ## Renda por bairro ####
 renda_bairro <- infs2 %>% 
   filter(!is.na(RENDA_IND), !is.na(BAIRRO)) %>% 
@@ -73,8 +95,48 @@ renda_bairro %>%
   ) +
   labs(x = "Bairro", y = "Renda individual", size = "Nº de pessoas")
 
-## n de comodos por M4 ####
 
+## Renda por REGIAO ####
+renda_regiao <- infs2 %>% 
+  filter(!is.na(RENDA_IND), !is.na(BAIRRO.REGIAO)) %>% 
+  group_by(RENDA_IND, BAIRRO.REGIAO) %>%
+  count(RENDA_IND) %>% 
+  print()
+
+renda_regiao %>%
+  ggplot(aes(x = BAIRRO.REGIAO, y = RENDA_IND, size = n, color = RENDA_IND)) +
+  geom_point(alpha = 0.7) +
+  scale_size(range = c(3, 12)) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 50, hjust = 1),
+    legend.position = "right",
+    legend.box.spacing = unit(0.005, "cm")
+  ) +
+  labs(x = "Bairro", y = "Renda individual", size = "Nº de pessoas")
+
+## Renda fam por REGIAO ####
+renda_fam_regiao <- infs2 %>% 
+  filter(!is.na(RENDA_FAM), !is.na(BAIRRO.REGIAO)) %>% 
+  group_by(BAIRRO.REGIAO, RENDA_FAM) %>%
+  count(RENDA_FAM) %>% 
+  print()
+
+renda_fam_regiao %>%
+  ggplot(aes(x = BAIRRO.REGIAO, y = RENDA_FAM, size = n, color = RENDA_FAM)) +
+  geom_point(alpha = 0.7) +
+  scale_size(range = c(3, 12)) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 50, hjust = 1),
+    legend.position = "right",
+    legend.box.spacing = unit(0.005, "cm")
+  ) +
+  labs(x = "Bairro", y = "Renda Familiar", size = "Nº de pessoas")
+
+
+
+## n de comodos por M4 ####
 infs2 %>% 
   filter(!is.na(NCOMODOS), !is.na(media_m2)) %>%
   ggplot(aes(x = NCOMODOS, y = media_m2)) +
@@ -248,13 +310,13 @@ infs2 %>%
 
 # ESCOLARIDADE ####
 escolaridade <- dados2 %>% 
-  distinct(PARTICIPANTE, ESCOLARIDADE) %>%  #garante 1 linha por participante
-  count(ESCOLARIDADE) %>% 
-  arrange(ESCOLARIDADE) %>% 
+  distinct(PARTICIPANTE, ESCOLARIDADE2) %>%  #garante 1 linha por participante
+  count(ESCOLARIDADE2) %>% 
+  arrange(ESCOLARIDADE2) %>% 
   print()
 
 escolaridade %>% 
-  ggplot(aes(x = factor(ESCOLARIDADE), y = n, label = n)) +
+  ggplot(aes(x = factor(ESCOLARIDADE2), y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FC9272") +
   labs(x = "ESCOLARIDADE",
        y = "Número de Participantes")+
@@ -316,27 +378,27 @@ escolaridade_mae %>%
 ### pai ####
 table(infs2$ESCOLARIDADE2, infs2$ESCOLA_PAI2)
 tabela_escolaridade <- infs2 %>%
-  count(ESCOLARIDADE, ESCOLA_PAI, PARTICIPANTE) %>%
-  group_by(ESCOLARIDADE, ESCOLA_PAI) %>%
+  count(ESCOLARIDADE2, ESCOLA_PAI2, PARTICIPANTE) %>%
+  group_by(ESCOLARIDADE2, ESCOLA_PAI2) %>%
   summarise(n_participantes = n_distinct(PARTICIPANTE)) %>% 
   mutate(
-    ESCOLARIDADE = factor(ESCOLARIDADE,
-                          levels = c("fund1", "fund2", "medio", "superior", "posgrad"),
+    ESCOLARIDADE2 = factor(ESCOLARIDADE2,
+                          levels = c("fund", "medio", "superior"),
                           ordered = TRUE),
-    ESCOLA_PAI = factor(ESCOLA_PAI,
-                        levels = c("analfabeto", "fund1", "fund2", "medio", "superior", "posgrad"),
+    ESCOLA_PAI2 = factor(ESCOLA_PAI2,
+                        levels = c("analfabeto", "fund", "medio.superior"),
                         ordered = TRUE)) %>%
-  arrange(ESCOLARIDADE, ESCOLA_PAI) %>%  # Ordenar os dados
+  arrange(ESCOLARIDADE2, ESCOLA_PAI2) %>%  # Ordenar os dados
   print()
 
 
-ggplot(tabela_escolaridade, aes(x = ESCOLARIDADE, y = n_participantes, fill = ESCOLA_PAI)) +
+ggplot(tabela_escolaridade, aes(x = ESCOLARIDADE2, y = n_participantes, fill = ESCOLA_PAI2)) +
   geom_col() +
   scale_fill_brewer(
     palette = "Reds",
     na.value = "gray70",
     name = "Escolaridade do Pai",
-    labels = c("Analfabeto", "Fundamental I", "Fundamental II", "Médio", "Superior", "Pós-graduação", "Não informado")
+    labels = c("Analfabeto", "Fundamental", "Médio/Superior", "Não informado")
   ) +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -347,30 +409,30 @@ ggplot(tabela_escolaridade, aes(x = ESCOLARIDADE, y = n_participantes, fill = ES
 table(infs2$ESCOLARIDADE2, infs2$ESCOLA_MAE2)
 
 tabela_escolaridade_mae <- infs2 %>%
-  count(ESCOLARIDADE, ESCOLA_MAE, PARTICIPANTE) %>%
-  group_by(ESCOLARIDADE, ESCOLA_MAE) %>%
+  count(ESCOLARIDADE2, ESCOLA_MAE2, PARTICIPANTE) %>%
+  group_by(ESCOLARIDADE2, ESCOLA_MAE2) %>%
   summarise(n_participantes = n_distinct(PARTICIPANTE)) %>% 
   mutate(
-    ESCOLARIDADE = factor(ESCOLARIDADE,
-                          levels = c("fund1", "fund2", "medio", "superior", "posgrad"),
-                          labels = c("Fund. I", "Fund. II", "Médio", "Superior", "Pós-grad"),
+    ESCOLARIDADE2 = factor(ESCOLARIDADE2,
+                          levels = c("fund", "medio", "superior"),
+                          labels = c("Fund", "Médio", "Superior/Pós-grad"),
                           ordered = TRUE),
-    ESCOLA_MAE = factor(ESCOLA_MAE,
-                        levels = c("analfabeto", "fund1", "medio", "superior", "posgrad"),
-                        labels = c("Analfabeta", "Fund. I", "Médio", "Superior", "Pós-grad"),
+    ESCOLA_MAE2 = factor(ESCOLA_MAE2,
+                        levels = c("analfabeto", "fund", "medio.superior"),
+                        labels = c("Analfabeta", "Fund", "Médio/Superior"),
                         ordered = TRUE)
   ) %>%
-  arrange(ESCOLARIDADE, ESCOLA_MAE) %>%  # Ordenar os dados
+  arrange(ESCOLARIDADE2, ESCOLA_MAE2) %>%  # Ordenar os dados
   print()
 
 
-ggplot(tabela_escolaridade_mae, aes(x = ESCOLARIDADE, y = n_participantes, fill = ESCOLA_MAE)) +
+ggplot(tabela_escolaridade_mae, aes(x = ESCOLARIDADE2, y = n_participantes, fill = ESCOLA_MAE2)) +
   geom_col() +
   scale_fill_brewer(
     palette = "Reds",
     na.value = "gray70",
     name = "Escolaridade do Mãe",
-    labels = c("Analfabeto", "Fundamental I", "Médio", "Superior", "Pós-graduação", "Não informado")
+    labels = c("Analfabeta", "Fundamental", "Médio/Superior", "Não informado")
   ) +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -379,6 +441,7 @@ ggplot(tabela_escolaridade_mae, aes(x = ESCOLARIDADE, y = n_participantes, fill 
 
 
 # RENDA ####
+## individual ####
 renda_individual <- dados2 %>% 
   distinct(PARTICIPANTE, RENDA_IND) %>%  #garante 1 linha por participante
   mutate(RENDA_IND = fct_explicit_na(RENDA_IND, "Não informado")) %>%  # Transforma NA em categoria
@@ -400,29 +463,50 @@ renda_individual %>%
         axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
         legend.position = "none")
 
-### Renda X Escolaridade ####
+# RENDA ####
+renda_familiar <- dados2 %>% 
+  distinct(PARTICIPANTE, RENDA_FAM) %>%  #garante 1 linha por participante
+  mutate(RENDA_FAM = fct_explicit_na(RENDA_FAM, "Não informado")) %>%  # Transforma NA em categoria
+  count(RENDA_FAM) %>% 
+  arrange(RENDA_FAM) %>% 
+  print()
 
+renda_familiar %>% 
+  ggplot(aes(x = factor(RENDA_FAM), y = n, label = n)) +
+  geom_bar(stat = "identity", color = "white", fill = "#FC9272") +
+  labs(x = "Renda Individual",
+       y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.2, size = 3.5) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        legend.position = "none")
+
+### Renda X Escolaridade ####
 table(infs2$ESCOLARIDADE2, infs2$RENDA_IND)
 renda_escolaridade <- infs2 %>%
-  count(ESCOLARIDADE, RENDA_IND, PARTICIPANTE) %>%
-  group_by(ESCOLARIDADE, RENDA_IND) %>%
+  count(ESCOLARIDADE2, RENDA_IND, PARTICIPANTE) %>%
+  group_by(ESCOLARIDADE2, RENDA_IND) %>%
   summarise(n_participantes = n_distinct(PARTICIPANTE)) %>% 
   mutate(
-    ESCOLARIDADE = factor(ESCOLARIDADE,
-                          levels = c("fund1", "fund2", "medio", "superior", "posgrad"),
-                          labels = c("Fund. I", "Fund. II", "Médio", "Graduação", "Pós-graduação"), ordered = TRUE)) %>% 
-  arrange(ESCOLARIDADE, RENDA_IND) %>%  # Ordenar os dados
+    ESCOLARIDADE2 = factor(ESCOLARIDADE2,
+                          levels = c("fund", "medio", "superior"),
+                          labels = c("Fund.", "Médio", "Ensino Superior"), ordered = TRUE)) %>% 
+  arrange(ESCOLARIDADE2, RENDA_IND) %>%  # Ordenar os dados
   print()
 
 
-ggplot(renda_escolaridade, aes(x = ESCOLARIDADE, y = n_participantes, fill = RENDA_IND)) +
+ggplot(renda_escolaridade, aes(x = ESCOLARIDADE2, y = n_participantes, fill = RENDA_IND)) +
   geom_col() +
   labs(x =  "Escolaridade", y = "Número de Participantes")+
   scale_fill_brewer(
     palette = "Reds",
     na.value = "gray70",
     name = "Renda individual",
-    labels = c("até 1 SM", "1 a 2 SM", "2 a 4 SM", "4 a 9 SM", "10 a 19 SM")
+    labels = c("Até 1 SM", "1 a 2 SM", "2 a 4 SM", "4 a 9/ 10 a 19 SM")
   ) +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -431,19 +515,11 @@ ggplot(renda_escolaridade, aes(x = ESCOLARIDADE, y = n_participantes, fill = REN
 
 
 ### Renda X Ocupação ####
-
 table(infs2$INDICE_OCUPACAO, infs2$RENDA_IND)
 
 ggplot(infs2, aes(x = INDICE_OCUPACAO, fill = RENDA_IND)) +
   geom_bar(position = "fill")
 #  labs(y = "Proporção", fill = "Escolaridade da Mãe")
-
-
-
-
-
-
-
 
 
 

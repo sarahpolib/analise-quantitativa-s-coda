@@ -14,7 +14,7 @@ escolaridade_3processos <- bind_rows(
 # Verificando se os dados contêm "P"
 table(escolaridade_3processos$variavel)
 
-png("escolaridade_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/escolaridade_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.escolaridade <- ggplot(escolaridade_3processos, aes(x = ESCOLARIDADE2, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -54,7 +54,7 @@ escolaridade_pai_3processos <- bind_rows(
 table(escolaridade_pai_3processos$variavel)
 
 
-png("escolaridade_pai_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/escolaridade_pai_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.escolaridade.pai <- ggplot(escolaridade_pai_3processos, aes(x = ESCOLA_PAI2, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -128,7 +128,7 @@ grafico.escolaridade.mae <- ggplot(escolaridade_mae_3processos, aes(x = ESCOLA_M
   )
 
 
-png("escolaridades.png", width = 9, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/escolaridades.png", width = 9, height = 4.5, units = "in", res = 300)
 (grafico.escolaridade | grafico.escolaridade.pai | grafico.escolaridade.mae) + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 dev.off()
 
@@ -146,7 +146,7 @@ ocupacao_3processos <- bind_rows(
 # Verificando se os dados contêm "P"
 table(ocupacao_3processos$variavel)
 
-png("ocupacao_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/ocupacao_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.ocupacao <- ggplot(ocupacao_3processos, aes(x = INDICE_OCUPACAO, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -183,7 +183,7 @@ ocupacao_pai_3processos <- bind_rows(
 table(ocupacao_pai_3processos$variavel)
 
 
-png("ocupacao_pai_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/ocupacao_pai_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.ocupacao.pai <- ggplot(ocupacao_pai_3processos, aes(x = INDICE_OCUPACAO_PAI, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -248,7 +248,7 @@ grafico.ocupacao.mae <- ggplot(ocupacao_mae_3processos, aes(x = INDICE_OCUPACAO_
 grafico.ocupacao.mae
 
 
-png("ocupacoes.png", width = 9, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/ocupacoes.png", width = 9, height = 4.5, units = "in", res = 300)
 (grafico.ocupacao | grafico.ocupacao.pai | grafico.ocupacao.mae) + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 dev.off()
 
@@ -265,7 +265,7 @@ renda_3processos <- bind_rows(
 # Verificando se os dados contêm "P"
 table(renda_3processos$variavel)
 
-png("renda_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/renda_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.renda <- ggplot(renda_3processos, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -299,7 +299,7 @@ renda_fam_3processos <- bind_rows(
 # Verificando se os dados contêm "P"
 table(renda_fam_3processos$variavel)
 
-png("renda_fam_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/renda_fam_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.renda_fam <- ggplot(renda_fam_3processos, aes(x = RENDA_FAM, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -328,7 +328,7 @@ dev.off()
 grafico.renda_fam
 
 
-png("rendas.png", width = 9, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/rendas.png", width = 9, height = 4.5, units = "in", res = 300)
 (grafico.renda | grafico.renda_fam) + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 dev.off()
 
@@ -344,7 +344,7 @@ lazer_3processos <- bind_rows(
 # Verificando se os dados contêm "P"
 table(lazer_3processos$variavel)
 
-png("lazer_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/lazer_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.lazer <- ggplot(lazer_3processos, aes(x = LAZER_CARACTERISTICA, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -379,7 +379,7 @@ lazer_campinas_3processos <- bind_rows(
 # Verificando se os dados contêm "P"
 table(lazer_campinas_3processos$variavel)
 
-png("lazer_campinas_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/lazer_campinas_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.lazer_campinas <- ggplot(lazer_campinas_3processos, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -434,7 +434,7 @@ infancia_3processos <- bind_rows(
 table(infancia_3processos$variavel)
 
 
-png("infancia_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/infancia_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
 grafico.infancia <- ggplot(infancia_3processos, aes(x = INFANCIA_MEMORIA, y = prop * 100, group = variavel, color = variavel)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -463,6 +463,6 @@ grafico.infancia <- ggplot(infancia_3processos, aes(x = INFANCIA_MEMORIA, y = pr
 dev.off()
 grafico.infancia
 
-png("lazeres.png", width = 9, height = 4.5, units = "in", res = 300)
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/lazeres.png", width = 9, height = 4.5, units = "in", res = 300)
 (grafico.lazer | grafico.lazer_campinas | grafico.infancia) + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 dev.off()
