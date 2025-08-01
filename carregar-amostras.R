@@ -88,15 +88,29 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
 infs$RENDA_IND <- factor(infs$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM"))
 levels(infs$RENDA_IND)
 
+#juntar 2 ultimas faizas salariais
 infs$RENDA_IND <- fct_collapse(infs$RENDA_IND, "4a9/10a19SM" = c("4a9SM", "10a19SM"))
 levels(infs$RENDA_IND)
 
+#simplificar ambição para não tem =  0 e tem = 1
+infs$INDICE_OUTRO_CARGO <- fct_collapse(as.factor(infs$INDICE_OUTRO_CARGO), "1" = c("2", "3", "4", "5", "6", "7"))
+levels(infs$INDICE_OUTRO_CARGO)
+
+#simplificar ambição para não tem =  0 e tem mas está entre os índices de 1 a 5 = 2, tem e envolve grauação = 3
+infs$INDICE_OCUPACAO_SONHOS <- fct_collapse(as.factor(infs$INDICE_OCUPACAO_SONHOS), "1" = c("1","2", "4", "5"), "2" = "6")
+levels(infs$INDICE_OCUPACAO_SONHOS)
 
 infs$RENDA_FAM <- factor(infs$RENDA_FAM, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM", "20+SM"))
 levels(infs$RENDA_FAM)
 
 
-#juntar 4a9sm com 10 a 19
+infs$LAZER_CAMPINAS_CARACTERISTICA <- fct_collapse(as.factor(infs$LAZER_CAMPINAS_CARACTERISTICA), "nsai.ntem" = c("nao", "nao.sai"))
+levels(infs$LAZER_CAMPINAS_CARACTERISTICA)
+
+#juntando individuos que citaram viagem internacional
+infs$LAZER_VIAGEM_VONTADE2 <- fct_collapse(as.factor(infs$LAZER_VIAGEM_VONTADE2), "nacional.internacional" = c("internacional", "nacional-internacional"))
+levels(infs$LAZER_VIAGEM_VONTADE2)
+
 
 head(infs)
 str(infs)

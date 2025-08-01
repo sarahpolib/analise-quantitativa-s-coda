@@ -6,7 +6,6 @@
                       
 
 # BAIRRO ####
-
 dados_grafico <- infs2 %>%
   filter(!is.na(BAIRRO), !is.na(media_m2)) %>%
   group_by(BAIRRO) %>%
@@ -46,7 +45,6 @@ ggplot(dados_grafico, aes(x = BAIRRO, y = media_m2)) +
 
 
 ## Bairo região ####
-
 tab.BAIRO.REGIAO <- infs2 %>%
   filter(!is.na(BAIRRO.REGIAO)) %>%
   distinct(PARTICIPANTE, BAIRRO.REGIAO) %>% 
@@ -156,14 +154,14 @@ ocupacao <- dados2 %>%
   arrange(INDICE_OCUPACAO) %>% 
   mutate(
     categoria = case_when(
-      INDICE_OCUPACAO == 1 ~ "1 Desempregado/sem renda",
-      INDICE_OCUPACAO == 2 ~ "2. Trabalhador braçal s/ treinamento",
-      INDICE_OCUPACAO == 3 ~ "3. Trabalhador braçal c/ treinamento",
-      INDICE_OCUPACAO == 4 ~ "4. Funções admin./atend. ao público",
-      INDICE_OCUPACAO == 5 ~ "5. Profissionais da educação",
-      INDICE_OCUPACAO == 6 ~ "6. Microempres./ger. baixo escalão",
-      INDICE_OCUPACAO == 7 ~ "7. Profissionais liberais",
-      INDICE_OCUPACAO == 8 ~ "8. Peq. Emp./ger. alto escalão",
+      INDICE_OCUPACAO == 0 ~ "0. Desempregado/sem renda",
+      INDICE_OCUPACAO == 1 ~ "1. Trabalhador braçal s/ treinamento",
+      INDICE_OCUPACAO == 2 ~ "2. Trabalhador braçal c/ treinamento",
+      INDICE_OCUPACAO == 3 ~ "3. Funções admin./atend. ao público",
+      INDICE_OCUPACAO == 4 ~ "4. Profissionais da educação",
+      INDICE_OCUPACAO == 5 ~ "5. Microempres./ger. baixo escalão",
+      INDICE_OCUPACAO == 6 ~ "7. Profissionais especializados/liberais",
+      INDICE_OCUPACAO == 7 ~ "7. Peq. Emp./ger. alto escalão",
       TRUE ~ as.character(INDICE_OCUPACAO)
     ),
     categoria = factor(categoria, levels = unique(categoria))) %>% 
@@ -187,10 +185,83 @@ ocupacao %>%
         axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
         )
 
+### ocupacao pai ####
+ocupacao_pai <- dados2 %>% 
+  distinct(PARTICIPANTE, INDICE_OCUPACAO_PAI) %>%  #garante 1 linha por participante
+  count(INDICE_OCUPACAO_PAI) %>% 
+  arrange(INDICE_OCUPACAO_PAI) %>% 
+  mutate(
+    categoria = case_when(
+      INDICE_OCUPACAO_PAI == 0 ~ "0. Desempregado/sem renda",
+      INDICE_OCUPACAO_PAI == 1 ~ "1. Trabalhador braçal s/ treinamento",
+      INDICE_OCUPACAO_PAI == 2 ~ "2. Trabalhador braçal c/ treinamento",
+      INDICE_OCUPACAO_PAI == 3 ~ "3. Funções admin./atend. ao público",
+      INDICE_OCUPACAO_PAI == 4 ~ "4. Profissionais da educação",
+      INDICE_OCUPACAO_PAI == 5 ~ "5. Microempres./ger. baixo escalão",
+      INDICE_OCUPACAO_PAI == 6 ~ "6. Profissionais especializados/liberais",
+      INDICE_OCUPACAO_PAI == 7 ~ "7. Peq. Emp./ger. alto escalão",
+      TRUE ~ as.character(INDICE_OCUPACAO_PAI)
+    ),
+    categoria = factor(categoria, levels = unique(categoria))) %>% 
+  print()
+
+
+ocupacao_pai %>% 
+  ggplot(aes(x = INDICE_OCUPACAO_PAI, y = n, label = n, fill = categoria)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Índice de Ocupação",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+  )
+
+### ocupacao mae ####
+ocupacao_mae <- dados2 %>% 
+  distinct(PARTICIPANTE, INDICE_OCUPACAO_MAE) %>%  #garante 1 linha por participante
+  count(INDICE_OCUPACAO_MAE) %>% 
+  arrange(INDICE_OCUPACAO_MAE) %>% 
+  mutate(
+    categoria = case_when(
+      INDICE_OCUPACAO_MAE == 0 ~ "0. Desempregado/sem renda",
+      INDICE_OCUPACAO_MAE == 1 ~ "1. Trabalhador braçal s/ treinamento",
+      INDICE_OCUPACAO_MAE == 2 ~ "2. Trabalhador braçal c/ treinamento",
+      INDICE_OCUPACAO_MAE == 3 ~ "3. Funções admin./atend. ao público",
+      INDICE_OCUPACAO_MAE == 4 ~ "4. Profissionais da educação",
+      INDICE_OCUPACAO_MAE == 5 ~ "5. Microempres./ger. baixo escalão",
+      INDICE_OCUPACAO_MAE == 6 ~ "6. Profissionais especializados/liberais",
+      INDICE_OCUPACAO_MAE == 7 ~ "7. Peq. Emp./ger. alto escalão",
+      TRUE ~ as.character(INDICE_OCUPACAO_MAE)
+    ),
+    categoria = factor(categoria, levels = unique(categoria))) %>% 
+  print()
+
+
+ocupacao_mae %>% 
+  ggplot(aes(x = INDICE_OCUPACAO_MAE, y = n, label = n, fill = categoria)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Índice de Ocupação da Mãe",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+  )
+
 
 
 ## Ocupação outro cargo ####
-
 ocupacao_outro_cargo <- dados2 %>% 
   distinct(PARTICIPANTE, INDICE_OUTRO_CARGO) %>%  #garante 1 linha por participante
   count(INDICE_OUTRO_CARGO) %>% 
@@ -262,13 +333,13 @@ infs2 %>%
 
 ## Locomoção e Distância ####
 locomocao <- dados2 %>% 
-  distinct(PARTICIPANTE, OCUPACAO_LOCOMOCAO) %>%  #garante 1 linha por participante
-  count(OCUPACAO_LOCOMOCAO) %>% 
-  arrange(OCUPACAO_LOCOMOCAO) %>% 
+  distinct(PARTICIPANTE, OCUPACAO_LOCOMOCAO2) %>%  #garante 1 linha por participante
+  count(OCUPACAO_LOCOMOCAO2) %>% 
+  arrange(OCUPACAO_LOCOMOCAO2) %>% 
   print()
 
 locomocao %>% 
-  ggplot(aes(x = factor(OCUPACAO_LOCOMOCAO), y = n, label = n)) +
+  ggplot(aes(x = factor(OCUPACAO_LOCOMOCAO2), y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FC9272") +
   labs(x = "Forma de Locomoção para o trabalho",
        y = "Número de Participantes")+
