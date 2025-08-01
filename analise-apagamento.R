@@ -1,5 +1,5 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
-#%%%%%%%%%%%%%%%%%%%%%# PROCESSO DE S0AGAMENTO #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
+#%%%%%%%%%%%%%%%%%%%%%# PROCESSO DE Apagamento #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 15/07/2025 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% V1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
@@ -15,7 +15,7 @@ S0.prop_VD <- dados_S0 %>%
 ggplot(S0.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  scale_x_discrete(labels = c("Realização", "S0agamento"))+
+  scale_x_discrete(labels = c("Realização", "Apagamento"))+
   geom_text(aes(label = label), vjust = -0.3, size = 4) + 
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(labels = percent_format(accuracy = 1), 
@@ -242,7 +242,7 @@ ggplot(S0.prop_GENERO, aes(x = GENERO, y = prop * 100, fill = VD, label = label)
   labs(x = "Gênero", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Feminino", "Masculino"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "Variante", labels = c("Realização", "S0agamento"))+
+  scale_fill_brewer(palette = "Reds", name = "Variante", labels = c("Realização", "Apagamento"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
@@ -267,7 +267,7 @@ png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_S0
 ggplot(S0.prop_IDADE_MIGRACAO[27:51,], aes(x = IDADE_MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Idade de Migração", y = "Proporção de S0agamento") +
+  labs(x = "Idade de Migração", y = "Proporção de Apagamento") +
   #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
   theme_light()
 dev.off()
@@ -356,6 +356,16 @@ ggplot(S0.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, 
 chisq.test(S0.tab_ESCOLARIDADE2)
 chisq.test(S0.tab_ESCOLARIDADE2[c(2,3),])
 
+#teste efeitos mistos
+S0.mod_ESCOLARIDADE2 <- glmer(VD ~ ESCOLARIDADE2 +
+                                   (1|ITEM_LEXICAL) +
+                                   (1|PARTICIPANTE), data = dados_S0, family = binomial)
+summary(S0.mod_ESCOLARIDADE2)
+lrm(VD ~ ESCOLARIDADE2, data = dados_S0)
+plot(allEffects(S0.mod_ESCOLARIDADE2), type = "response")
+
+
+
 #escolaridade1
 #chisq.test(S0.tab_ESCOLARIDADE[c(1,2),]) #sem diferença pra fund1 e 2
 #chisq.test(S0.tab_ESCOLARIDADE[c(4,5),]) #sem diferença pra superior e pósgrad 
@@ -391,6 +401,16 @@ chisq.test(S0.tab_ESCOLA_PAI2[c(1,2),])
 chisq.test(S0.tab_ESCOLA_PAI2[c(1,3),]) 
 chisq.test(S0.tab_ESCOLA_PAI2[c(3,4),]) 
 
+
+
+#teste efeitos mistos
+S0.mod_ESCOLA_PAI2 <- glmer(VD ~ ESCOLA_PAI2 +
+                                (1|ITEM_LEXICAL) +
+                                (1|PARTICIPANTE), data = dados_S0, family = binomial)
+summary(S0.mod_ESCOLA_PAI2)
+lrm(VD ~ ESCOLA_PAI2, data = dados_S0)
+plot(allEffects(S0.mod_ESCOLA_PAI2), type = "response")
+
 #### Mãe ####
 S0.prop_ESCOLA_MAE2 <- dados_S0 %>%
   count(VD, ESCOLA_MAE2) %>%
@@ -418,7 +438,13 @@ chisq.test(S0.tab_ESCOLA_MAE2[c(1,2),])
 chisq.test(S0.tab_ESCOLA_MAE2[c(2,3),]) 
 chisq.test(S0.tab_ESCOLA_MAE2[c(1,4),])
 
-
+#teste efeitos mistos
+S0.mod_ESCOLA_MAE2 <- glmer(VD ~ ESCOLA_MAE2 +
+                              (1|ITEM_LEXICAL) +
+                              (1|PARTICIPANTE), data = dados_S0, family = binomial)
+summary(S0.mod_ESCOLA_MAE2)
+lrm(VD ~ ESCOLA_MAE2, data = dados_S0)
+plot(allEffects(S0.mod_ESCOLA_MAE2), type = "response")
 
 ### Ocupação ####
 S0.prop_INDICE_OCUPACAO <- dados_S0 %>%
@@ -434,10 +460,13 @@ ggplot(S0.prop_INDICE_OCUPACAO[9:16,], aes(x = INDICE_OCUPACAO, y = prop * 100))
   labs(x = "Índice de Ocupação", y = "Proporção de Apagamento") +
   theme_light()
 
-S0.mod_INDICE_OCUPACAO <- glm(VD ~ INDICE_OCUPACAO, data = dados_S0, family = binomial)
+S0.mod_INDICE_OCUPACAO <- glmer(VD ~ INDICE_OCUPACAO +
+                                (1|ITEM_LEXICAL) +
+                                (1|PARTICIPANTE), data = dados_S0, family = binomial)
 summary(S0.mod_INDICE_OCUPACAO)
 lrm(VD ~ INDICE_OCUPACAO, data = dados_S0)
 plot(allEffects(S0.mod_INDICE_OCUPACAO), type = "response")
+
 
 
 ### Ocupação outro cargo ####
@@ -448,18 +477,15 @@ S0.prop_INDICE_OUTRO_CARGO <- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(S0.prop_INDICE_OUTRO_CARGO[9:15,], aes(x = INDICE_OUTRO_CARGO, y = prop * 100)) + 
-  geom_point(stat = "identity", color = "black") + 
-  stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Índice de Ocupação - Outro Cargo", y = "Proporção de Apagamento") +
-  theme_light()
 
 
-S0.mod_INDICE_OUTRO_CARGO <- glm(VD ~ INDICE_OUTRO_CARGO, data = dados_S0, family = binomial)
+S0.mod_INDICE_OUTRO_CARGO <- glmer(VD ~ INDICE_OUTRO_CARGO+
+                                   (1|ITEM_LEXICAL) +
+                                   (1|PARTICIPANTE), 
+                                   data = dados_S0, family = binomial)
 summary(S0.mod_INDICE_OUTRO_CARGO)
 lrm(VD ~ INDICE_OUTRO_CARGO, data = dados_S0)
 plot(allEffects(S0.mod_INDICE_OUTRO_CARGO), type = "response")
-
 
 
 ### Ocupação SONHOS ####
@@ -470,14 +496,10 @@ S0.prop_INDICE_OCUPACAO_SONHOS <- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(S0.prop_INDICE_OCUPACAO_SONHOS[8:14,], aes(x = INDICE_OCUPACAO_SONHOS, y = prop * 100)) + 
-  geom_point(stat = "identity", color = "black") + 
-  stat_smooth(method=lm, se=TRUE, color="red")+
-  #labs(x = "Índice de Ocupação", y = "Proporção de Apagamento") +
-  theme_light()
-
-
-S0.mod_INDICE_OCUPACAO_SONHOS <- glm(VD ~ INDICE_OCUPACAO_SONHOS, data = dados_S0, family = binomial)
+S0.mod_INDICE_OCUPACAO_SONHOS <- glmer(VD ~ INDICE_OCUPACAO_SONHOS+
+                                      (1|ITEM_LEXICAL) +
+                                      (1|PARTICIPANTE), 
+                                      data = dados_S0, family = binomial)
 summary(S0.mod_INDICE_OCUPACAO_SONHOS)
 lrm(VD ~ INDICE_OCUPACAO_SONHOS, data = dados_S0)
 plot(allEffects(S0.mod_INDICE_OCUPACAO_SONHOS), type = "response")
@@ -489,7 +511,6 @@ S0.prop_OCUPACAO_DIST <- dados_S0 %>%
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
-
 
 
 ggplot(S0.prop_OCUPACAO_DIST, aes(x = OCUPACAO_DIST, y = prop * 100, fill = VD, label = label)) + 
@@ -514,6 +535,15 @@ chisq.test(S0.tab_OCUPACAO_DIST[c(1,2),])
 chisq.test(S0.tab_OCUPACAO_DIST[c(2,3),])
 
 
+#teste efeitos mistos
+S0.mod_OCUPACAO_DIST <- glmer(VD ~ OCUPACAO_DIST +
+                              (1|ITEM_LEXICAL) +
+                              (1|PARTICIPANTE), 
+                              data = dados_S0, family = binomial)
+summary(S0.mod_OCUPACAO_DIST)
+lrm(VD ~ OCUPACAO_DIST, data = dados_S0)
+plot(allEffects(S0.mod_OCUPACAO_DIST), type = "response")
+
 
 ### Ocupação locomoção ####
 #analise de locomoção com todos os itens foi transformada na seguinte OCUPACAO_LOCOMOCAO2
@@ -523,7 +553,6 @@ S0.prop_OCUPACAO_LOCOMOCAO2 <- dados_S0 %>%
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
-
 
 
 ggplot(S0.prop_OCUPACAO_LOCOMOCAO2, aes(x = OCUPACAO_LOCOMOCAO2, y = prop * 100, fill = VD, label = label)) + 
@@ -546,6 +575,15 @@ ggplot(S0.prop_OCUPACAO_LOCOMOCAO2, aes(x = OCUPACAO_LOCOMOCAO2, y = prop * 100,
 chisq.test(S0.tab_OCUPACAO_LOCOMOCAO2) #sim
 chisq.test(S0.tab_OCUPACAO_LOCOMOCAO2[c(1,2),])
 
+#teste efeitos mistos
+S0.mod_OCUPACAO_LOCOMOCAO2 <- glmer(VD ~ OCUPACAO_LOCOMOCAO2 +
+                                (1|ITEM_LEXICAL) +
+                                (1|PARTICIPANTE), 
+                              data = dados_S0, family = binomial)
+summary(S0.mod_OCUPACAO_LOCOMOCAO2)
+lrm(VD ~ OCUPACAO_LOCOMOCAO2, data = dados_S0)
+plot(allEffects(S0.mod_OCUPACAO_LOCOMOCAO2), type = "response")
+
 
 ### Ocupação dos Pais ####
 #### Pai ####
@@ -562,7 +600,10 @@ ggplot(S0.prop_INDICE_OCUPACAO_PAI[5:8,], aes(x = INDICE_OCUPACAO_PAI, y = prop 
   labs(x = "Índice de Ocupação", y = "Proporção de Apagamento") +
   theme_light()
 
-S0.mod_INDICE_OCUPACAO_PAI <- glm(VD ~ INDICE_OCUPACAO_PAI, data = dados_S0, family = binomial)
+S0.mod_INDICE_OCUPACAO_PAI <- glmer(VD ~ INDICE_OCUPACAO_PAI+
+                                      (1|ITEM_LEXICAL) +
+                                      (1|PARTICIPANTE), 
+                                    data = dados_S0, family = binomial)
 summary(S0.mod_INDICE_OCUPACAO_PAI)
 lrm(VD ~ INDICE_OCUPACAO_PAI, data = dados_S0)
 plot(allEffects(S0.mod_INDICE_OCUPACAO_PAI), type = "response")
@@ -587,7 +628,9 @@ ggplot(aes(x = INDICE_OCUPACAO_MAE, y = prop * 100)) +
 
 
 
-S0.mod_INDICE_OCUPACAO_MAE <- glm(VD ~ INDICE_OCUPACAO_MAE, data = dados_S0, family = binomial)
+S0.mod_INDICE_OCUPACAO_MAE <- glmer(VD ~ INDICE_OCUPACAO_MAE+
+                                      (1|ITEM_LEXICAL) +
+                                      (1|PARTICIPANTE), data = dados_S0, family = binomial)
 summary(S0.mod_INDICE_OCUPACAO_MAE)
 lrm(VD ~ INDICE_OCUPACAO_MAE, data = dados_S0)
 plot(allEffects(S0.mod_INDICE_OCUPACAO_MAE), type = "response")
@@ -624,6 +667,17 @@ chisq.test(S0.tab_MEGA_SENA2) #sim
 chisq.test(S0.tab_MEGA_SENA2[c(1,2),])
 chisq.test(S0.tab_MEGA_SENA2[c(3,4),])
 
+#teste efeitos mistos
+S0.mod_MEGA_SENA2 <- glmer(VD ~ MEGA_SENA2 +
+                                (1|ITEM_LEXICAL) +
+                                (1|PARTICIPANTE), 
+                                data = dados_S0, family = binomial)
+summary(S0.mod_MEGA_SENA2)
+lrm(VD ~ MEGA_SENA2, data = dados_S0)
+plot(allEffects(S0.mod_MEGA_SENA2), type = "response")
+
+
+
 ### Mega sena ####
 S0.prop_MEGASENA_TRABALHAR2 <- dados_S0 %>%
   count(VD, MEGASENA_TRABALHAR2) %>%
@@ -653,6 +707,17 @@ ggplot(S0.prop_MEGASENA_TRABALHAR2, aes(x = MEGASENA_TRABALHAR2, y = prop * 100,
 (S0.tab_MEGASENA_TRABALHAR2 <- with(dados_S0, table(MEGASENA_TRABALHAR2, VD)))
 chisq.test(S0.tab_MEGASENA_TRABALHAR2) #nao
 
+#teste efeitos mistos
+S0.mod_MEGASENA_TRABALHAR2 <- glmer(VD ~ MEGASENA_TRABALHAR2 +
+                             (1|ITEM_LEXICAL) +
+                             (1|PARTICIPANTE), 
+                           data = dados_S0, family = binomial)
+summary(S0.mod_MEGASENA_TRABALHAR2)
+lrm(VD ~ MEGASENA_TRABALHAR2, data = dados_S0)
+plot(allEffects(S0.mod_MEGASENA_TRABALHAR2), type = "response")
+
+
+
 ### Renda Individual ####
 S0.prop_RENDA_IND <- dados_S0 %>%
   count(VD, RENDA_IND) %>%
@@ -681,6 +746,18 @@ chisq.test(S0.tab_RENDA_IND[c(1,2),]) #sim
 chisq.test(S0.tab_RENDA_IND[c(4,5),]) #sim
 chisq.test(S0.tab_RENDA_IND[c(2,3),]) #sim
 chisq.test(S0.tab_RENDA_IND[c(1,4),])
+
+#teste efeitos mistos
+S0.mod_RENDA_IND <- glmer(VD ~ RENDA_IND +
+                            (1|ITEM_LEXICAL) +
+                            (1|PARTICIPANTE),
+                          data = dados_S0, family = binomial)
+summary(S0.mod_RENDA_IND)
+lrm(VD ~ RENDA_IND, data = dados_S0)
+plot(allEffects(S0.mod_RENDA_IND), type = "response")
+
+
+
 
 
 ### Renda Familiar ####
@@ -713,6 +790,18 @@ chisq.test(S0.tab_RENDA_FAM[c(3,4),]) #sim
 chisq.test(S0.tab_RENDA_FAM[c(4,5),]) #sim
 
 
+#teste efeitos mistos
+S0.mod_RENDA_FAM <- glmer(VD ~ RENDA_FAM +
+                            (1|ITEM_LEXICAL) +
+                            (1|PARTICIPANTE),
+                          data = dados_S0, family = binomial)
+summary(S0.mod_RENDA_FAM)
+lrm(VD ~ RENDA_FAM, data = dados_S0)
+plot(allEffects(S0.mod_RENDA_FAM), type = "response")
+
+
+
+
 ### m2 ####
 S0.prop_media_m2 <- dados_S0 %>%
   count(VD, media_m2) %>%
@@ -728,7 +817,10 @@ ggplot(S0.prop_media_m2[21:40,], aes(x = media_m2, y = prop * 100)) +
   theme_light()
 
 
-S0.mod_media_m2 <- glm(VD ~ media_m2, data = dados_S0, family = binomial)
+S0.mod_media_m2 <- glmer(VD ~ media_m2+
+                           (1|ITEM_LEXICAL) +
+                           (1|PARTICIPANTE), 
+                         data = dados_S0, family = binomial)
 summary(S0.mod_media_m2)
 lrm(VD ~ INDICE_OCUPACAO, data = dados_S0)
 plot(allEffects(S0.mod_media_m2), type = "response")
@@ -769,6 +861,41 @@ S0.prop_BAIRRO %>%
 (S0.prop_BAIRRO <- with(dados_S0, table(BAIRRO, VD)))
 chisq.test(S0.prop_BAIRRO)
 
+#### Região ####
+S0.prop_BAIRRO_REGIAO <- dados_S0 %>%
+  count(VD, BAIRRO_REGIAO) %>%
+  group_by(BAIRRO_REGIAO) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
+
+ggplot(S0.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Região", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Centro", "Periferia Norte", "Periferia Sul"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar", "Palatal"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9))
+
+
+(S0.tab_BAIRRO_REGIAO <- with(dados_S0, table(BAIRRO_REGIAO, VD)))
+chisq.test(S0.tab_BAIRRO_REGIAO) #tem correlação
+chisq.test(S0.tab_BAIRRO_REGIAO[c(1,3),])
+
+
+#teste efeitos mistos
+S0.mod_BAIRRO_REGIAO <- glmer(VD ~ BAIRRO_REGIAO +
+                            (1|ITEM_LEXICAL) +
+                            (1|PARTICIPANTE),
+                          data = dados_S0, family = binomial)
+summary(S0.mod_BAIRRO_REGIAO)
+lrm(VD ~ BAIRRO_REGIAO, data = dados_S0)
+plot(allEffects(S0.mod_BAIRRO_REGIAO), type = "response")
 
 ### Número de Banheiros ####
 S0.prop_NBANHEIROS <- dados_S0 %>%
@@ -798,6 +925,16 @@ chisq.test(S0.prop_NBANHEIROS)
 chisq.test(S0.prop_NBANHEIROS[c(1,2)])
 chisq.test(S0.prop_NBANHEIROS[c(2,3)])
 
+#teste efeitos mistos
+S0.mod_NBANHEIROS <- glmer(VD ~ NBANHEIROS +
+                                (1|ITEM_LEXICAL) +
+                                (1|PARTICIPANTE),
+                              data = dados_S0, family = binomial)
+summary(S0.mod_NBANHEIROS)
+lrm(VD ~ NBANHEIROS, data = dados_S0)
+plot(allEffects(S0.mod_NBANHEIROS), type = "response")
+
+
 ### Número de Quartos ####
 S0.prop_NQUARTOS <- dados_S0 %>%
   count(VD, NQUARTOS) %>%
@@ -825,6 +962,17 @@ S0.prop_NQUARTOS %>%
 chisq.test(S0.prop_NQUARTOS)
 chisq.test(S0.prop_NQUARTOS[c(1,2)])
 chisq.test(S0.prop_NQUARTOS[c(2,3)])
+
+
+#teste efeitos mistos
+S0.mod_NQUARTOS <- glmer(VD ~ NQUARTOS +
+                             (1|ITEM_LEXICAL) +
+                             (1|PARTICIPANTE),
+                           data = dados_S0, family = binomial)
+summary(S0.mod_NQUARTOS)
+lrm(VD ~ NQUARTOS, data = dados_S0)
+plot(allEffects(S0.mod_NQUARTOS), type = "response")
+
 
 ### Tipo Moradia ####
 S0.prop_IMOVEL <- dados_S0 %>%
@@ -854,6 +1002,17 @@ chisq.test(S0.prop_IMOVEL)
 chisq.test(S0.prop_IMOVEL[c(1,2)])
 chisq.test(S0.prop_IMOVEL[c(2,3)])
 
+
+#teste efeitos mistos
+S0.mod_IMOVEL <- glmer(VD ~ IMOVEL +
+                           (1|ITEM_LEXICAL) +
+                           (1|PARTICIPANTE),
+                         data = dados_S0, family = binomial)
+summary(S0.mod_IMOVEL)
+lrm(VD ~ IMOVEL, data = dados_S0)
+plot(allEffects(S0.mod_IMOVEL), type = "response")
+
+
 ### Propriedade característica ####
 #acho que faz mais sentindo juntar financiado e próprio
 S0.prop_PROPRIEDADE <- dados_S0 %>%
@@ -882,6 +1041,16 @@ S0.prop_PROPRIEDADE %>%
 chisq.test(S0.prop_PROPRIEDADE)
 chisq.test(S0.prop_PROPRIEDADE[c(1,2)])
 chisq.test(S0.prop_PROPRIEDADE[c(1,3)])
+
+#teste efeitos mistos
+S0.mod_PROPRIEDADE <- glmer(VD ~ PROPRIEDADE +
+                         (1|ITEM_LEXICAL) +
+                         (1|PARTICIPANTE),
+                       data = dados_S0, family = binomial)
+summary(S0.mod_PROPRIEDADE)
+lrm(VD ~ PROPRIEDADE, data = dados_S0)
+plot(allEffects(S0.mod_PROPRIEDADE), type = "response")
+
 
 ### Número de Pessoas ####
 S0.prop_NPESSOAS <- dados_S0 %>%
@@ -913,6 +1082,14 @@ chisq.test(S0.prop_NPESSOAS[c(2,3)])
 chisq.test(S0.prop_NPESSOAS[c(2,4)])
 chisq.test(S0.prop_NPESSOAS[c(4,5)])
 
+#teste efeitos mistos
+S0.mod_NPESSOAS <- glmer(VD ~ NPESSOAS +
+                         (1|ITEM_LEXICAL) +
+                         (1|PARTICIPANTE),
+                       data = dados_S0, family = binomial)
+summary(S0.mod_NPESSOAS)
+lrm(VD ~ NPESSOAS, data = dados_S0)
+plot(allEffects(S0.mod_NPESSOAS), type = "response")
 
 
 ### Lazer ####
@@ -945,6 +1122,17 @@ chisq.test(S0.tab_LAZER_CARACTERISTICA[c(3,4),])
 chisq.test(S0.tab_LAZER_CARACTERISTICA[c(1,4),])
 
 
+#teste efeitos mistos
+S0.mod_LAZER_CARACTERISTICA <- glmer(VD ~ LAZER_CARACTERISTICA +
+                           (1|ITEM_LEXICAL) +
+                           (1|PARTICIPANTE), 
+                         data = dados_S0, family = binomial)
+summary(S0.mod_LAZER_CARACTERISTICA)
+lrm(VD ~ LAZER_CARACTERISTICA, data = dados_S0)
+plot(allEffects(S0.mod_LAZER_CARACTERISTICA), type = "response")
+
+
+
 ### Lazer Campinas####
 S0.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_S0 %>%
   count(VD, LAZER_CAMPINAS_CARACTERISTICA) %>%
@@ -974,6 +1162,16 @@ chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA[c(2,3),])
 chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA[c(3,4),]) #falantes que nfalaram quenão tem e que não sae não tem correlação
 chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA[c(1,5),]) 
 
+#teste efeitos mistos
+S0.mod_LAZER_CAMPINAS_CARACTERISTICA <- glmer(VD ~ LAZER_CAMPINAS_CARACTERISTICA +
+                                       (1|ITEM_LEXICAL) +
+                                       (1|PARTICIPANTE), 
+                                     data = dados_S0, family = binomial)
+summary(S0.mod_LAZER_CAMPINAS_CARACTERISTICA)
+lrm(VD ~ LAZER_CAMPINAS_CARACTERISTICA, data = dados_S0)
+plot(allEffects(S0.mod_LAZER_CAMPINAS_CARACTERISTICA), type = "response")
+
+
 
 ### Viagem ####
 #costuma viajar?
@@ -1001,10 +1199,19 @@ ggplot(S0.prop_VIAGEM, aes(x = VIAGEM, y = prop * 100, fill = VD, label = label)
 (S0.tab_VIAGEM <- with(dados_S0, table(VIAGEM, VD)))
 chisq.test(S0.tab_VIAGEM) #tem correlação
 
+#teste efeitos mistos
+S0.mod_VIAGEM <- glmer(VD ~ VIAGEM +
+                         (1|ITEM_LEXICAL) +
+                         (1|PARTICIPANTE), 
+                      data = dados_S0, family = binomial)
+summary(S0.mod_VIAGEM)
+lrm(VD ~ VIAGEM, data = dados_S0)
+plot(allEffects(S0.mod_VIAGEM), type = "response")
+
+
 
 
 ### Tipo de Viagem ####
-
 S0.prop_VIAGEM_LUGAR <- dados_S0 %>%
   count(VD, VIAGEM_LUGAR) %>%
   group_by(VIAGEM_LUGAR) %>% 
@@ -1032,9 +1239,17 @@ chisq.test(S0.tab_VIAGEM_LUGAR[c(2,3),])
 chisq.test(S0.tab_VIAGEM_LUGAR[c(4,5),])
 chisq.test(S0.tab_VIAGEM_LUGAR[c(1,4),])
 
+#teste efeitos mistos
+S0.mod_VIAGEM_LUGAR <- glmer(VD ~ VIAGEM_LUGAR +
+                         (1|ITEM_LEXICAL) +
+                         (1|PARTICIPANTE), 
+                       data = dados_S0, family = binomial)
+summary(S0.mod_VIAGEM_LUGAR)
+lrm(VD ~ VIAGEM_LUGAR, data = dados_S0)
+plot(allEffects(S0.mod_VIAGEM_LUGAR), type = "response")
+
 
 ### Viagem vontade ####
-
 S0.prop_LAZER_VIAGEM_VONTADE2 <- dados_S0 %>%
   count(VD, LAZER_VIAGEM_VONTADE2) %>%
   group_by(LAZER_VIAGEM_VONTADE2) %>% 
@@ -1062,6 +1277,15 @@ chisq.test(S0.tab_LAZER_VIAGEM_VONTADE2[c(1,2),])
 chisq.test(S0.tab_LAZER_VIAGEM_VONTADE2[c(2,4),])
 
 
+#teste efeitos mistos
+S0.mod_LAZER_VIAGEM_VONTADE2 <- glmer(VD ~ LAZER_VIAGEM_VONTADE2 +
+                         (1|ITEM_LEXICAL) +
+                         (1|PARTICIPANTE), 
+                       data = dados_S0, family = binomial)
+summary(S0.mod_LAZER_VIAGEM_VONTADE2)
+lrm(VD ~ LAZER_VIAGEM_VONTADE2, data = dados_S0)
+plot(allEffects(S0.mod_LAZER_VIAGEM_VONTADE2), type = "response")
+
 ### Infancia ####
 S0.prop_INFANCIA_MEMORIA <- dados_S0 %>%
   count(VD, INFANCIA_MEMORIA) %>%
@@ -1084,10 +1308,19 @@ ggplot(S0.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop * 100, fill 
     axis.title.y = element_text(size = 9))
 
 
-(S0.tab_LAZER_VIAGEM_VONTADE2 <- with(dados_S0, table(LAZER_VIAGEM_VONTADE2, VD)))
-chisq.test(S0.tab_LAZER_VIAGEM_VONTADE2) #tem correlação
-chisq.test(S0.tab_LAZER_VIAGEM_VONTADE2[c(1,2),])
+(S0.tab_INFANCIA_MEMORIA <- with(dados_S0, table(INFANCIA_MEMORIA, VD)))
+chisq.test(S0.tab_INFANCIA_MEMORIA) #tem correlação
+chisq.test(S0.tab_INFANCIA_MEMORIA[c(1,2),])
 
+
+#teste efeitos mistos
+S0.mod_INFANCIA_MEMORIA <- glmer(VD ~ INFANCIA_MEMORIA +
+                                        (1|ITEM_LEXICAL) +
+                                        (1|PARTICIPANTE), 
+                                      data = dados_S0, family = binomial)
+summary(S0.mod_INFANCIA_MEMORIA)
+lrm(VD ~ INFANCIA_MEMORIA, data = dados_S0)
+plot(allEffects(S0.mod_INFANCIA_MEMORIA), type = "response")
 
 
 
