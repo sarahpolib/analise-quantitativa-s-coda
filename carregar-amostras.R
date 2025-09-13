@@ -57,24 +57,36 @@ unique(dadosAmostra2Poli$PARTICIPANTE)
 infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UTF-8"),
                  col_types = cols(.default = col_character(),
                                   IDADE = col_integer(),
-                                  INDICE_SOCIO = col_double(),
-                                  INDICE_ESCOL = col_double(),
+                                  #INDICE_ESCOL_OUSHIRO = col_double(),
+                                  INDICE_ESCOL3 = col_integer(),
                                   INDICE_OCUPACAO = col_integer(),
-                                  INDICE_OUTRO_CARGO = col_integer(),
-                                  INDICE_OCUPACAO_SONHOS = col_integer(),
+                                  INDICE_OUTRO_CARGO2 = col_integer(),
+                                  INDICE_OCUPACAO_SONHOS2 = col_integer(),
+                                  INDICE_LOCOMOCAO = col_integer(), 
+                                  INDICE_MEGA = col_integer(),
+                                  INDICE_LAZER= col_integer(),
+                                  INDICE_LAZER_CAMPINAS = col_integer(),
+                                  INDICE_VIAGEM = col_integer(),
+                                  INDICE_VIAGEM_LUGAR = col_integer(),
+                                  INDICE_VIAGEM_VONTADE = col_integer(),
+                                  INDICE_BAIRRO = col_integer(),
+                                  INDICE_INFANCIA = col_integer(),
+                                  INDICE_SOCIO_OUSHIRO = col_double(),
                                   IDADE_MIGRACAO = col_integer(),
                                   TEMPO_RESIDENCIA = col_integer(),
-                                  #NPESSOAS = col_integer(),
+                                  DENSIDADE_HABITACAO =  col_double(),
                                   NRENDA = col_integer(),
+                                  INDICE_RENDA_IND = col_integer(),
+                                  INDICE_RENDA_FAM = col_integer(),
                                   INDICE_OCUPACAO_PAI = col_integer(),
                                   INDICE_OCUPACAO_MAE = col_integer(),
-                                  INDICE_ESCOL_PAI = col_double(),
-                                  INDICE_ESCOL_MAE = col_double(),
-                                  AMIGO1_CLASSIFICACAO = col_integer(),
-                                  AMIGO2_CLASSIFICACAO = col_integer(),
-                                  AMIGO3_CLASSIFICACAO = col_integer(),
-                                  AMIGO4_CLASSIFICACAO = col_integer(),
-                                  AMIGO5_CLASSIFICACAO = col_integer(),
+                                  INDICE_ESCOL_PAI = col_integer(),
+                                  INDICE_ESCOL_MAE = col_integer(),
+                                  # AMIGO1_CLASSIFICACAO = col_integer(),
+                                  # AMIGO2_CLASSIFICACAO = col_integer(),
+                                  # AMIGO3_CLASSIFICACAO = col_integer(),
+                                  # AMIGO4_CLASSIFICACAO = col_integer(),
+                                  # AMIGO5_CLASSIFICACAO = col_integer(),
                                   ESTADUALIDADE = col_integer(),
                                   PAULISTIDADE = col_integer(),
                                   NORDESTINIDADE = col_integer(),
@@ -83,6 +95,7 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
                                   INDICE_HABITOS = col_integer()
                                   )) %>%
   mutate(across(where(is.character), as.factor))
+str(infs)
 
 #mudar nível de variaveis
 infs$RENDA_IND <- factor(infs$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM"))
@@ -92,20 +105,9 @@ levels(infs$RENDA_IND)
 infs$RENDA_IND <- fct_collapse(infs$RENDA_IND, "4a9/10a19SM" = c("4a9SM", "10a19SM"))
 levels(infs$RENDA_IND)
 
-#simplificar ambição para não tem =  0 e tem = 1
-infs$INDICE_OUTRO_CARGO <- fct_collapse(as.factor(infs$INDICE_OUTRO_CARGO), "1" = c("2", "3", "4", "5", "6", "7"))
-levels(infs$INDICE_OUTRO_CARGO)
-
-#simplificar ambição para não tem =  0 e tem mas está entre os índices de 1 a 5 = 2, tem e envolve grauação = 3
-infs$INDICE_OCUPACAO_SONHOS <- fct_collapse(as.factor(infs$INDICE_OCUPACAO_SONHOS), "1" = c("1","2", "4", "5"), "2" = "6")
-levels(infs$INDICE_OCUPACAO_SONHOS)
-
 infs$RENDA_FAM <- factor(infs$RENDA_FAM, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM", "20+SM"))
 levels(infs$RENDA_FAM)
 
-
-infs$LAZER_CAMPINAS_CARACTERISTICA <- fct_collapse(as.factor(infs$LAZER_CAMPINAS_CARACTERISTICA), "nsai.ntem" = c("nao", "nao.sai"))
-levels(infs$LAZER_CAMPINAS_CARACTERISTICA)
 
 #juntando individuos que citaram viagem internacional
 infs$LAZER_VIAGEM_VONTADE2 <- fct_collapse(as.factor(infs$LAZER_VIAGEM_VONTADE2), "nacional.internacional" = c("internacional", "nacional-internacional"))
@@ -178,6 +180,13 @@ mutate(CFP_abertura2 = case_when(
   )
 levels(dados2$ESCOLARIDADE)
 
+## Normalização de índices
+normalizar <- function(x, n = max(x, na.rm = TRUE)) {
+  (x - 1) * 5 / (n - 1)
+}
+
+(6 - 1) * 5 / (9 - 1)
+(6*5)/(9)
 
 ### PALATALIZAÇÃO ####
 dados_AP <- dados2 %>% 
@@ -239,6 +248,40 @@ ggplot(aes(x = VD, y = prop, fill = VD, label = label)) +
     axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "none")
 dev.off()
+
+
+#Distribuição por amostra ####
+
+distribuicao.amostra <- dados2 %>% 
+  count(AMOSTRA, VD) %>%
+  group_by(AMOSTRA) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
+  print()
+
+
+png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD-amostra.png", width = 6.5, height = 4.5, units = "in", res = 300)
+distribuicao.amostra %>%   
+  ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(aes(label = label), 
+            vjust = -0.2,
+            size = 3.5) +
+  facet_wrap(. ~ AMOSTRA)+
+  scale_fill_brewer(palette = "Reds")+
+  scale_y_continuous(labels = percent_format(accuracy = 1), 
+                     expand = expansion(mult = c(0, 0.15))) + #espaço no topo para texto
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+    legend.position = "bottom")
+dev.off()
+
 
 
 # DISTRIBUIÇÃO GERAL POR PARTICIPANTE####

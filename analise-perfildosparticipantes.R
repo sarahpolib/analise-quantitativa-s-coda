@@ -46,12 +46,12 @@ ggplot(dados_grafico, aes(x = BAIRRO, y = media_m2)) +
 
 ## Bairo região ####
 tab.BAIRO.REGIAO <- infs2 %>%
-  filter(!is.na(BAIRRO.REGIAO)) %>%
-  distinct(PARTICIPANTE, BAIRRO.REGIAO) %>% 
-  count(BAIRRO.REGIAO) %>% 
+  filter(!is.na(BAIRRO_REGIAO2)) %>%
+  distinct(PARTICIPANTE, BAIRRO_REGIAO2) %>% 
+  count(BAIRRO_REGIAO2) %>% 
   print()
 
-ggplot(tab.BAIRO.REGIAO, aes(x = BAIRRO.REGIAO, y = n)) +
+ggplot(tab.BAIRO.REGIAO, aes(x = BAIRRO_REGIAO2, y = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FC9272") +
   labs(x = "Região",
       y = "Número de Participantes")+
@@ -96,8 +96,8 @@ renda_bairro %>%
 
 ## Renda por REGIAO ####
 renda_regiao <- infs2 %>% 
-  filter(!is.na(RENDA_IND), !is.na(BAIRRO.REGIAO)) %>% 
-  group_by(RENDA_IND, BAIRRO.REGIAO) %>%
+  filter(!is.na(RENDA_IND), !is.na(BAIRRO_REGIAO2)) %>% 
+  group_by(RENDA_IND, BAIRRO_REGIAO2) %>%
   count(RENDA_IND) %>% 
   print()
 
@@ -115,13 +115,13 @@ renda_regiao %>%
 
 ## Renda fam por REGIAO ####
 renda_fam_regiao <- infs2 %>% 
-  filter(!is.na(RENDA_FAM), !is.na(BAIRRO.REGIAO)) %>% 
-  group_by(BAIRRO.REGIAO, RENDA_FAM) %>%
+  filter(!is.na(RENDA_FAM), !is.na(BAIRRO_REGIAO2)) %>% 
+  group_by(BAIRRO_REGIAO2, RENDA_FAM) %>%
   count(RENDA_FAM) %>% 
   print()
 
 renda_fam_regiao %>%
-  ggplot(aes(x = BAIRRO.REGIAO, y = RENDA_FAM, size = n, color = RENDA_FAM)) +
+  ggplot(aes(x = BAIRRO_REGIAO2, y = RENDA_FAM, size = n, color = RENDA_FAM)) +
   geom_point(alpha = 0.7) +
   scale_size(range = c(3, 12)) +
   theme_minimal() +
