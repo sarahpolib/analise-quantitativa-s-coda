@@ -6,11 +6,11 @@
                 # Carregar amostras e manipulação dos dados # 
 
 # Carregar pacotes ###
-#install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork")
+#install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork"); install.packages("factoextra")
 
-library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork)
+library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra)
 
-rm(list = ls())
+#rm(list = ls())
 
 # Carregar dados ####
 setwd("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa")
@@ -97,7 +97,8 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
   mutate(across(where(is.character), as.factor))
 str(infs)
 
-#mudar nível de variaveis
+### Mudar nível de variaveis ####
+#### Renda individual ####
 infs$RENDA_IND <- factor(infs$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM"))
 levels(infs$RENDA_IND)
 
@@ -113,6 +114,42 @@ levels(infs$RENDA_FAM)
 infs$LAZER_VIAGEM_VONTADE2 <- fct_collapse(as.factor(infs$LAZER_VIAGEM_VONTADE2), "nacional.internacional" = c("internacional", "nacional-internacional"))
 levels(infs$LAZER_VIAGEM_VONTADE2)
 
+#ascesão de cargo
+infs$INDICE_OUTRO_CARGO <- fct_collapse(as.factor(infs$INDICE_OUTRO_CARGO), "sem.perspec" = "0", "com.perspec" = c("1", "2", "3", "5","6"))
+levels(infs$INDICE_OUTRO_CARGO)
+
+
+#ocupação dos sonhos
+infs$INDICE_OCUPACAO_SONHOS <- fct_collapse(as.factor(infs$INDICE_OCUPACAO_SONHOS), "nenhuma" = "0", "prof.intermediaria" = c("1", "2", "3", "4"), "prof.especializacao" = "5")
+levels(infs$INDICE_OCUPACAO_SONHOS)
+
+#Lazer 
+infs$LAZER_CARACTERISTICA <- fct_collapse(as.factor(infs$LAZER_CARACTERISTICA), "custo" = c("custo", "ambos"))
+levels(infs$LAZER_CARACTERISTICA)
+
+
+#Lazer em campinas
+infs$LAZER_CAMPINAS_CARACTERISTICA <- fct_collapse(as.factor(infs$LAZER_CAMPINAS_CARACTERISTICA), "custo" = c("custo", "ambos"))
+levels(infs$LAZER_CAMPINAS_CARACTERISTICA)
+
+
+#### Normalização de índices ####
+escalas <- infs %>% 
+  select(INDICE_ESCOL3, INDICE_OCUPACAO, INDICE_OUTRO_CARGO2, INDICE_OCUPACAO_SONHOS2, INDICE_LOCOMOCAO, INDICE_MEGA, INDICE_LAZER, INDICE_LAZER_CAMPINAS, INDICE_VIAGEM, INDICE_VIAGEM_LUGAR, INDICE_VIAGEM_VONTADE, INDICE_BAIRRO, INDICE_INFANCIA, INDICE_RENDA_IND, INDICE_RENDA_FAM, INDICE_ESCOL_PAI, INDICE_OCUPACAO_PAI, INDICE_ESCOL_MAE, INDICE_OCUPACAO_MAE, DENSIDADE_HABITACAO) %>% 
+  mutate(across(everything(), as.numeric)) %>%
+  print()
+
+normalizar <- function(x, n = max(x, na.rm = TRUE)) {
+  (x * 5) / n}
+
+
+infs <- infs %>%
+  mutate(across(all_of(names(escalas)), 
+              ~ normalizar(.), 
+              .names = "{.col}_norm")) %>% 
+  print()
+
+infs$INDICE_OCUPACAO_norm
 
 head(infs)
 str(infs)
@@ -180,13 +217,6 @@ mutate(CFP_abertura2 = case_when(
   )
 levels(dados2$ESCOLARIDADE)
 
-## Normalização de índices
-normalizar <- function(x, n = max(x, na.rm = TRUE)) {
-  (x - 1) * 5 / (n - 1)
-}
-
-(6 - 1) * 5 / (9 - 1)
-(6*5)/(9)
 
 ### PALATALIZAÇÃO ####
 dados_AP <- dados2 %>% 

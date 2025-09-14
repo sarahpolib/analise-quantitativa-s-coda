@@ -279,6 +279,7 @@ lrm(VD ~ IDADE_MIGRACAO, data = dados_AP)
 
 plot(allEffects(AP.mod_IDADE_MIGRACAO), type = "response")
 
+
 # TEMPO DE RESIDENCIA ####
 AP.prop_TEMPO_RESIDENCIA <- dados_AP %>% 
   filter(CFS_pontoc2 == "coronal") %>% 
@@ -302,7 +303,31 @@ lrm(VD ~ TEMPO_RESIDENCIA, data = dados_AP)
 
 plot(allEffects(AP.mod_TEMPO_RESIDENCIA), type = "response")
 
-# MODELAGEM DE BARBOSA(2023) ####
+# INDICE SOCIO OUSHIRO ####
+AP.prop_INDICE_SOCIO_OUSHIRO <- dados_AP %>% 
+  filter(CFS_pontoc2 == "coronal") %>% 
+  count(VD, INDICE_SOCIO_OUSHIRO) %>%
+  group_by(INDICE_SOCIO_OUSHIRO) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print(n = 62)
+
+#png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
+ggplot(AP.prop_INDICE_SOCIO_OUSHIRO[32:62,], aes(x = INDICE_SOCIO_OUSHIRO, y = prop * 100)) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="red")+
+  labs(x = "Índice Socioeconomico (Oushiro, 2015)", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+#dev.off()
+
+AP.mod_INDICE_SOCIO_OUSHIRO <- glm(VD ~ INDICE_SOCIO_OUSHIRO, data = dados_AP, family = binomial)
+summary(AP.mod_INDICE_SOCIO_OUSHIRO)
+lrm(VD ~ INDICE_SOCIO_OUSHIRO, data = dados_AP)
+
+plot(allEffects(AP.mod_INDICE_SOCIO_OUSHIRO), type = "response")
+
+
+# 1 MODELAGEM DE BARBOSA(2023) ####
 sort(unique(dados_AP$IDADE_MIGRACAO))
 dados_AP$PARTICIPANTE[which(dados_AP$IDADE_MIGRACAO == 45)]
 dados_AP
@@ -329,6 +354,33 @@ car::vif(modAP1)
 check_model(modAP1)
 check_outliers(modAP1)
 
+
+# 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
+modAP2 <- glmer(VD ~ TONICIDADE + 
+                  POSICAO_S +
+                  CFP_abertura +
+                  CLASSE_MORFOLOGICA3 + 
+                  GENERO + 
+                  TEMPO_RESIDENCIA + 
+                  IDADE_MIGRACAO +
+                  INDICE_SOCIO_OUSHIRO +
+                  (1|ITEM_LEXICAL) +
+                  (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(modAP2)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      CFP_abertura +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_OUSHIRO, data = dados_AP)
+
+car::vif(modAP1)
+check_model(modAP1)
+check_outliers(modAP1)
+
+
 # INDICE SOCIOECONOMICO ####
 ## Escolaridade ####
 AP.prop_ESCOLARIDADE2 <- dados_AP %>%
@@ -341,8 +393,8 @@ AP.prop_ESCOLARIDADE2 <- dados_AP %>%
 
 ggplot(AP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Escolaridade", y = "Proporção de Ocorrência") + 
-  scale_x_discrete(labels = c("Alveolar", "Palatal"))+
+  #labs(x = "Escolaridade", y = "Proporção de Ocorrência") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
@@ -504,8 +556,8 @@ AP.prop_INDICE_OUTRO_CARGO <- dados_AP %>%
 
 ggplot(AP.prop_INDICE_OUTRO_CARGO, aes(x = INDICE_OUTRO_CARGO, y = prop * 100, fill = VD, label = label)) +
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Outro Cargo", y = "Proporção de Ocorrência") + 
-  scale_x_discrete(labels = c("Não tem", "Tem", "Não se aplica"))+
+ # labs(x = "Outro Cargo", y = "Proporção de Ocorrência") + 
+#  scale_x_discrete(labels = c("Não tem", "Tem", "Não se aplica"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
@@ -538,7 +590,7 @@ AP.prop_INDICE_OCUPACAO_SONHOS <- dados_AP %>%
 ggplot(AP.prop_INDICE_OCUPACAO_SONHOS, aes(x = INDICE_OCUPACAO_SONHOS, y = prop * 100, fill = VD, label = label)) +
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Ocupação dos sonhos", y = "Proporção de Ocorrência") + 
-  scale_x_discrete(labels = c("Não tem", "categorias de 1 a 5", "categoria 6", "Não se aplica"))+
+  scale_x_discrete(labels = c("Nenhuma", "Prof. Intermediárias", "Prof. com Especialização", "Não se aplica"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
@@ -938,14 +990,14 @@ chisq.test(AP.prop_BAIRRO)
 
 #### Região ####
 AP.prop_BAIRRO_REGIAO <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal", !is.na(BAIRRO_REGIAO)) %>% 
-  count(VD, BAIRRO_REGIAO) %>%
-  group_by(BAIRRO_REGIAO) %>% 
+  filter(CFS_pontoc2 == "coronal", !is.na(BAIRRO_REGIAO2)) %>% 
+  count(VD, BAIRRO_REGIAO2) %>%
+  group_by(BAIRRO_REGIAO2) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(AP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO, y = prop * 100, fill = VD, label = label)) + 
+ggplot(AP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Região", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Centro", "Periferia Norte", "Periferia Sul"))+
@@ -959,12 +1011,11 @@ ggplot(AP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO, y = prop * 100, fill = VD, 
     axis.title.y = element_text(size = 9))
 
 
-(AP.tab_BAIRRO_REGIAO <- with(dados_AP, table(BAIRRO_REGIAO, VD)))
+(AP.tab_BAIRRO_REGIAO <- with(dados_AP, table(BAIRRO_REGIAO2, VD)))
 chisq.test(AP.tab_BAIRRO_REGIAO) #tem correlação
-chisq.test(AP.tab_BAIRRO_REGIAO[c(1,3),])
 
 #teste efeitos mistos
-AP.mod_BAIRRO_REGIAO <- glmer(VD ~ BAIRRO_REGIAO +
+AP.mod_BAIRRO_REGIAO <- glmer(VD ~ BAIRRO_REGIAO2 +
                             (1|ITEM_LEXICAL) +
                             (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_BAIRRO_REGIAO)
@@ -1049,6 +1100,14 @@ summary(AP.mod_NQUARTOS)
 lrm(VD ~ NQUARTOS, data = dados_AP)
 plot(allEffects(AP.mod_NQUARTOS), type = "response")
 
+### Densidade ####
+#teste efeitos mistos
+AP.mod_DENSIDADE_HABITACAO <- glmer(VD ~ DENSIDADE_HABITACAO +
+                           (1|ITEM_LEXICAL) +
+                           (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(AP.mod_DENSIDADE_HABITACAO)
+lrm(VD ~ NQUARTOS, data = dados_AP)
+plot(allEffects(AP.mod_NQUARTOS), type = "response")
 
 
 ### Tipo Moradia ####
@@ -1182,7 +1241,7 @@ AP.prop_LAZER_CARACTERISTICA <- dados_AP %>%
 
 ggplot(AP.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  labs(x = "Opções de Lazer", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar", "Palatal"))+
@@ -1196,10 +1255,6 @@ ggplot(AP.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop * 10
 
 (AP.tab_LAZER_CARACTERISTICA <- with(dados_AP, table(LAZER_CARACTERISTICA, VD)))
 chisq.test(AP.tab_LAZER_CARACTERISTICA) #tem correlação
-chisq.test(AP.tab_LAZER_CARACTERISTICA[c(1,2),])
-chisq.test(AP.tab_LAZER_CARACTERISTICA[c(2,3),])
-chisq.test(AP.tab_LAZER_CARACTERISTICA[c(3,4),])
-chisq.test(AP.tab_LAZER_CARACTERISTICA[c(1,4),])
 
 
 #teste efeitos mistos
@@ -1223,7 +1278,7 @@ AP.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_AP %>%
 
 ggplot(AP.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  labs(x = "Lazer em Campinas", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar", "Palatal"))+
