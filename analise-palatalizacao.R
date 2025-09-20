@@ -1458,8 +1458,43 @@ plot(allEffects(AP.mod_INFANCIA_MEMORIA), type = "response")
 
 
 
+# PCA ####
+escalas_AP <- dados_AP %>%
+  select(INDICE_ESCOL3_norm, 
+    INDICE_OCUPACAO_norm, 
+    INDICE_OUTRO_CARGO2_norm, 
+    INDICE_OCUPACAO_SONHOS2_norm,
+    INDICE_LOCOMOCAO_norm, 
+    INDICE_MEGA_norm, 
+    INDICE_LAZER_norm, 
+    INDICE_LAZER_CAMPINAS_norm,
+    INDICE_VIAGEM_norm, 
+    INDICE_VIAGEM_LUGAR_norm, 
+    INDICE_VIAGEM_VONTADE_norm, 
+    INDICE_BAIRRO_norm,
+    INDICE_INFANCIA_norm, 
+    INDICE_RENDA_IND_norm, 
+    INDICE_RENDA_FAM_norm, 
+    INDICE_ESCOL_PAI_norm,
+    INDICE_OCUPACAO_PAI_norm, 
+    INDICE_ESCOL_MAE_norm, 
+    INDICE_OCUPACAO_MAE_norm, 
+    DENSIDADE_HABITACAO_norm
+  ) %>%
+  mutate(across(everything(), as.numeric)) %>%
+  na.omit()
 
+pca_AP <- prcomp(escalas_AP, center = TRUE, scale. = TRUE)
+summary(pca_AP)          # variância explicada por cada componente
+pca_AP$rotation           # cargas (contribuição das variáveis)
+pca_AP$x                  # coordenadas dos indivíduos
 
+# Scree plot
+fviz_eig(pca_AP, 
+         addlabels = TRUE,    # mostra valores no gráfico
+         ylim = c(0, 40))     # ajusta o eixo Y para ver melhor
 
-
-
+fviz_contrib(pca_AP, choice = "var", axes = 1, top = 10)
+fviz_contrib(pca_AP, choice = "var", axes = 2, top = 10)
+fviz_contrib(pca_AP, choice = "var", axes = 3, top = 10)
+fviz_contrib(pca_AP, choice = "var", axes = 4, top = 10)
