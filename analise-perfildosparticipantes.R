@@ -4,8 +4,34 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% V1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
                       
+#HABITAÇÃO ####
+## PROPRIEDADE ####
+### Propriedade x renda individual ####
 
-# BAIRRO ####
+table(infs2$IMOVEL, infs2$RENDA_IND)
+imovel_renda <- infs2 %>%
+  count(IMOVEL, RENDA_IND, PARTICIPANTE) %>%
+  group_by(IMOVEL, RENDA_IND) %>%
+  summarise(n_participantes = n_distinct(IMOVEL)) %>% 
+  arrange(IMOVEL, RENDA_IND) %>%  # Ordenar os dados
+  print()
+
+
+ggplot(imovel_renda, aes(x = RENDA_IND, y = n_participantes, fill = IMOVEL)) +
+  geom_col() +
+  #labs(x =  "IMOVEL", y = "Número de Participantes")+
+#  scale_fill_brewer(
+ #   palette = "Reds",
+  #  na.value = "gray70"#,
+  #  name = "Renda individual",
+  #  labels = c("Até 1 SM", "1 a 2 SM", "2 a 4 SM", "4 a 9/ 10 a 19 SM")
+  #) +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "right")
+
+
+## BAIRRO ####
 dados_grafico <- infs2 %>%
   filter(!is.na(BAIRRO), !is.na(media_m2)) %>%
   group_by(BAIRRO) %>%
@@ -44,7 +70,7 @@ ggplot(dados_grafico, aes(x = BAIRRO, y = media_m2)) +
   )
 
 
-## Bairo região ####
+### Bairo região ####
 tab.BAIRO.REGIAO <- infs2 %>%
   filter(!is.na(BAIRRO_REGIAO2)) %>%
   distinct(PARTICIPANTE, BAIRRO_REGIAO2) %>% 
@@ -65,7 +91,7 @@ ggplot(tab.BAIRO.REGIAO, aes(x = BAIRRO_REGIAO2, y = n)) +
 
 
 
-## Renda por bairro ####
+### Renda por bairro ####
 renda_bairro <- infs2 %>% 
   filter(!is.na(RENDA_IND), !is.na(BAIRRO)) %>% 
   group_by(BAIRRO, RENDA_IND, media_m2) %>% 
@@ -94,7 +120,7 @@ renda_bairro %>%
   labs(x = "Bairro", y = "Renda individual", size = "Nº de pessoas")
 
 
-## Renda por REGIAO ####
+### Renda por REGIAO ####
 renda_regiao <- infs2 %>% 
   filter(!is.na(RENDA_IND), !is.na(BAIRRO_REGIAO2)) %>% 
   group_by(RENDA_IND, BAIRRO_REGIAO2) %>%
@@ -113,7 +139,7 @@ renda_regiao %>%
   ) +
   labs(x = "Bairro", y = "Renda individual", size = "Nº de pessoas")
 
-## Renda fam por REGIAO ####
+### Renda fam por REGIAO ####
 renda_fam_regiao <- infs2 %>% 
   filter(!is.na(RENDA_FAM), !is.na(BAIRRO_REGIAO2)) %>% 
   group_by(BAIRRO_REGIAO2, RENDA_FAM) %>%
@@ -134,7 +160,9 @@ renda_fam_regiao %>%
 
 
 
-## n de comodos por M4 ####
+
+
+### n de comodos por M4 ####
 infs2 %>% 
   filter(!is.na(NCOMODOS), !is.na(media_m2)) %>%
   ggplot(aes(x = NCOMODOS, y = media_m2)) +
@@ -611,8 +639,6 @@ comodos_quartos <- infs2 %>%
 
 ## M2 por comodos ####
 #A linha vermelha mostra a média do preço do m² para cada quantidade de banheiros.
-
-
 infs2 %>% 
   filter(!is.na(NBANHEIROS), !is.na(media_m2)) %>%
   ggplot(aes(x = NBANHEIROS, y = media_m2)) +

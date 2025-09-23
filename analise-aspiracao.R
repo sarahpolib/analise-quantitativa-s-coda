@@ -32,51 +32,51 @@ distribuicao.geral %>%
 
 
 # CONT.FON.SEG ####
-HAP.prop_CONT_FON_SEG <- dados_HAP %>% 
-  count(VD, CONT_FON_SEG) %>%
-  group_by(CONT_FON_SEG) %>% 
-  mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
-  print()
-
-ggplot(HAP.prop_CONT_FON_SEG, aes(x = CONT_FON_SEG, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
-
-#CFS_sonoridade de acordo com BARBOSA (2023)
-HAP.prop_CFS_sonoridade <- dados_HAP %>% 
-  count(VD, CFS_sonoridade) %>%
-  group_by(CFS_sonoridade) %>% 
-  mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
-  print()
-
-ggplot(HAP.prop_CFS_sonoridade, aes(x = CFS_sonoridade, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+# filtragem foi feita no arquivo carregar-amostras. Dados mostram envelope de variação semelhante ao de Barbosa 2023, ou seja, ocorrência de aspiração se dá só quando seguida por consoante sonora
+# HAP.prop_CONT_FON_SEG <- dados_HAP %>% 
+#   count(VD, CONT_FON_SEG) %>%
+#   group_by(CONT_FON_SEG) %>% 
+#   mutate(prop = prop.table(n),
+#          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+#   print()
+# 
+# ggplot(HAP.prop_CONT_FON_SEG, aes(x = CONT_FON_SEG, y = prop * 100, fill = VD, label = label)) + 
+#   geom_bar(stat = "identity", color = "white") + 
+#   labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+#   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
+#   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+#   scale_fill_brewer(palette = "Reds")+
+#   theme_minimal()+
+#   theme(
+#     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+#     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+#     axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+#     axis.title.y = element_text(size = 9))
+# 
+# #CFS_sonoridade de acordo com BARBOSA (2023)
+# HAP.prop_CFS_sonoridade <- dados_HAP %>% 
+#   count(VD, CFS_sonoridade) %>%
+#   group_by(CFS_sonoridade) %>% 
+#   mutate(prop = prop.table(n),
+#          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+#   print()
+# 
+# ggplot(HAP.prop_CFS_sonoridade, aes(x = CFS_sonoridade, y = prop * 100, fill = VD, label = label)) + 
+#   geom_bar(stat = "identity", color = "white") + 
+#   #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+#   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
+#   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+#   scale_fill_brewer(palette = "Reds")+
+#   theme_minimal()+
+#   theme(
+#     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+#     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+#     axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+#     axis.title.y = element_text(size = 9))
 
 
 # VD ####
 HAP.prop_VD <- dados_HAP %>% 
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD) %>%
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
@@ -101,7 +101,6 @@ ggplot(HAP.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) +
 
 # TONICIDADE ####
 HAP.prop_TONICIDADE <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, TONICIDADE) %>%
   group_by(TONICIDADE) %>% 
   mutate(prop = prop.table(n),
@@ -127,7 +126,6 @@ chisq.test(HAP.tab_TONICIDADE)
 
 # POSICAO ####
 HAP.prop_POSICAO <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, POSICAO_S) %>%
   group_by(POSICAO_S) %>% 
   mutate(prop = prop.table(n),
@@ -153,7 +151,6 @@ chisq.test(HAP.tab_POSICAO)
 
 # CONT.FON.PREC ####
 HAP.prop_CONT_FON_PREC <- dados_HAP %>% 
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, CONT_FON_PREC) %>%
   group_by(CONT_FON_PREC) %>% 
   mutate(prop = prop.table(n),
@@ -176,7 +173,6 @@ ggplot(HAP.prop_CONT_FON_PREC, aes(x = CONT_FON_PREC, y = prop * 100, fill = VD,
 
 #CFS_abertura assim como Barbosa (2023)
 HAP.prop_CFP_abertura2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, CFP_abertura2) %>%
   group_by(CFP_abertura2) %>% 
   mutate(prop = prop.table(n),
@@ -202,7 +198,6 @@ chisq.test(HAP.tab_CFP_abertura2)
 
 # CLASSE MORFOLOGICA ####
 HAP.prop_CLASSE_MORFOLOGICA3 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, CLASSE_MORFOLOGICA3) %>%
   group_by(CLASSE_MORFOLOGICA3) %>% 
   mutate(prop = prop.table(n),
@@ -228,7 +223,6 @@ chisq.test(HAP.tab_CLASSE_MORFOLOGICA3)
 
 # ESTILO ####
 HAP.prop_ESTILO <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, ESTILO) %>%
   group_by(ESTILO) %>% 
   mutate(prop = prop.table(n),
@@ -255,7 +249,6 @@ chisq.test(HAP.tab_ESTILO)
 
 # GENERO ####
 HAP.prop_GENERO <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, GENERO) %>%
   group_by(GENERO) %>% 
   mutate(prop = prop.table(n),
@@ -282,7 +275,6 @@ chisq.test(HAP.tab_GENERO)
 
 # IDADE DE MIGRACAO ####
 HAP.prop_IDADE_MIGRACAO <- dados_HAP %>% 
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, IDADE_MIGRACAO) %>%
   group_by(IDADE_MIGRACAO) %>% 
   mutate(prop = prop.table(n)) %>% 
@@ -300,14 +292,12 @@ dev.off()
 HAP.mod_IDADE_MIGRACAO <- glm(VD ~ IDADE_MIGRACAO, data = dados_HAP, family = binomial)
 summary(HAP.mod_IDADE_MIGRACAO)
 lrm(VD ~ IDADE_MIGRACAO, data = dados_HAP)
-
 plot(allEffects(HAP.mod_IDADE_MIGRACAO), type = "response")
 
 
 
 # TEMPO DE RESIDENCIA ####
 HAP.prop_TEMPO_RESIDENCIA <- dados_HAP %>% 
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, TEMPO_RESIDENCIA) %>%
   group_by(TEMPO_RESIDENCIA) %>% 
   mutate(prop = prop.table(n)) %>% 
@@ -325,7 +315,6 @@ ggplot(HAP.prop_TEMPO_RESIDENCIA[24:39,], aes(x = TEMPO_RESIDENCIA, y = prop * 1
 HAP.mod_TEMPO_RESIDENCIA <- glm(VD ~ TEMPO_RESIDENCIA, data = dados_HAP, family = binomial)
 summary(HAP.mod_TEMPO_RESIDENCIA)
 lrm(VD ~ TEMPO_RESIDENCIA, data = dados_HAP)
-
 plot(allEffects(HAP.mod_TEMPO_RESIDENCIA), type = "response")
 
 
@@ -356,7 +345,6 @@ check_model(modHAP1)
 # INDICE SOCIOECONOMICO ####
 ### Escolaridade ####
 HAP.prop_ESCOLARIDADE2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, ESCOLARIDADE2) %>%
   group_by(ESCOLARIDADE2) %>% 
   mutate(prop = prop.table(n),
@@ -399,7 +387,6 @@ plot(allEffects(HAP.mod_ESCOLARIDADE2), type = "response")
 ### Escolaridade dos Pais ####
 #### Pai ####
 HAP.prop_ESCOLA_PAI2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, ESCOLA_PAI2) %>%
   group_by(ESCOLA_PAI2) %>% 
   mutate(prop = prop.table(n),
@@ -423,8 +410,6 @@ ggplot(HAP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, lab
 (HAP.tab_ESCOLA_PAI2<- with(dados_HAP, table(ESCOLA_PAI2, VD)))
 chisq.test(HAP.tab_ESCOLA_PAI2) #sim mas pode estar incorreto
 chisq.test(HAP.tab_ESCOLA_PAI2[c(1,4),]) 
-chisq.test(HAP.tab_ESCOLA_PAI2[c(1,2),]) 
-chisq.test(HAP.tab_ESCOLA_PAI2[c(3,4),]) 
 
 #teste efeitos mistos
 HAP.mod_ESCOLA_PAI2  <- glmer(VD ~ ESCOLA_PAI2 +
@@ -439,7 +424,6 @@ plot(allEffects(HAP.mod_ESCOLA_PAI2), type = "response")
 
 #### Mãe ####
 HAP.prop_ESCOLA_MAE2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, ESCOLA_MAE2) %>%
   group_by(ESCOLA_MAE2) %>% 
   mutate(prop = prop.table(n),
@@ -475,8 +459,6 @@ HAP.grafico_escolaridade_mae
 (HAP.tab_ESCOLA_MAE2<- with(dados_HAP, table(ESCOLA_MAE2, VD)))
 chisq.test(HAP.tab_ESCOLA_MAE2) #sim
 chisq.test(HAP.tab_ESCOLA_MAE2[c(1,2),])
-chisq.test(HAP.tab_ESCOLA_MAE2[c(2,3),]) 
-chisq.test(HAP.tab_ESCOLA_MAE2[c(1,4),])
 
 
 #teste efeitos mistos
@@ -490,7 +472,6 @@ plot(allEffects(HAP.mod_ESCOLA_MAE2), type = "response")
 
 ### Ocupação ####
 HAP.prop_INDICE_OCUPACAO <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, INDICE_OCUPACAO) %>%
   group_by(INDICE_OCUPACAO) %>% 
   mutate(prop = prop.table(n),
@@ -515,7 +496,6 @@ plot(allEffects(HAP.mod_INDICE_OCUPACAO), type = "response")
 
 ### Ocupação outro cargo ####
 HAP.prop_INDICE_OUTRO_CARGO <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, INDICE_OUTRO_CARGO) %>%
   group_by(INDICE_OUTRO_CARGO) %>% 
   mutate(prop = prop.table(n),
@@ -534,7 +514,6 @@ plot(allEffects(HAP.mod_INDICE_OUTRO_CARGO), type = "response")
 
 ### Ocupação SONHOS ####
 HAP.prop_INDICE_OCUPACAO_SONHOS <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, INDICE_OCUPACAO_SONHOS) %>%
   group_by(INDICE_OCUPACAO_SONHOS) %>% 
   mutate(prop = prop.table(n),
@@ -552,7 +531,6 @@ plot(allEffects(HAP.mod_INDICE_OCUPACAO_SONHOS), type = "response")
 
 ### Ocupação distancia ####
 HAP.prop_OCUPACAO_DIST <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, OCUPACAO_DIST) %>%
   group_by(OCUPACAO_DIST) %>% 
   mutate(prop = prop.table(n),
@@ -596,7 +574,6 @@ plot(allEffects(HAP.mod_OCUPACAO_DIST), type = "response")
 #analise de locomoção com todos os itens foi transformada na seguinte OCUPACAO_LOCOMOCAO2
 
 HAP.prop_OCUPACAO_LOCOMOCAO2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, OCUPACAO_LOCOMOCAO2) %>%
   group_by(OCUPACAO_LOCOMOCAO2) %>% 
   mutate(prop = prop.table(n),
@@ -639,7 +616,6 @@ plot(allEffects(HAP.mod_OCUPACAO_LOCOMOCAO2), type = "response")
 ### Ocupação dos Pais ####
 #### Pai ####
 HAP.prop_INDICE_OCUPACAO_PAI <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, INDICE_OCUPACAO_PAI) %>%
   group_by(INDICE_OCUPACAO_PAI) %>% 
   mutate(prop = prop.table(n),
@@ -662,7 +638,6 @@ plot(allEffects(HAP.mod_INDICE_OCUPACAO_PAI), type = "response")
 
 #### Mãe ####
 HAP.prop_INDICE_OCUPACAO_MAE <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, INDICE_OCUPACAO_MAE) %>%
   group_by(INDICE_OCUPACAO_MAE) %>% 
   mutate(prop = prop.table(n),
@@ -686,7 +661,6 @@ plot(allEffects(HAP.mod_INDICE_OCUPACAO_MAE), type = "response")
 
 ### Mega sena ####
 HAP.prop_MEGA_SENA2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, MEGA_SENA2) %>%
   group_by(MEGA_SENA2) %>% 
   mutate(prop = prop.table(n),
@@ -727,7 +701,6 @@ plot(allEffects(HAP.mod_MEGA_SENA2), type = "response")(1|PARTICIPANTE)
 
 ### Mega sena Trabalhar ####
 HAP.prop_MEGASENA_TRABALHAR2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, MEGASENA_TRABALHAR2) %>%
   group_by(MEGASENA_TRABALHAR2) %>% 
   mutate(prop = prop.table(n),
@@ -792,10 +765,7 @@ ggplot(HAP.prop_RENDA_IND, aes(x = RENDA_IND, y = prop * 100, fill = VD, label =
 
 (HAP.tab_RENDA_IND <- with(dados_HAP, table(RENDA_IND, VD)))
 chisq.test(HAP.tab_RENDA_IND) #tem correlação
-chisq.test(HAP.tab_RENDA_IND[c(1,2),]) #nao
-chisq.test(HAP.tab_RENDA_IND[c(4,5),]) #não
-chisq.test(HAP.tab_RENDA_IND[c(2,3),]) #sim
-chisq.test(HAP.tab_RENDA_IND[c(1,4),]) #não
+chisq.test(HAP.tab_RENDA_IND[c(1,2),])
 
 
 #teste efeitos mistos
@@ -811,7 +781,6 @@ plot(allEffects(HAP.mod_RENDA_IND), type = "response")
 
 ### Renda Familiar ####
 HAP.prop_RENDA_FAM <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, RENDA_FAM) %>%
   group_by(RENDA_FAM) %>% 
   mutate(prop = prop.table(n),
@@ -835,10 +804,6 @@ ggplot(HAP.prop_RENDA_FAM, aes(x = RENDA_FAM, y = prop * 100, fill = VD, label =
 (HAP.tab_RENDA_FAM <- with(dados_HAP, table(RENDA_FAM, VD)))
 chisq.test(HAP.tab_RENDA_FAM) #tem correlação
 chisq.test(HAP.tab_RENDA_FAM[c(1,2),]) #nao
-chisq.test(HAP.tab_RENDA_FAM[c(2,3),]) #sim
-chisq.test(HAP.tab_RENDA_FAM[c(2,4),]) #não
-chisq.test(HAP.tab_RENDA_FAM[c(4,5),]) #sim
-chisq.test(HAP.tab_RENDA_FAM[c(1,4),]) #nao
 
 
 #teste efeitos mistos
@@ -852,7 +817,6 @@ plot(allEffects(HAP.mod_RENDA_FAM), type = "response")
 
 ### m2 ####
 HAP.prop_media_m2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, media_m2) %>%
   group_by(media_m2) %>% 
   mutate(prop = prop.table(n),
@@ -877,14 +841,12 @@ plot(allEffects(HAP.mod_media_m2), type = "response")
 ### Bairro ####
 
 ordem_bairros <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora", !is.na(media_m2)) %>%
   group_by(BAIRRO) %>%
   summarise(media_geral = mean(media_m2, na.rm = TRUE)) %>%
   arrange(media_geral) %>%  # ou arrange(media_geral) para ordem crescente
   pull(BAIRRO)
 
 HAP.prop_BAIRRO <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora", !is.na(media_m2)) %>% 
   count(VD, BAIRRO, media_m2) %>%
   mutate(BAIRRO = factor(BAIRRO, levels = ordem_bairros)) %>%  # Reordena os níveis
   group_by(BAIRRO) %>% 
@@ -914,13 +876,13 @@ chisq.test(HAP.prop_BAIRRO)
 
 #### Região ####
 HAP.prop_BAIRRO_REGIAO <- dados_HAP %>%
-  count(VD, BAIRRO_REGIAO) %>%
-  group_by(BAIRRO_REGIAO) %>% 
+  count(VD, BAIRRO_REGIAO2) %>%
+  group_by(BAIRRO_REGIAO2) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO, y = prop * 100, fill = VD, label = label)) + 
+ggplot(HAP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Região", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Centro", "Periferia Norte", "Periferia Sul"))+
@@ -940,7 +902,7 @@ chisq.test(HAP.tab_BAIRRO_REGIAO[c(1,3),])
 
 
 #teste efeitos mistos
-HAP.mod_BAIRRO_REGIAO <- glmer(VD ~ BAIRRO_REGIAO +
+HAP.mod_BAIRRO_REGIAO <- glmer(VD ~ BAIRRO_REGIAO2 +
                                 (1|ITEM_LEXICAL) +
                                 (1|PARTICIPANTE),
                               data = dados_HAP, family = binomial)
@@ -952,7 +914,6 @@ plot(allEffects(HAP.mod_BAIRRO_REGIAO), type = "response")
 
 ### Número de Banheiros ####
 HAP.prop_NBANHEIROS <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, NBANHEIROS) %>%
   group_by(NBANHEIROS) %>% 
   mutate(prop = prop.table(n),
@@ -977,7 +938,6 @@ HAP.prop_NBANHEIROS %>%
 (HAP.prop_NBANHEIROS <- with(dados_HAP, table(NBANHEIROS, VD)))
 chisq.test(HAP.prop_NBANHEIROS)
 chisq.test(HAP.prop_NBANHEIROS[c(1,2)])
-chisq.test(HAP.prop_NBANHEIROS[c(2,3)])
 
 #teste efeitos mistos
 HAP.mod_NBANHEIROS <- glmer(VD ~ NBANHEIROS+
@@ -992,7 +952,6 @@ plot(allEffects(HAP.mod_NBANHEIROS), type = "response")
 
 ### Número de Quartos ####
 HAP.prop_NQUARTOS <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, NQUARTOS) %>%
   group_by(NQUARTOS) %>% 
   mutate(prop = prop.table(n),
@@ -1017,7 +976,6 @@ HAP.prop_NQUARTOS %>%
 (HAP.prop_NQUARTOS <- with(dados_HAP, table(NQUARTOS, VD)))
 chisq.test(HAP.prop_NQUARTOS)
 chisq.test(HAP.prop_NQUARTOS[c(1,2)])
-chisq.test(HAP.prop_NQUARTOS[c(2,3)])
 
 
 #teste efeitos mistos
@@ -1031,9 +989,18 @@ plot(allEffects(HAP.mod_NQUARTOS), type = "response")
 
 
 
+### Densidade ####
+#teste efeitos mistos
+HAP.mod_DENSIDADE_HABITACAO <- glmer(VD ~ DENSIDADE_HABITACAO +
+                                      (1|ITEM_LEXICAL) +
+                                      (1|PARTICIPANTE), data = dados_HAP, family = binomial)
+summary(HAP.mod_DENSIDADE_HABITACAO)
+lrm(VD ~ DENSIDADE_HABITACAO, data = dados_HAP)
+plot(allEffects(HAP.mod_DENSIDADE_HABITACAO), type = "response")
+
+
 ### Tipo Moradia ####
 HAP.prop_IMOVEL <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, IMOVEL) %>%
   group_by(IMOVEL) %>% 
   mutate(prop = prop.table(n),
@@ -1058,7 +1025,6 @@ HAP.prop_IMOVEL %>%
 (HAP.prop_IMOVEL <- with(dados_HAP, table(IMOVEL, VD)))
 chisq.test(HAP.prop_IMOVEL)
 chisq.test(HAP.prop_IMOVEL[c(1,2)])
-chisq.test(HAP.prop_IMOVEL[c(2,3)])
 
 #teste efeitos mistos
 HAP.mod_IMOVEL <- glmer(VD ~ IMOVEL+
@@ -1072,7 +1038,6 @@ plot(allEffects(HAP.mod_IMOVEL), type = "response")
 
 ### Propriedade característica ####
 HAP.prop_PROPRIEDADE <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, PROPRIEDADE) %>%
   group_by(PROPRIEDADE) %>% 
   mutate(prop = prop.table(n),
@@ -1109,7 +1074,6 @@ plot(allEffects(HAP.mod_PROPRIEDADE), type = "response")
 
 ### Número de Pessoas ####
 HAP.prop_NPESSOAS <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, NPESSOAS) %>%
   group_by(NPESSOAS) %>% 
   mutate(prop = prop.table(n),
@@ -1134,9 +1098,6 @@ HAP.prop_NPESSOAS %>%
 (HAP.prop_NPESSOAS <- with(dados_HAP, table(NPESSOAS, VD)))
 chisq.test(HAP.prop_NPESSOAS)
 chisq.test(HAP.prop_NPESSOAS[c(1,2)])
-chisq.test(HAP.prop_NPESSOAS[c(3,4)])
-chisq.test(HAP.prop_NPESSOAS[c(5,7)])
-chisq.test(HAP.prop_NPESSOAS[c(3,5)])
 
 #teste efeitos mistos
 HAP.mod_NPESSOAS <- glmer(VD ~ NPESSOAS+
@@ -1151,7 +1112,6 @@ plot(allEffects(HAP.mod_NPESSOAS), type = "response")
 
 ### Lazer ####
 HAP.prop_LAZER_CARACTERISTICA <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, LAZER_CARACTERISTICA) %>%
   group_by(LAZER_CARACTERISTICA) %>% 
   mutate(prop = prop.table(n),
@@ -1175,8 +1135,6 @@ ggplot(HAP.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop * 1
 (HAP.tab_LAZER_CARACTERISTICA <- with(dados_HAP, table(LAZER_CARACTERISTICA, VD)))
 chisq.test(HAP.tab_LAZER_CARACTERISTICA) #tem correlação
 chisq.test(HAP.tab_LAZER_CARACTERISTICA[c(1,2),])
-chisq.test(HAP.tab_LAZER_CARACTERISTICA[c(2,4),])
-chisq.test(HAP.tab_LAZER_CARACTERISTICA[c(3,4),])
 
 
 #teste efeitos mistos
@@ -1191,7 +1149,6 @@ plot(allEffects(HAP.mod_LAZER_CARACTERISTICA), type = "response")
 
 ### Lazer Campinas####
 HAP.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, LAZER_CAMPINAS_CARACTERISTICA) %>%
   group_by(LAZER_CAMPINAS_CARACTERISTICA) %>% 
   mutate(prop = prop.table(n),
@@ -1215,8 +1172,6 @@ ggplot(HAP.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERIS
 (HAP.tab_LAZER_CAMPINAS_CARACTERISTICA <- with(dados_HAP, table(LAZER_CAMPINAS_CARACTERISTICA, VD)))
 chisq.test(HAP.tab_LAZER_CAMPINAS_CARACTERISTICA) #tem correlação
 chisq.test(HAP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(1,2),])
-chisq.test(HAP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(2,5),])
-chisq.test(HAP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(3,4),]) #falantes que nfalaram quenão tem e que não sae não tem correlação
 
 #teste efeitos mistos
 HAP.mod_LAZER_CAMPINAS_CARACTERISTICA <- glmer(VD ~ LAZER_CAMPINAS_CARACTERISTICA+
@@ -1231,7 +1186,6 @@ plot(allEffects(HAP.mod_LAZER_CAMPINAS_CARACTERISTICA), type = "response")
 ### Viagem ####
 #costuma viajar?
 HAP.prop_VIAGEM <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, VIAGEM) %>%
   group_by(VIAGEM) %>% 
   mutate(prop = prop.table(n),
@@ -1267,7 +1221,6 @@ plot(allEffects(HAP.mod_VIAGEM), type = "response")
 
 ### Tipo de Viagem ####
 HAP.prop_VIAGEM_LUGAR <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, VIAGEM_LUGAR) %>%
   group_by(VIAGEM_LUGAR) %>% 
   mutate(prop = prop.table(n),
@@ -1291,10 +1244,6 @@ ggplot(HAP.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop * 100, fill = VD, l
 (HAP.tab_VIAGEM_LUGAR <- with(dados_HAP, table(VIAGEM_LUGAR, VD)))
 chisq.test(HAP.tab_VIAGEM_LUGAR) #tem correlação
 chisq.test(HAP.tab_VIAGEM_LUGAR[c(1,2),])
-chisq.test(HAP.tab_VIAGEM_LUGAR[c(2,3),])
-chisq.test(HAP.tab_VIAGEM_LUGAR[c(3,4),])
-chisq.test(HAP.tab_VIAGEM_LUGAR[c(4,5),])
-
 
 #teste efeitos mistos
 HAP.mod_VIAGEM_LUGAR <- glmer(VD ~ VIAGEM_LUGAR+
@@ -1308,7 +1257,6 @@ plot(allEffects(HAP.mod_VIAGEM_LUGAR), type = "response")
 ### Viagem vontade ####
 
 HAP.prop_LAZER_VIAGEM_VONTADE2 <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, LAZER_VIAGEM_VONTADE2) %>%
   group_by(LAZER_VIAGEM_VONTADE2) %>% 
   mutate(prop = prop.table(n),
@@ -1347,7 +1295,6 @@ plot(allEffects(HAP.mod_LAZER_VIAGEM_VONTADE2), type = "response")
 
 ### Infancia ####
 HAP.prop_INFANCIA_MEMORIA <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora") %>% 
   count(VD, INFANCIA_MEMORIA) %>%
   group_by(INFANCIA_MEMORIA) %>% 
   mutate(prop = prop.table(n),
@@ -1370,7 +1317,6 @@ ggplot(HAP.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop * 100, fill
 
 (HAP.tab_INFANCIA_MEMORIA <- with(dados_HAP, table(INFANCIA_MEMORIA, VD)))
 chisq.test(HAP.tab_INFANCIA_MEMORIA) #tem correlação
-chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2[c(3,4),])
 
 #teste efeitos mistos
 HAP.mod_INFANCIA_MEMORIA <- glmer(VD ~ INFANCIA_MEMORIA+
@@ -1385,25 +1331,26 @@ plot(allEffects(HAP.mod_INFANCIA_MEMORIA), type = "response")
 # PCA ####
 escalas_HAP <- dados_HAP %>%
   select(INDICE_ESCOL3_norm, 
+         INDICE_ESCOL_PAI_norm,
+         INDICE_ESCOL_MAE_norm, 
          INDICE_OCUPACAO_norm, 
-         INDICE_OUTRO_CARGO2_norm, 
+         INDICE_OCUPACAO_PAI_norm, 
+         INDICE_OCUPACAO_MAE_norm,
+         #INDICE_OUTRO_CARGO2_norm, 
          INDICE_OCUPACAO_SONHOS2_norm,
-         INDICE_LOCOMOCAO_norm, 
-         INDICE_MEGA_norm, 
+         #INDICE_LOCOMOCAO_norm, 
+         INDICE_MEGA_norm,
+         INDICE_RENDA_IND_norm, 
+         #INDICE_RENDA_FAM_norm,
+         #INDICE_BAIRRO_norm,
+         #DENSIDADE_HABITACAO_norm,
+         INDICE_IMOVEL_norm,
          INDICE_LAZER_norm, 
          INDICE_LAZER_CAMPINAS_norm,
          INDICE_VIAGEM_norm, 
          INDICE_VIAGEM_LUGAR_norm, 
          INDICE_VIAGEM_VONTADE_norm, 
-         INDICE_BAIRRO_norm,
-         INDICE_INFANCIA_norm, 
-         INDICE_RENDA_IND_norm, 
-         INDICE_RENDA_FAM_norm, 
-         INDICE_ESCOL_PAI_norm,
-         INDICE_OCUPACAO_PAI_norm, 
-         INDICE_ESCOL_MAE_norm, 
-         INDICE_OCUPACAO_MAE_norm, 
-         DENSIDADE_HABITACAO_norm
+         INDICE_INFANCIA_norm
   ) %>%
   mutate(across(everything(), as.numeric)) %>%
   na.omit()
@@ -1420,7 +1367,21 @@ fviz_eig(pca_HAP,
 
 fviz_contrib(pca_HAP, choice = "var", axes = 1, top = 10)
 
-
+# INDICE_ESCOL3_norm
+# INDICE_ESCOL_PAI_norm
+# INDICE_ESCOL_MAE_norm
+# INDICE_OCUPACAO_norm
+# INDICE_OCUPACAO_PAI_norm
+# INDICE_OCUPACAO_MAE_norm
+# INDICE_OCUPACAO_SONHOS2_norm
+# INDICE_LAZER_norm
+# INDICE_LAZER_CAMPINAS_norm
+# INDICE_RENDA_IND_norm
+# INDICE_VIAGEM_norm
+# INDICE_VIAGEM_LUGAR_norm
+# INDICE_INFANCIA_norm
+# INDICE_IMOVEL_norm
+# INDICE_MEGA_norm
 
 
 

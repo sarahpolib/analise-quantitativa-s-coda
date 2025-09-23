@@ -82,6 +82,7 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
                                   INDICE_OCUPACAO_MAE = col_integer(),
                                   INDICE_ESCOL_PAI = col_integer(),
                                   INDICE_ESCOL_MAE = col_integer(),
+                                  INDICE_IMOVEL = col_integer(),
                                   # AMIGO1_CLASSIFICACAO = col_integer(),
                                   # AMIGO2_CLASSIFICACAO = col_integer(),
                                   # AMIGO3_CLASSIFICACAO = col_integer(),
@@ -98,7 +99,7 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
 str(infs)
 
 ### Mudar nível de variaveis ####
-#### Renda individual ####
+#### Renda individual ###
 infs$RENDA_IND <- factor(infs$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM"))
 levels(infs$RENDA_IND)
 
@@ -109,6 +110,9 @@ levels(infs$RENDA_IND)
 infs$RENDA_FAM <- factor(infs$RENDA_FAM, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM", "20+SM"))
 levels(infs$RENDA_FAM)
 
+#tipo de viagem, juntou-se os níveis considerando viagem pra conhecer novos lugares vs viagem pra locais mais pertos ou pro estado pra visitar a familia
+infs$VIAGEM_LUGAR <- fct_collapse(as.factor(infs$VIAGEM_LUGAR), "nacional.internacional" = c("nacional", "nacional-internacional"), "SP-estado" = c("estado", "SP", "SP-estado"))
+levels(infs$VIAGEM_LUGAR)
 
 #juntando individuos que citaram viagem internacional
 infs$LAZER_VIAGEM_VONTADE2 <- fct_collapse(as.factor(infs$LAZER_VIAGEM_VONTADE2), "nacional.internacional" = c("internacional", "nacional-internacional"))
@@ -133,9 +137,9 @@ infs$LAZER_CAMPINAS_CARACTERISTICA <- fct_collapse(as.factor(infs$LAZER_CAMPINAS
 levels(infs$LAZER_CAMPINAS_CARACTERISTICA)
 
 
-#### Normalização de índices ####
+### Normalização de índices ####
 escalas <- infs %>% 
-  select(INDICE_ESCOL3, INDICE_OCUPACAO, INDICE_OUTRO_CARGO2, INDICE_OCUPACAO_SONHOS2, INDICE_LOCOMOCAO, INDICE_MEGA, INDICE_LAZER, INDICE_LAZER_CAMPINAS, INDICE_VIAGEM, INDICE_VIAGEM_LUGAR, INDICE_VIAGEM_VONTADE, INDICE_BAIRRO, INDICE_INFANCIA, INDICE_RENDA_IND, INDICE_RENDA_FAM, INDICE_ESCOL_PAI, INDICE_OCUPACAO_PAI, INDICE_ESCOL_MAE, INDICE_OCUPACAO_MAE, DENSIDADE_HABITACAO) %>% 
+  select(INDICE_ESCOL3, INDICE_OCUPACAO, INDICE_OUTRO_CARGO2, INDICE_OCUPACAO_SONHOS2, INDICE_LOCOMOCAO, INDICE_MEGA, INDICE_LAZER, INDICE_LAZER_CAMPINAS, INDICE_VIAGEM, INDICE_VIAGEM_LUGAR, INDICE_VIAGEM_VONTADE, INDICE_BAIRRO, INDICE_INFANCIA, INDICE_RENDA_IND, INDICE_RENDA_FAM, INDICE_ESCOL_PAI, INDICE_OCUPACAO_PAI, INDICE_ESCOL_MAE, INDICE_OCUPACAO_MAE, DENSIDADE_HABITACAO, INDICE_IMOVEL) %>% 
   mutate(across(everything(), as.numeric)) %>%
   print()
 
@@ -149,7 +153,7 @@ infs <- infs %>%
               .names = "{.col}_norm")) %>% 
   print()
 
-infs$INDICE_OCUPACAO_norm
+infs$INDICE_IMOVEL_norm
 
 head(infs)
 str(infs)
@@ -220,11 +224,12 @@ levels(dados2$ESCOLARIDADE)
 
 ### PALATALIZAÇÃO ####
 dados_AP <- dados2 %>% 
-  filter(VD %in% c("P", "A")) %>%
+  filter(VD %in% c("P", "A"),
+         CFS_pontoc2 == "coronal") %>%
   droplevels()
 
 levels(dados_AP$VD)
-
+levels(dados_AP$CFS_pontoc2)
 
 
 
@@ -240,13 +245,16 @@ levels(dados_S0$MORFEMA.PLURAL)
 
 ### ASPIRAÇÃO ####
 dados_HAP <- dados2 %>% 
-  filter(VD %in% c("A", "H", "P")) %>% 
+  filter(VD %in% c("A", "H", "P"),
+         CFS_sonoridade == "sonora") %>%
   mutate(VD = fct_collapse(VD,
                            H = "H",
                            AP = c("A", "P"))) %>%
   droplevels()
 
 levels(dados_HAP$VD) 
+levels(dados_HAP$CFS_sonoridade) 
+
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 

@@ -5,52 +5,52 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 
 # CONT.FON.SEG ####
+# filtragem foi feita no arquivo carregar-amostras. Dados mostram envelope de variação semelhante ao de Barbosa 2023, ou seja, ocorrência de palatalização se dá só quando seguida por consoante coronal
 
-AP.prop_CONT_FON_SEG <- dados_AP %>% 
-  count(VD, CONT_FON_SEG) %>%
-  group_by(CONT_FON_SEG) %>% 
-  mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
-  print()
-
-ggplot(AP.prop_CONT_FON_SEG, aes(x = CONT_FON_SEG, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
-
-#CFS_coronal de acordo com BARBOSA (2023)
-AP.prop_CFS_pontoc2<- dados_AP %>% 
-  count(VD, CFS_pontoc2) %>%
-  group_by(CFS_pontoc2) %>% 
-  mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
-  print()
-
-ggplot(AP.prop_CFS_pontoc2, aes(x = CFS_pontoc2, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+# AP.prop_CONT_FON_SEG <- dados_AP %>% 
+#   count(VD, CONT_FON_SEG) %>%
+#   group_by(CONT_FON_SEG) %>% 
+#   mutate(prop = prop.table(n),
+#          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+#   print()
+# 
+# ggplot(AP.prop_CONT_FON_SEG, aes(x = CONT_FON_SEG, y = prop * 100, fill = VD, label = label)) + 
+#   geom_bar(stat = "identity", color = "white") + 
+#   labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+#   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+#   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+#   scale_fill_brewer(palette = "Reds")+
+#   theme_minimal()+
+#   theme(
+#     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+#     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+#     axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+#     axis.title.y = element_text(size = 9))
+# 
+# #CFS_coronal de acordo com BARBOSA (2023)
+# AP.prop_CFS_pontoc2<- dados_AP %>% 
+#   count(VD, CFS_pontoc2) %>%
+#   group_by(CFS_pontoc2) %>% 
+#   mutate(prop = prop.table(n),
+#          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+#   print()
+# 
+# ggplot(AP.prop_CFS_pontoc2, aes(x = CFS_pontoc2, y = prop * 100, fill = VD, label = label)) + 
+#   geom_bar(stat = "identity", color = "white") + 
+#   labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+#   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+#   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+#   scale_fill_brewer(palette = "Reds")+
+#   theme_minimal()+
+#   theme(
+#     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+#     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+#     axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+#     axis.title.y = element_text(size = 9))
 
 
 # VD ####
 AP.prop_VD <- dados_AP %>% 
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD) %>%
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
@@ -75,7 +75,6 @@ ggplot(AP.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) +
 
 # TONICIDADE ####
 AP.prop_TONICIDADE <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, TONICIDADE) %>%
   group_by(TONICIDADE) %>% 
   mutate(prop = prop.table(n),
@@ -101,7 +100,6 @@ chisq.test(AP.tab_TONICIDADE)
 
 # POSICAO ####
 AP.prop_POSICAO <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, POSICAO_S) %>%
   group_by(POSICAO_S) %>% 
   mutate(prop = prop.table(n),
@@ -128,7 +126,6 @@ chisq.test(AP.tab_POSICAO)
 # CONT.FON.PREC ####
 
 AP.prop_CONT_FON_PREC <- dados_AP %>% 
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, CONT_FON_PREC) %>%
   group_by(CONT_FON_PREC) %>% 
   mutate(prop = prop.table(n),
@@ -151,7 +148,6 @@ ggplot(AP.prop_CONT_FON_PREC, aes(x = CONT_FON_PREC, y = prop * 100, fill = VD, 
 
 #CFS_abertura assim como Barbosa (2023)
 AP.prop_CFP_abertura2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, CFP_abertura2) %>%
   group_by(CFP_abertura2) %>% 
   mutate(prop = prop.table(n),
@@ -178,7 +174,7 @@ chisq.test(AP.tab_CFP_abertura2[c(1,2),]) #sem diferença entre fechada e meio f
 
 # CLASSE MORFOLOGICA ####
 AP.prop_CLASSE_MORFOLOGICA3 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
+
   count(VD, CLASSE_MORFOLOGICA3) %>%
   group_by(CLASSE_MORFOLOGICA3) %>% 
   mutate(prop = prop.table(n),
@@ -204,7 +200,6 @@ chisq.test(AP.tab_CLASSE_MORFOLOGICA3)
 
 # ESTILO ####
 AP.prop_ESTILO <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, ESTILO) %>%
   group_by(ESTILO) %>% 
   mutate(prop = prop.table(n),
@@ -231,7 +226,6 @@ chisq.test(AP.tab_ESTILO)
 
 # GENERO ####
 AP.prop_GENERO <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, GENERO) %>%
   group_by(GENERO) %>% 
   mutate(prop = prop.table(n),
@@ -258,7 +252,6 @@ chisq.test(AP.tab_GENERO)
 
 # IDADE DE MIGRACAO ####
 AP.prop_IDADE_MIGRACAO <- dados_AP %>% 
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, IDADE_MIGRACAO) %>%
   group_by(IDADE_MIGRACAO) %>% 
   mutate(prop = prop.table(n)) %>% 
@@ -282,7 +275,6 @@ plot(allEffects(AP.mod_IDADE_MIGRACAO), type = "response")
 
 # TEMPO DE RESIDENCIA ####
 AP.prop_TEMPO_RESIDENCIA <- dados_AP %>% 
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, TEMPO_RESIDENCIA) %>%
   group_by(TEMPO_RESIDENCIA) %>% 
   mutate(prop = prop.table(n)) %>% 
@@ -300,12 +292,10 @@ dev.off()
 AP.mod_TEMPO_RESIDENCIA <- glm(VD ~ TEMPO_RESIDENCIA, data = dados_AP, family = binomial)
 summary(AP.mod_TEMPO_RESIDENCIA)
 lrm(VD ~ TEMPO_RESIDENCIA, data = dados_AP)
-
 plot(allEffects(AP.mod_TEMPO_RESIDENCIA), type = "response")
 
 # INDICE SOCIO OUSHIRO ####
 AP.prop_INDICE_SOCIO_OUSHIRO <- dados_AP %>% 
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, INDICE_SOCIO_OUSHIRO) %>%
   group_by(INDICE_SOCIO_OUSHIRO) %>% 
   mutate(prop = prop.table(n)) %>% 
@@ -323,7 +313,6 @@ ggplot(AP.prop_INDICE_SOCIO_OUSHIRO[32:62,], aes(x = INDICE_SOCIO_OUSHIRO, y = p
 AP.mod_INDICE_SOCIO_OUSHIRO <- glm(VD ~ INDICE_SOCIO_OUSHIRO, data = dados_AP, family = binomial)
 summary(AP.mod_INDICE_SOCIO_OUSHIRO)
 lrm(VD ~ INDICE_SOCIO_OUSHIRO, data = dados_AP)
-
 plot(allEffects(AP.mod_INDICE_SOCIO_OUSHIRO), type = "response")
 
 
@@ -384,7 +373,6 @@ check_outliers(modAP1)
 # INDICE SOCIOECONOMICO ####
 ## Escolaridade ####
 AP.prop_ESCOLARIDADE2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, ESCOLARIDADE2) %>%
   group_by(ESCOLARIDADE2) %>% 
   mutate(prop = prop.table(n),
@@ -424,7 +412,6 @@ plot(allEffects(AP.mod_escolaridade), type = "response")
 ### Escolaridade dos Pais ####
 #### Pai ####
 AP.prop_ESCOLA_PAI2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, ESCOLA_PAI2) %>%
   group_by(ESCOLA_PAI2) %>% 
   mutate(prop = prop.table(n),
@@ -461,7 +448,6 @@ plot(allEffects(AP.mod_escolaridade_pai), type = "response")
 
 #### Mãe ####
 AP.prop_ESCOLA_MAE2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, ESCOLA_MAE2) %>%
   group_by(ESCOLA_MAE2) %>% 
   mutate(prop = prop.table(n),
@@ -509,7 +495,6 @@ plot(allEffects(AP.mod_escolaridade_mae), type = "response")
 
 ### Ocupação ####
 AP.prop_INDICE_OCUPACAO <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, INDICE_OCUPACAO) %>%
   group_by(INDICE_OCUPACAO) %>% 
   mutate(prop = prop.table(n),
@@ -547,7 +532,6 @@ plot(allEffects(AP.mod_INDICE_OCUPACAO), type = "response")
 
 ### Ocupação outro cargo ####
 AP.prop_INDICE_OUTRO_CARGO <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, INDICE_OUTRO_CARGO) %>%
   group_by(INDICE_OUTRO_CARGO) %>% 
   mutate(prop = prop.table(n),
@@ -579,7 +563,6 @@ plot(allEffects(AP.mod_ocupacao_outro), type = "response")
 
 ### Ocupação SONHOS ####
 AP.prop_INDICE_OCUPACAO_SONHOS <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, INDICE_OCUPACAO_SONHOS) %>%
   group_by(INDICE_OCUPACAO_SONHOS) %>% 
   mutate(prop = prop.table(n),
@@ -612,7 +595,6 @@ plot(allEffects(AP.mod_ocupacao_sonhos), type = "response")
 
 ### Ocupação distancia ####
 AP.prop_OCUPACAO_DIST <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, OCUPACAO_DIST) %>%
   group_by(OCUPACAO_DIST) %>% 
   mutate(prop = prop.table(n),
@@ -653,7 +635,6 @@ plot(allEffects(AP.mod_ocupacao_dist), type = "response")
 ### Ocupação locomoção ####
 #analise de locomoção com todos os itens foi transformada na seguinte OCUPACAO_LOCOMOCAO2
 AP.prop_OCUPACAO_LOCOMOCAO2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, OCUPACAO_LOCOMOCAO2) %>%
   group_by(OCUPACAO_LOCOMOCAO2) %>% 
   mutate(prop = prop.table(n),
@@ -695,7 +676,6 @@ plot(allEffects(AP.mod_ocupacao_locomocao), type = "response")
 ### Ocupação dos Pais ####
 #### Pai ####
 AP.prop_INDICE_OCUPACAO_PAI <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, INDICE_OCUPACAO_PAI) %>%
   group_by(INDICE_OCUPACAO_PAI) %>% 
   mutate(prop = prop.table(n),
@@ -727,7 +707,6 @@ plot(allEffects(AP.mod_INDICE_OCUPACAO_PAI), type = "response")
 
 #### Mãe ####
 AP.prop_INDICE_OCUPACAO_MAE <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, INDICE_OCUPACAO_MAE) %>%
   group_by(INDICE_OCUPACAO_MAE) %>% 
   mutate(prop = prop.table(n),
@@ -759,7 +738,6 @@ plot(allEffects(AP.mod_INDICE_OCUPACAO_MAE), type = "response")
 
 ### Mega sena ####
 AP.prop_MEGA_SENA2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, MEGA_SENA2) %>%
   group_by(MEGA_SENA2) %>% 
   mutate(prop = prop.table(n),
@@ -806,7 +784,6 @@ plot(allEffects(AP.mod_megasena), type = "response")
 
 #### Mega sena trabalhar ####
 AP.prop_MEGASENA_TRABALHAR2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, MEGASENA_TRABALHAR2) %>%
   group_by(MEGASENA_TRABALHAR2) %>% 
   mutate(prop = prop.table(n),
@@ -848,7 +825,6 @@ plot(allEffects(AP.mod_megasena_trabalhar), type = "response")
 
 ### Renda Individual ####
 AP.prop_RENDA_IND <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal", !is.na(RENDA_IND)) %>% 
   count(VD, RENDA_IND) %>%
   group_by(RENDA_IND) %>% 
   mutate(prop = prop.table(n),
@@ -887,7 +863,6 @@ plot(allEffects(AP.mod_renda_ind), type = "response")
 
 ### Renda Familiar ####
 AP.prop_RENDA_FAM <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, RENDA_FAM) %>%
   group_by(RENDA_FAM) %>% 
   mutate(prop = prop.table(n),
@@ -930,7 +905,6 @@ plot(allEffects(AP.mod_renda_fam), type = "response")
 
 ### m2 ####
 AP.prop_media_m2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, media_m2) %>%
   group_by(media_m2) %>% 
   mutate(prop = prop.table(n),
@@ -953,14 +927,12 @@ plot(allEffects(AP.mod_media_m2), type = "response")
 
 ### Bairro ####
 ordem_bairros <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal", !is.na(media_m2)) %>%
   group_by(BAIRRO) %>%
   summarise(media_geral = mean(media_m2, na.rm = TRUE)) %>%
   arrange(media_geral) %>%  # ou arrange(media_geral) para ordem crescente
   pull(BAIRRO)
 
 AP.prop_BAIRRO <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal", !is.na(media_m2)) %>% 
   count(VD, BAIRRO, media_m2) %>%
   mutate(BAIRRO = factor(BAIRRO, levels = ordem_bairros)) %>%  # Reordena os níveis
   group_by(BAIRRO) %>% 
@@ -984,13 +956,9 @@ ggplot(aes(x = BAIRRO, y = prop * 100, fill = VD, label = label)) +
     axis.title.y = element_text(size = 9))
 
 
-(AP.prop_BAIRRO <- with(dados_AP, table(BAIRRO, VD)))
-chisq.test(AP.prop_BAIRRO)
-
 
 #### Região ####
 AP.prop_BAIRRO_REGIAO <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal", !is.na(BAIRRO_REGIAO2)) %>% 
   count(VD, BAIRRO_REGIAO2) %>%
   group_by(BAIRRO_REGIAO2) %>% 
   mutate(prop = prop.table(n),
@@ -1025,7 +993,6 @@ plot(allEffects(AP.mod_BAIRRO_REGIAO), type = "response")
 
 ### Número de Banheiros ####
 AP.prop_NBANHEIROS <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, NBANHEIROS) %>%
   group_by(NBANHEIROS) %>% 
   mutate(prop = prop.table(n),
@@ -1065,7 +1032,6 @@ plot(allEffects(AP.mod_NBANHEIROS), type = "response")
 
 ### Número de Quartos ####
 AP.prop_NQUARTOS <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, NQUARTOS) %>%
   group_by(NQUARTOS) %>% 
   mutate(prop = prop.table(n),
@@ -1112,7 +1078,6 @@ plot(allEffects(AP.mod_NQUARTOS), type = "response")
 
 ### Tipo Moradia ####
 AP.prop_IMOVEL <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, IMOVEL) %>%
   group_by(IMOVEL) %>% 
   mutate(prop = prop.table(n),
@@ -1151,7 +1116,6 @@ plot(allEffects(AP.mod_IMOVEL), type = "response")
 
 ### Propriedade característica ####
 AP.prop_PROPRIEDADE <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, PROPRIEDADE) %>%
   group_by(PROPRIEDADE) %>% 
   mutate(prop = prop.table(n),
@@ -1191,7 +1155,6 @@ plot(allEffects(AP.mod_PROPRIEDADE), type = "response")
 
 ### Número de Pessoas ####
 AP.prop_NPESSOAS <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, NPESSOAS) %>%
   group_by(NPESSOAS) %>% 
   mutate(prop = prop.table(n),
@@ -1232,7 +1195,6 @@ plot(allEffects(AP.mod_PROPRIEDADE), type = "response")
 
 ### Lazer ####
 AP.prop_LAZER_CARACTERISTICA <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, LAZER_CARACTERISTICA) %>%
   group_by(LAZER_CARACTERISTICA) %>% 
   mutate(prop = prop.table(n),
@@ -1269,7 +1231,6 @@ plot(allEffects(AP.mod_LAZER_CARACTERISTICA), type = "response")
 
 ### Lazer Campinas####
 AP.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, LAZER_CAMPINAS_CARACTERISTICA) %>%
   group_by(LAZER_CAMPINAS_CARACTERISTICA) %>% 
   mutate(prop = prop.table(n),
@@ -1307,7 +1268,6 @@ plot(allEffects(AP.mod_LAZER_CAMPINAS_CARACTERISTICA), type = "response")
 ### Viagem ####
 #costuma viajar?
 AP.prop_VIAGEM <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, VIAGEM) %>%
   group_by(VIAGEM) %>% 
   mutate(prop = prop.table(n),
@@ -1343,7 +1303,6 @@ plot(allEffects(AP.mod_VIAGEM), type = "response")
 
 ### Viagem lugar ####
 AP.prop_VIAGEM_LUGAR <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, VIAGEM_LUGAR) %>%
   group_by(VIAGEM_LUGAR) %>% 
   mutate(prop = prop.table(n),
@@ -1367,9 +1326,6 @@ ggplot(AP.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop * 100, fill = VD, la
 (AP.tab_VIAGEM_LUGAR <- with(dados_AP, table(VIAGEM_LUGAR, VD)))
 chisq.test(AP.tab_VIAGEM_LUGAR) #tem correlação
 chisq.test(AP.tab_VIAGEM_LUGAR[c(1,3),])
-chisq.test(AP.tab_VIAGEM_LUGAR[c(4,5),])
-chisq.test(AP.tab_VIAGEM_LUGAR[c(2,3),])
-
 
 #teste efeitos mistos
 AP.mod_VIAGEM_LUGAR <- glmer(VD ~ VIAGEM_LUGAR +
@@ -1383,7 +1339,6 @@ plot(allEffects(AP.mod_VIAGEM_LUGAR), type = "response")
 
 ### Viagem vontade ####
 AP.prop_LAZER_VIAGEM_VONTADE2 <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, LAZER_VIAGEM_VONTADE2) %>%
   group_by(LAZER_VIAGEM_VONTADE2) %>% 
   mutate(prop = prop.table(n),
@@ -1407,8 +1362,6 @@ ggplot(AP.prop_LAZER_VIAGEM_VONTADE2, aes(x = LAZER_VIAGEM_VONTADE2, y = prop * 
 (AP.tab_LAZER_VIAGEM_VONTADE2 <- with(dados_AP, table(LAZER_VIAGEM_VONTADE2, VD)))
 chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2) #tem correlação
 chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2[c(1,2),])
-chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2[c(2,3),])
-chisq.test(AP.tab_LAZER_VIAGEM_VONTADE2[c(1,4),])
 
 #teste efeitos mistos
 AP.mod_LAZER_VIAGEM_VONTADE2 <- glmer(VD ~ LAZER_VIAGEM_VONTADE2 +
@@ -1422,7 +1375,6 @@ plot(allEffects(AP.mod_LAZER_VIAGEM_VONTADE2), type = "response")
 
 ### Infancia ####
 AP.prop_INFANCIA_MEMORIA <- dados_AP %>%
-  filter(CFS_pontoc2 == "coronal") %>% 
   count(VD, INFANCIA_MEMORIA) %>%
   group_by(INFANCIA_MEMORIA) %>% 
   mutate(prop = prop.table(n),
@@ -1461,33 +1413,36 @@ plot(allEffects(AP.mod_INFANCIA_MEMORIA), type = "response")
 # PCA ####
 escalas_AP <- dados_AP %>%
   select(INDICE_ESCOL3_norm, 
-    INDICE_OCUPACAO_norm, 
-    INDICE_OUTRO_CARGO2_norm, 
-    INDICE_OCUPACAO_SONHOS2_norm,
-    INDICE_LOCOMOCAO_norm, 
-    INDICE_MEGA_norm, 
-    INDICE_LAZER_norm, 
-    INDICE_LAZER_CAMPINAS_norm,
-    INDICE_VIAGEM_norm, 
-    INDICE_VIAGEM_LUGAR_norm, 
-    INDICE_VIAGEM_VONTADE_norm, 
-    INDICE_BAIRRO_norm,
-    INDICE_INFANCIA_norm, 
-    INDICE_RENDA_IND_norm, 
-    INDICE_RENDA_FAM_norm, 
-    INDICE_ESCOL_PAI_norm,
-    INDICE_OCUPACAO_PAI_norm, 
-    INDICE_ESCOL_MAE_norm, 
-    INDICE_OCUPACAO_MAE_norm, 
-    DENSIDADE_HABITACAO_norm
+         INDICE_ESCOL_PAI_norm,
+         INDICE_ESCOL_MAE_norm, 
+         INDICE_OCUPACAO_norm, 
+         INDICE_OCUPACAO_PAI_norm, 
+         INDICE_OCUPACAO_MAE_norm,
+         #INDICE_OUTRO_CARGO2_norm, 
+         INDICE_OCUPACAO_SONHOS2_norm,
+         #INDICE_LOCOMOCAO_norm, 
+         INDICE_MEGA_norm,
+         INDICE_RENDA_IND_norm, 
+         #INDICE_RENDA_FAM_norm,
+         #INDICE_BAIRRO_norm,
+         #DENSIDADE_HABITACAO_norm,
+         INDICE_IMOVEL_norm,
+         INDICE_LAZER_norm, 
+         INDICE_LAZER_CAMPINAS_norm,
+         INDICE_VIAGEM_norm, 
+         INDICE_VIAGEM_LUGAR_norm, 
+         INDICE_VIAGEM_VONTADE_norm, 
+         INDICE_INFANCIA_norm
   ) %>%
   mutate(across(everything(), as.numeric)) %>%
   na.omit()
 
 pca_AP <- prcomp(escalas_AP, center = TRUE, scale. = TRUE)
 summary(pca_AP)          # variância explicada por cada componente
-pca_AP$rotation           # cargas (contribuição das variáveis)
+pca_AP$rotation # cargas (contribuição das variáveis)
 pca_AP$x                  # coordenadas dos indivíduos
+
+
 
 # Scree plot
 fviz_eig(pca_AP, 
@@ -1498,3 +1453,16 @@ fviz_contrib(pca_AP, choice = "var", axes = 1, top = 10)
 fviz_contrib(pca_AP, choice = "var", axes = 2, top = 10)
 fviz_contrib(pca_AP, choice = "var", axes = 3, top = 10)
 fviz_contrib(pca_AP, choice = "var", axes = 4, top = 10)
+
+
+
+principal(dados_AP, nfactors= 6, rotate="none") 
+
+#Resumindo, as variáveis que mais se repetem entre os PCs que explicam 84% são:
+
+#INDICE_ESCOL_PAI_norm, INDICE_ESCOL_MAE_norm, INDICE_OCUPACAO_PAI_norm
+#INDICE_OCUPACAO_norm
+#INDICE_VIAGEM_VONTADE_norm, INDICE_VIAGEM_LUGAR_norm, INDICE_VIAGEM_norm
+#INDICE_LAZER_CAMPINAS_norm, INDICE_INFANCIA_norm
+#INDICE_RENDA_IND_norm
+#INDICE_IMOVEL_norm
