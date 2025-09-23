@@ -435,8 +435,7 @@ ggplot(S0.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop * 100, fill = VD, labe
 (S0.tab_ESCOLA_MAE2<- with(dados_S0, table(ESCOLA_MAE2, VD)))
 chisq.test(S0.tab_ESCOLA_MAE2) #sim
 chisq.test(S0.tab_ESCOLA_MAE2[c(1,2),])
-chisq.test(S0.tab_ESCOLA_MAE2[c(2,3),]) 
-chisq.test(S0.tab_ESCOLA_MAE2[c(1,4),])
+
 
 #teste efeitos mistos
 S0.mod_ESCOLA_MAE2 <- glmer(VD ~ ESCOLA_MAE2 +
@@ -827,14 +826,12 @@ plot(allEffects(S0.mod_media_m2), type = "response")
 
 ### Bairro ####
 ordem_bairros <- dados_S0 %>%
-  filter(CFS_sonoridade == "sonora", !is.na(media_m2)) %>%
   group_by(BAIRRO) %>%
   summarise(media_geral = mean(media_m2, na.rm = TRUE)) %>%
   arrange(media_geral) %>%  # ou arrange(media_geral) para ordem crescente
   pull(BAIRRO)
 
 S0.prop_BAIRRO <- dados_S0 %>%
-  filter(CFS_sonoridade == "sonora", !is.na(media_m2)) %>% 
   count(VD, BAIRRO, media_m2) %>%
   mutate(BAIRRO = factor(BAIRRO, levels = ordem_bairros)) %>%  # Reordena os níveis
   group_by(BAIRRO) %>% 
@@ -863,13 +860,13 @@ chisq.test(S0.prop_BAIRRO)
 
 #### Região ####
 S0.prop_BAIRRO_REGIAO <- dados_S0 %>%
-  count(VD, BAIRRO_REGIAO) %>%
-  group_by(BAIRRO_REGIAO) %>% 
+  count(VD, BAIRRO_REGIAO2) %>%
+  group_by(BAIRRO_REGIAO2) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(S0.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO, y = prop * 100, fill = VD, label = label)) + 
+ggplot(S0.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Região", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Centro", "Periferia Norte", "Periferia Sul"))+
@@ -889,12 +886,12 @@ chisq.test(S0.tab_BAIRRO_REGIAO[c(1,3),])
 
 
 #teste efeitos mistos
-S0.mod_BAIRRO_REGIAO <- glmer(VD ~ BAIRRO_REGIAO +
+S0.mod_BAIRRO_REGIAO <- glmer(VD ~ BAIRRO_REGIAO2 +
                             (1|ITEM_LEXICAL) +
                             (1|PARTICIPANTE),
                           data = dados_S0, family = binomial)
 summary(S0.mod_BAIRRO_REGIAO)
-lrm(VD ~ BAIRRO_REGIAO, data = dados_S0)
+lrm(VD ~ BAIRRO_REGIAO2, data = dados_S0)
 plot(allEffects(S0.mod_BAIRRO_REGIAO), type = "response")
 
 ### Número de Banheiros ####
@@ -972,6 +969,16 @@ S0.mod_NQUARTOS <- glmer(VD ~ NQUARTOS +
 summary(S0.mod_NQUARTOS)
 lrm(VD ~ NQUARTOS, data = dados_S0)
 plot(allEffects(S0.mod_NQUARTOS), type = "response")
+
+
+### Densidade ####
+#teste efeitos mistos
+S0.mod_DENSIDADE_HABITACAO <- glmer(VD ~ DENSIDADE_HABITACAO +
+                                      (1|ITEM_LEXICAL) +
+                                      (1|PARTICIPANTE), data = dados_S0, family = binomial)
+summary(S0.mod_DENSIDADE_HABITACAO)
+lrm(VD ~ DENSIDADE_HABITACAO, data = dados_S0)
+plot(allEffects(S0.mod_DENSIDADE_HABITACAO), type = "response")
 
 
 ### Tipo Moradia ####
@@ -1158,9 +1165,7 @@ ggplot(S0.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERIST
 (S0.tab_LAZER_CAMPINAS_CARACTERISTICA <- with(dados_S0, table(LAZER_CAMPINAS_CARACTERISTICA, VD)))
 chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA) #tem correlação
 chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA[c(1,2),])
-chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA[c(2,3),])
-chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA[c(3,4),]) #falantes que nfalaram quenão tem e que não sae não tem correlação
-chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA[c(1,5),]) 
+
 
 #teste efeitos mistos
 S0.mod_LAZER_CAMPINAS_CARACTERISTICA <- glmer(VD ~ LAZER_CAMPINAS_CARACTERISTICA +
@@ -1328,26 +1333,26 @@ plot(allEffects(S0.mod_INFANCIA_MEMORIA), type = "response")
 # PCA ####
 escalas_S0 <- dados_S0 %>%
   select(INDICE_ESCOL3_norm, 
+         INDICE_ESCOL_PAI_norm,
+         INDICE_ESCOL_MAE_norm, 
          INDICE_OCUPACAO_norm, 
-         INDICE_OUTRO_CARGO2_norm, 
+         INDICE_OCUPACAO_PAI_norm, 
+         INDICE_OCUPACAO_MAE_norm,
+         #INDICE_OUTRO_CARGO2_norm, 
          INDICE_OCUPACAO_SONHOS2_norm,
-         INDICE_LOCOMOCAO_norm, 
-         INDICE_MEGA_norm, 
+         #INDICE_LOCOMOCAO_norm, 
+         INDICE_MEGA_norm,
+         INDICE_RENDA_IND_norm, 
+         #INDICE_RENDA_FAM_norm,
+         #INDICE_BAIRRO_norm,
+         #DENSIDADE_HABITACAO_norm,
+         INDICE_IMOVEL_norm,
          INDICE_LAZER_norm, 
          INDICE_LAZER_CAMPINAS_norm,
          INDICE_VIAGEM_norm, 
          INDICE_VIAGEM_LUGAR_norm, 
          INDICE_VIAGEM_VONTADE_norm, 
-         INDICE_BAIRRO_norm,
-         INDICE_INFANCIA_norm, 
-         INDICE_RENDA_IND_norm, 
-         INDICE_RENDA_FAM_norm, 
-         INDICE_ESCOL_PAI_norm,
-         INDICE_OCUPACAO_PAI_norm, 
-         INDICE_ESCOL_MAE_norm, 
-         INDICE_OCUPACAO_MAE_norm, 
-         DENSIDADE_HABITACAO_norm
-  ) %>%
+         INDICE_INFANCIA_norm) %>%
   mutate(across(everything(), as.numeric)) %>%
   na.omit()
 
@@ -1363,3 +1368,22 @@ fviz_eig(pca_S0,
 
 fviz_contrib(pca_S0, choice = "var", axes = 1, top = 10)
 
+
+
+# INDICE_ESCOL_PAI_norm
+# INDICE_ESCOL_MAE_norm
+# INDICE_OCUPACAO_norm
+# INDICE_OCUPACAO_PAI_norm
+ 
+# INDICE_VIAGEM_norm
+# INDICE_VIAGEM_LUGAR_norm
+# INDICE_VIAGEM_VONTADE_norm
+# INDICE_LAZER_CAMPINAS_norm
+# INDICE_LAZER_norm
+
+
+# INDICE_IMOVEL_norm
+# INDICE_RENDA_IND_norm
+
+# INDICE_OCUPACAO_SONHOS2_norm (aparece forte em PC2 e PC4)
+# INDICE_INFANCIA_norm (forte em PC2 e PC4)
