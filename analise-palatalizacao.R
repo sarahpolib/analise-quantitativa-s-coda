@@ -1454,6 +1454,7 @@ fviz_contrib(pca_AP, choice = "var", axes = 2, top = 10)
 fviz_contrib(pca_AP, choice = "var", axes = 3, top = 10)
 fviz_contrib(pca_AP, choice = "var", axes = 4, top = 10)
 
+write.csv(pca_AP$rotation[,1:4], "pca_AP_scores.csv", row.names = TRUE)
 
 
 principal(dados_AP, nfactors= 6, rotate="none") 
