@@ -1368,6 +1368,7 @@ fviz_eig(pca_S0,
 
 fviz_contrib(pca_S0, choice = "var", axes = 1, top = 10)
 
+write.csv(pca_S0$rotation[,1:4], "pca_S0_scores.csv", row.names = TRUE)
 
 
 # INDICE_ESCOL_PAI_norm

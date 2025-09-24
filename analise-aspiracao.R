@@ -1367,6 +1367,10 @@ fviz_eig(pca_HAP,
 
 fviz_contrib(pca_HAP, choice = "var", axes = 1, top = 10)
 
+write.csv(pca_HAP$rotation[,1:4], "pca_HAP_scores.csv", row.names = TRUE)
+
+
+
 # INDICE_ESCOL3_norm
 # INDICE_ESCOL_PAI_norm
 # INDICE_ESCOL_MAE_norm
