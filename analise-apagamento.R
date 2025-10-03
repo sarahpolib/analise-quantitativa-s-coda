@@ -303,7 +303,7 @@ lrm(VD ~ TEMPO_RESIDENCIA, data = dados_S0)
 plot(allEffects(S0.mod_TEMPO_RESIDENCIA), type = "response")
 
 
-# MODELAGEM DE BARBOSA(2023) ####
+# 1 MODELAGEM DE BARBOSA(2023) ####
 modS01 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
                   CFP_abertura +
@@ -327,6 +327,66 @@ lrm(VD ~ TONICIDADE +
 car::vif(modS01)
 check_model(modS01)
 #check_outliers(modS01)
+r.squaredGLMM(modS01)
+
+
+# 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
+modS02 <- glmer(VD ~ TONICIDADE + 
+                  POSICAO_S +
+                  CFP_abertura +
+                  CFS_sonoridade +
+                  CLASSE_MORFOLOGICA3 + 
+                  GENERO + 
+                  TEMPO_RESIDENCIA + 
+                  IDADE_MIGRACAO +
+                  INDICE_SOCIO_OUSHIRO +
+                  (1|ITEM_LEXICAL) +
+                  (1|PARTICIPANTE), data = dados_S0, family = binomial)
+summary(modS02)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      CFP_abertura +
+      CFS_sonoridade +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_OUSHIRO, data = dados_S0)
+
+car::vif(modS02)
+check_model(modS02)
+check_outliers(modS02)
+r.squaredGLMM(modS02)
+
+
+# 3 MODELAGEM DE POLI INDICE SOCIO POLI ####
+modS03 <- glmer(VD ~ TONICIDADE + 
+                  POSICAO_S +
+                  CFP_abertura +
+                  CFS_sonoridade +
+                  CLASSE_MORFOLOGICA3 + 
+                  GENERO + 
+                  TEMPO_RESIDENCIA + 
+                  IDADE_MIGRACAO +
+                  INDICE_SOCIO_POLI +
+                  (1|ITEM_LEXICAL) +
+                  (1|PARTICIPANTE), data = dados_S0, family = binomial)
+summary(modS03)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      CFP_abertura +
+      CFS_sonoridade +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_POLI, data = dados_S0)
+
+car::vif(modS03)
+check_model(modS03)
+check_outliers(modS03)
+r.squaredGLMM(modS03)
+
 
 
 # INDICE SOCIOECONOMICO ####
@@ -1332,7 +1392,8 @@ plot(allEffects(S0.mod_INFANCIA_MEMORIA), type = "response")
 
 # PCA ####
 escalas_S0 <- dados_S0 %>%
-  select(INDICE_ESCOL3_norm, 
+  select(VD,
+         INDICE_ESCOL3_norm, 
          INDICE_ESCOL_PAI_norm,
          INDICE_ESCOL_MAE_norm, 
          INDICE_OCUPACAO_norm, 
@@ -1370,21 +1431,12 @@ fviz_contrib(pca_S0, choice = "var", axes = 1, top = 10)
 
 write.csv(pca_S0$rotation[,1:4], "pca_S0_scores.csv", row.names = TRUE)
 
+# FEATURE SELECTION - LASSO ####
+x_S0 <- model.matrix(VD ~ ., escalas_S0)[, -1]
+y_S0 <- escalas_S0$VD
 
-# INDICE_ESCOL_PAI_norm
-# INDICE_ESCOL_MAE_norm
-# INDICE_OCUPACAO_norm
-# INDICE_OCUPACAO_PAI_norm
- 
-# INDICE_VIAGEM_norm
-# INDICE_VIAGEM_LUGAR_norm
-# INDICE_VIAGEM_VONTADE_norm
-# INDICE_LAZER_CAMPINAS_norm
-# INDICE_LAZER_norm
+lasso_S0 <- cv.glmnet(x_S0, y_S0, alpha = 1)
+coef(lasso_S0, s = "lambda.min")
 
+plot(lasso_S0$glmnet.fit, xvar = "lambda", label = TRUE)
 
-# INDICE_IMOVEL_norm
-# INDICE_RENDA_IND_norm
-
-# INDICE_OCUPACAO_SONHOS2_norm (aparece forte em PC2 e PC4)
-# INDICE_INFANCIA_norm (forte em PC2 e PC4)
