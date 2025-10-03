@@ -8,7 +8,7 @@
 # Carregar pacotes ###
 #install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork"); install.packages("factoextra"); install.packages("glmnet")
 
-library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet)
+library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet); library(MuMIn)
 
 #rm(list = ls())
 
@@ -183,6 +183,50 @@ setdiff(levels(infs$BAIRRO), levels(media_m2_bairro$BAIRRO))
 infs2 <- left_join(infs, media_m2_bairro, by = "BAIRRO")
 infs2$media_m2
 
+# CALCULO INDICE SOCIOECONÔMICO ####
+#escolaridade
+#Media escolaridade e ocupação dos pais
+#Ocupação sonhos
+#Mega sena
+#Renda ind
+#média lazer e Lazer em Campinas
+#média Viagem, Viagem Lugar e Viagem vontade
+#Infância
+
+
+# Função para calcular o índice ajustado
+calcular_indice <- function(df) {
+  apply(df, 1, function(x) {
+    
+    esc <- as.numeric(x["INDICE_ESCOL3_norm"])
+    
+    pais <- mean(as.numeric(c(x["INDICE_ESCOL_PAI_norm"],
+                              x["INDICE_ESCOL_MAE_norm"],
+                              x["INDICE_OCUPACAO_PAI_norm"],
+                              x["INDICE_OCUPACAO_MAE_norm"])), na.rm = TRUE)
+    
+    lazer <- mean(as.numeric(c(x["INDICE_LAZER_norm"],
+                               x["INDICE_LAZER_CAMPINAS_norm"])), na.rm = TRUE)
+    
+    viagem <- mean(as.numeric(c(x["INDICE_VIAGEM_norm"],
+                                x["INDICE_VIAGEM_LUGAR_norm"],
+                                x["INDICE_VIAGEM_VONTADE_norm"])), na.rm = TRUE)
+    
+    ocup_sonhos <- as.numeric(x["INDICE_OCUPACAO_SONHOS2_norm"])
+    mega        <- as.numeric(x["INDICE_MEGA_norm"])
+    renda       <- as.numeric(x["INDICE_RENDA_IND_norm"])
+    infancia    <- as.numeric(x["INDICE_INFANCIA_norm"])
+    
+    componentes <- c(esc, pais, ocup_sonhos, mega, renda, infancia, lazer, viagem)
+    
+    mean(componentes, na.rm = TRUE)
+  })
+}
+
+# Exemplo de uso
+# supondo que seu data.frame seja 'dados'
+infs2$INDICE_SOCIO_POLI <- calcular_indice(infs2)
+infs2$INDICE_SOCIO_POLI
 
 ## juntar dadosAmostra2Poli com dados ifds ####
 dados <- left_join(dadosAmostra2Poli, infs2, by = "PARTICIPANTE")
@@ -225,7 +269,9 @@ levels(dados2$ESCOLARIDADE)
 ### PALATALIZAÇÃO ####
 dados_AP <- dados2 %>% 
   filter(VD %in% c("P", "A"),
-         CFS_pontoc2 == "coronal") %>%
+         CFS_pontoc2 == "coronal",
+         #PARTICIPANTE != "IsabelaS"
+         ) %>%
   droplevels()
 
 levels(dados_AP$VD)
@@ -352,4 +398,6 @@ distribuicao.geral.participante %>%
     axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "bottom")
 dev.off()
+
+
 

@@ -108,7 +108,7 @@ AP.prop_POSICAO <- dados_AP %>%
 
 ggplot(AP.prop_POSICAO, aes(x = POSICAO_S, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  labs(x = "Posição", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -174,7 +174,6 @@ chisq.test(AP.tab_CFP_abertura2[c(1,2),]) #sem diferença entre fechada e meio f
 
 # CLASSE MORFOLOGICA ####
 AP.prop_CLASSE_MORFOLOGICA3 <- dados_AP %>%
-
   count(VD, CLASSE_MORFOLOGICA3) %>%
   group_by(CLASSE_MORFOLOGICA3) %>% 
   mutate(prop = prop.table(n),
@@ -315,6 +314,28 @@ summary(AP.mod_INDICE_SOCIO_OUSHIRO)
 lrm(VD ~ INDICE_SOCIO_OUSHIRO, data = dados_AP)
 plot(allEffects(AP.mod_INDICE_SOCIO_OUSHIRO), type = "response")
 
+# INDICE SOCIO POLI ####
+AP.prop_INDICE_SOCIO_POLI <- dados_AP %>% 
+  count(VD, INDICE_SOCIO_POLI) %>%
+  group_by(INDICE_SOCIO_POLI) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print(n = 92)
+
+#png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
+ggplot(AP.prop_INDICE_SOCIO_POLI[47:92,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="red")+
+  labs(x = "Índice Socioeconomico (POLI, 2025)", y = "Proporção de Palatalização") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+#dev.off()
+
+AP.mod_INDICE_SOCIO_POLI <- glm(VD ~ INDICE_SOCIO_POLI, data = dados_AP, family = binomial)
+summary(AP.mod_INDICE_SOCIO_POLI)
+lrm(VD ~ INDICE_SOCIO_POLI, data = dados_AP)
+plot(allEffects(AP.mod_INDICE_SOCIO_POLI), type = "response") 
+
+
 
 # 1 MODELAGEM DE BARBOSA(2023) ####
 sort(unique(dados_AP$IDADE_MIGRACAO))
@@ -342,7 +363,8 @@ lrm(VD ~ TONICIDADE +
 car::vif(modAP1)
 check_model(modAP1)
 check_outliers(modAP1)
-
+# R² marginal e condicional
+r.squaredGLMM(modAP1)
 
 # 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
 modAP2 <- glmer(VD ~ TONICIDADE + 
@@ -365,9 +387,43 @@ lrm(VD ~ TONICIDADE +
       IDADE_MIGRACAO +
       INDICE_SOCIO_OUSHIRO, data = dados_AP)
 
-car::vif(modAP1)
-check_model(modAP1)
-check_outliers(modAP1)
+car::vif(modAP2)
+check_model(modAP2)
+check_outliers(modAP2)
+r.squaredGLMM(modAP2)
+
+
+# 3 MODELAGEM DE POLI INDICE SOCIO POLI ####
+modAP3 <- glmer(VD ~ TONICIDADE + 
+                  POSICAO_S +
+                  CFP_abertura +
+                  CLASSE_MORFOLOGICA3 + 
+                  GENERO + 
+                  TEMPO_RESIDENCIA + 
+                  IDADE_MIGRACAO +
+                  INDICE_SOCIO_POLI +
+                  (1|ITEM_LEXICAL) +
+                  (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(modAP3)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      CFP_abertura +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_POLI, data = dados_AP)
+
+car::vif(modAP3)
+check_model(modAP3)
+check_outliers(modAP3)
+r.squaredGLMM(modAP3)
+
+
+## interações ####
+summary(glm(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_POLI, data = dados_AP, family = binomial))
+summary(glm(VD ~ IDADE_MIGRACAO * TEMPO_RESIDENCIA, data = dados_AP, family = binomial))
+summary(glm(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI, data = dados_AP, family = binomial))
 
 
 # INDICE SOCIOECONOMICO ####
@@ -1412,7 +1468,8 @@ plot(allEffects(AP.mod_INFANCIA_MEMORIA), type = "response")
 
 # PCA ####
 escalas_AP <- dados_AP %>%
-  select(INDICE_ESCOL3_norm, 
+  select(VD,
+         INDICE_ESCOL3_norm, 
          INDICE_ESCOL_PAI_norm,
          INDICE_ESCOL_MAE_norm, 
          INDICE_OCUPACAO_norm, 
@@ -1459,11 +1516,13 @@ write.csv(pca_AP$rotation[,1:4], "pca_AP_scores.csv", row.names = TRUE)
 
 principal(dados_AP, nfactors= 6, rotate="none") 
 
-#Resumindo, as variáveis que mais se repetem entre os PCs que explicam 84% são:
 
-#INDICE_ESCOL_PAI_norm, INDICE_ESCOL_MAE_norm, INDICE_OCUPACAO_PAI_norm
-#INDICE_OCUPACAO_norm
-#INDICE_VIAGEM_VONTADE_norm, INDICE_VIAGEM_LUGAR_norm, INDICE_VIAGEM_norm
-#INDICE_LAZER_CAMPINAS_norm, INDICE_INFANCIA_norm
-#INDICE_RENDA_IND_norm
-#INDICE_IMOVEL_norm
+# FEATURE SELECTION - LASSO ####
+x_AP <- model.matrix(VD ~ ., escalas_AP)[, -1]
+y_AP <- escalas_AP$VD
+
+lasso_AP <- cv.glmnet(x_AP, y_AP, alpha = 1)
+coef(lasso_AP, s = "lambda.min")
+
+plot(lasso_AP$glmnet.fit, xvar = "lambda", label = TRUE)
+

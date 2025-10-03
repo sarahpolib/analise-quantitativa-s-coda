@@ -318,7 +318,7 @@ lrm(VD ~ TEMPO_RESIDENCIA, data = dados_HAP)
 plot(allEffects(HAP.mod_TEMPO_RESIDENCIA), type = "response")
 
 
-# MODELAGEM DE BARBOSA(2023) ####
+# 1 MODELAGEM DE BARBOSA(2023) ####
 modHAP1 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
                   CFP_abertura +
@@ -340,6 +340,68 @@ lrm(VD ~ TONICIDADE +
 car::vif(modHAP1)
 check_model(modHAP1)
 #check_outliers(modHAP1)
+r.squaredGLMM(modHAP1)
+
+
+# 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
+modHAP2 <- glmer(VD ~ TONICIDADE + 
+                  POSICAO_S +
+                  CFP_abertura +
+                  CLASSE_MORFOLOGICA3 + 
+                  GENERO + 
+                  TEMPO_RESIDENCIA + 
+                  IDADE_MIGRACAO +
+                  INDICE_SOCIO_OUSHIRO +
+                  (1|ITEM_LEXICAL) +
+                  (1|PARTICIPANTE), data = dados_HAP, family = binomial)
+summary(modHAP2)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      CFP_abertura +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_OUSHIRO, data = dados_HAP)
+
+car::vif(modHAP2)
+check_model(modHAP2)
+check_outliers(modHAP2)
+r.squaredGLMM(modHAP2)
+
+
+# 3 MODELAGEM DE POLI INDICE SOCIO POLI ####
+modHAP3 <- glmer(VD ~ TONICIDADE + 
+                  POSICAO_S +
+                  CFP_abertura +
+                  CLASSE_MORFOLOGICA3 + 
+                  GENERO + 
+                  TEMPO_RESIDENCIA + 
+                  IDADE_MIGRACAO +
+                  INDICE_SOCIO_POLI +
+                  (1|ITEM_LEXICAL) +
+                  (1|PARTICIPANTE), data = dados_HAP, family = binomial)
+summary(modHAP3)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      CFP_abertura +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_POLI, data = dados_HAP)
+
+car::vif(modHAP3)
+check_model(modHAP3)
+check_outliers(modHAP3)
+r.squaredGLMM(modHAP3)
+
+
+## interações ####
+summary(glm(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_POLI, data = dados_HAP, family = binomial))
+summary(glm(VD ~ IDADE_MIGRACAO * TEMPO_RESIDENCIA, data = dados_HAP, family = binomial))
+summary(glm(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI, data = dados_HAP, family = binomial))
+summary(glm(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_OUSHIRO, data = dados_HAP, family = binomial))
 
 
 # INDICE SOCIOECONOMICO ####
@@ -1330,7 +1392,8 @@ plot(allEffects(HAP.mod_INFANCIA_MEMORIA), type = "response")
 
 # PCA ####
 escalas_HAP <- dados_HAP %>%
-  select(INDICE_ESCOL3_norm, 
+  select(VD,
+         INDICE_ESCOL3_norm, 
          INDICE_ESCOL_PAI_norm,
          INDICE_ESCOL_MAE_norm, 
          INDICE_OCUPACAO_norm, 
@@ -1369,23 +1432,13 @@ fviz_contrib(pca_HAP, choice = "var", axes = 1, top = 10)
 
 write.csv(pca_HAP$rotation[,1:4], "pca_HAP_scores.csv", row.names = TRUE)
 
+# FEATURE SELECTION - LASSO ####
+x_HAP <- model.matrix(VD ~ ., escalas_HAP)[, -1]
+y_HAP <- escalas_HAP$VD
+
+lasso_HAP <- cv.glmnet(x_HAP, y_HAP, alpha = 1)
+coef(lasso_HAP, s = "lambda.min")
 
 
-# INDICE_ESCOL3_norm
-# INDICE_ESCOL_PAI_norm
-# INDICE_ESCOL_MAE_norm
-# INDICE_OCUPACAO_norm
-# INDICE_OCUPACAO_PAI_norm
-# INDICE_OCUPACAO_MAE_norm
-# INDICE_OCUPACAO_SONHOS2_norm
-# INDICE_LAZER_norm
-# INDICE_LAZER_CAMPINAS_norm
-# INDICE_RENDA_IND_norm
-# INDICE_VIAGEM_norm
-# INDICE_VIAGEM_LUGAR_norm
-# INDICE_INFANCIA_norm
-# INDICE_IMOVEL_norm
-# INDICE_MEGA_norm
-
-
+plot(lasso_HAP$glmnet.fit, xvar = "lambda", label = TRUE)
 
