@@ -15,7 +15,7 @@ library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(
 # Carregar dados ####
 setwd("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa")
 
-## amostra2 ####
+## AMOSTRA2 ####
 amostra2 <- read_csv("dadosS-amostra2-planilha.csv", locale = locale(encoding = "latin1"),
                      col_types = cols(.default = col_character(),
                                       CONT_PREC = col_character(),
@@ -31,7 +31,7 @@ str(amostra2)
 unique(amostra2$PARTICIPANTE)
 
 
-## poli ####
+## POLI ####
 poli <- read_csv("dadosS-poli-planilha.csv", locale = locale(encoding = "latin1"),
                     col_types = cols(.default = col_character(),
                                      CONT_PREC = col_character(),
@@ -53,7 +53,7 @@ str(dadosAmostra2Poli)
 #View(dadosAmostra2Poli)
 unique(dadosAmostra2Poli$PARTICIPANTE)
  
-## infs ####
+## INFS ####
 infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UTF-8"),
                  col_types = cols(.default = col_character(),
                                   IDADE = col_integer(),
@@ -99,7 +99,7 @@ infs <- read_csv("infs2025-amostra2ePoli-V2.csv", locale = locale(encoding = "UT
 str(infs)
 
 ### Mudar nível de variaveis ####
-#### Renda individual ###
+# Renda individual #
 infs$RENDA_IND <- factor(infs$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM"))
 levels(infs$RENDA_IND)
 
@@ -158,8 +158,8 @@ infs$INDICE_IMOVEL_norm
 head(infs)
 str(infs)
 
-## m2 ####
 
+### m2 ####
 m2 <- read_csv("m2-bairros.csv", locale = locale(encoding = "UTF-8"), 
                col_types = cols(.default = col_character(),
                                 PRECO = col_double(),
@@ -178,12 +178,12 @@ media_m2_bairro <- m2 %>%
   print(n = 22)
 
 
-## juntar infs e m2 ####
+### juntar infs e m2 ####
 setdiff(levels(infs$BAIRRO), levels(media_m2_bairro$BAIRRO))
 infs2 <- left_join(infs, media_m2_bairro, by = "BAIRRO")
 infs2$media_m2
 
-# CALCULO INDICE SOCIOECONÔMICO ####
+### CALCULO INDICE SOCIOECONÔMICO ####
 #escolaridade
 #Media escolaridade e ocupação dos pais
 #Ocupação sonhos
@@ -223,12 +223,11 @@ calcular_indice <- function(df) {
   })
 }
 
-# Exemplo de uso
-# supondo que seu data.frame seja 'dados'
+#calculo
 infs2$INDICE_SOCIO_POLI <- calcular_indice(infs2)
 infs2$INDICE_SOCIO_POLI
 
-## juntar dadosAmostra2Poli com dados ifds ####
+## Amostra2Poli + INFS ####
 dados <- left_join(dadosAmostra2Poli, infs2, by = "PARTICIPANTE")
 #View(dados)
 str(dados)
@@ -236,7 +235,7 @@ str(dados)
 setdiff(levels(dadosAmostra2Poli$PARTICIPANTE), levels(infs$PARTICIPANTE))
 
 
-## Filtragens e manipulações de variáveis ####
+### Filtragens e manipulações de variáveis linguísticas ####
 dados1 <- dados %>% 
   filter(VD %in% c("A", "P", "0", "H")) %>% 
   droplevels()
@@ -277,6 +276,9 @@ dados_AP <- dados2 %>%
 levels(dados_AP$VD)
 levels(dados_AP$CFS_pontoc2)
 
+dados_AP$INDICE_ESCOL_PAI_norm <- as.factor(dados_AP$INDICE_ESCOL_PAI_norm)
+class(dados_AP$INDICE_ESCOL_PAI_norm)
+
 
 
 ### APAGAMENTO ####
@@ -301,10 +303,13 @@ dados_HAP <- dados2 %>%
 levels(dados_HAP$VD) 
 levels(dados_HAP$CFS_sonoridade) 
 
+# EXPORTAR dados2 ####
+
+write.csv(dados2, "dados2.csv", row.names = TRUE)
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 
-# DISTRIBUIÇÃO GERAL ####
+# Distribuição Geral ####
 distribuicao.geral <- dados2 %>% 
   count(VD) %>%
   mutate(prop = prop.table(n),
@@ -334,7 +339,7 @@ ggplot(aes(x = VD, y = prop, fill = VD, label = label)) +
 dev.off()
 
 
-#Distribuição por amostra ####
+## Por amostra ####
 
 distribuicao.amostra <- dados2 %>% 
   count(AMOSTRA, VD) %>%
@@ -368,7 +373,7 @@ dev.off()
 
 
 
-# DISTRIBUIÇÃO GERAL POR PARTICIPANTE####
+## Por participante ####
 distribuicao.geral.participante <- dados2 %>% 
   count(PARTICIPANTE, VD) %>%
   group_by(PARTICIPANTE) %>% 

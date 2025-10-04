@@ -224,10 +224,9 @@ ocupacao_pai <- dados2 %>%
       INDICE_OCUPACAO_PAI == 1 ~ "1. Trabalhador braçal s/ treinamento",
       INDICE_OCUPACAO_PAI == 2 ~ "2. Trabalhador braçal c/ treinamento",
       INDICE_OCUPACAO_PAI == 3 ~ "3. Funções admin./atend. ao público",
-      INDICE_OCUPACAO_PAI == 4 ~ "4. Profissionais da educação",
-      INDICE_OCUPACAO_PAI == 5 ~ "5. Microempres./ger. baixo escalão",
-      INDICE_OCUPACAO_PAI == 6 ~ "6. Profissionais especializados/liberais",
-      INDICE_OCUPACAO_PAI == 7 ~ "7. Peq. Emp./ger. alto escalão",
+      INDICE_OCUPACAO_PAI == 4 ~ "5. Microempres./ger. baixo escalão",
+      INDICE_OCUPACAO_PAI == 5 ~ "6. Profissionais especializados/liberais",
+      INDICE_OCUPACAO_PAI == 6 ~ "7. Peq. Emp./ger. alto escalão",
       TRUE ~ as.character(INDICE_OCUPACAO_PAI)
     ),
     categoria = factor(categoria, levels = unique(categoria))) %>% 

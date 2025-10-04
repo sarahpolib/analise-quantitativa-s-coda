@@ -424,6 +424,7 @@ r.squaredGLMM(modAP3)
 summary(glm(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_POLI, data = dados_AP, family = binomial))
 summary(glm(VD ~ IDADE_MIGRACAO * TEMPO_RESIDENCIA, data = dados_AP, family = binomial))
 summary(glm(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI, data = dados_AP, family = binomial))
+summary(glm(VD ~ IDADE_MIGRACAO * ESCOLARIDADE2, data = dados_AP, family = binomial))
 
 
 # INDICE SOCIOECONOMICO ####
@@ -1468,8 +1469,7 @@ plot(allEffects(AP.mod_INFANCIA_MEMORIA), type = "response")
 
 # PCA ####
 escalas_AP <- dados_AP %>%
-  select(VD,
-         INDICE_ESCOL3_norm, 
+  select(INDICE_ESCOL3_norm, 
          INDICE_ESCOL_PAI_norm,
          INDICE_ESCOL_MAE_norm, 
          INDICE_OCUPACAO_norm, 
@@ -1518,8 +1518,36 @@ principal(dados_AP, nfactors= 6, rotate="none")
 
 
 # FEATURE SELECTION - LASSO ####
-x_AP <- model.matrix(VD ~ ., escalas_AP)[, -1]
-y_AP <- escalas_AP$VD
+escalas_lasso_AP <- dados_AP %>%
+  select(VD,
+    INDICE_ESCOL3_norm, 
+    INDICE_ESCOL_PAI_norm,
+    INDICE_ESCOL_MAE_norm, 
+    INDICE_OCUPACAO_norm, 
+    INDICE_OCUPACAO_PAI_norm, 
+    INDICE_OCUPACAO_MAE_norm,
+    #INDICE_OUTRO_CARGO2_norm, 
+    INDICE_OCUPACAO_SONHOS2_norm,
+    #INDICE_LOCOMOCAO_norm, 
+    INDICE_MEGA_norm,
+    INDICE_RENDA_IND_norm, 
+    #INDICE_RENDA_FAM_norm,
+    #INDICE_BAIRRO_norm,
+    #DENSIDADE_HABITACAO_norm,
+    INDICE_IMOVEL_norm,
+    INDICE_LAZER_norm, 
+    INDICE_LAZER_CAMPINAS_norm,
+    INDICE_VIAGEM_norm, 
+    INDICE_VIAGEM_LUGAR_norm, 
+    INDICE_VIAGEM_VONTADE_norm, 
+    INDICE_INFANCIA_norm
+  ) %>%
+  mutate(across(everything(), as.numeric)) %>%
+  na.omit()
+
+
+x_AP <- model.matrix(VD ~ ., escalas_lasso_AP)[, -1]
+y_AP <- escalas_lasso_AP$VD
 
 lasso_AP <- cv.glmnet(x_AP, y_AP, alpha = 1)
 coef(lasso_AP, s = "lambda.min")
