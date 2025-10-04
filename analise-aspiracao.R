@@ -1392,8 +1392,7 @@ plot(allEffects(HAP.mod_INFANCIA_MEMORIA), type = "response")
 
 # PCA ####
 escalas_HAP <- dados_HAP %>%
-  select(VD,
-         INDICE_ESCOL3_norm, 
+  select(INDICE_ESCOL3_norm, 
          INDICE_ESCOL_PAI_norm,
          INDICE_ESCOL_MAE_norm, 
          INDICE_OCUPACAO_norm, 
@@ -1433,8 +1432,35 @@ fviz_contrib(pca_HAP, choice = "var", axes = 1, top = 10)
 write.csv(pca_HAP$rotation[,1:4], "pca_HAP_scores.csv", row.names = TRUE)
 
 # FEATURE SELECTION - LASSO ####
-x_HAP <- model.matrix(VD ~ ., escalas_HAP)[, -1]
-y_HAP <- escalas_HAP$VD
+escalas_lasso_HAP <- dados_HAP %>%
+  select(VD,
+         INDICE_ESCOL3_norm, 
+         INDICE_ESCOL_PAI_norm,
+         INDICE_ESCOL_MAE_norm, 
+         INDICE_OCUPACAO_norm, 
+         INDICE_OCUPACAO_PAI_norm, 
+         INDICE_OCUPACAO_MAE_norm,
+         #INDICE_OUTRO_CARGO2_norm, 
+         INDICE_OCUPACAO_SONHOS2_norm,
+         #INDICE_LOCOMOCAO_norm, 
+         INDICE_MEGA_norm,
+         INDICE_RENDA_IND_norm, 
+         #INDICE_RENDA_FAM_norm,
+         #INDICE_BAIRRO_norm,
+         #DENSIDADE_HABITACAO_norm,
+         INDICE_IMOVEL_norm,
+         INDICE_LAZER_norm, 
+         INDICE_LAZER_CAMPINAS_norm,
+         INDICE_VIAGEM_norm, 
+         INDICE_VIAGEM_LUGAR_norm, 
+         INDICE_VIAGEM_VONTADE_norm, 
+         INDICE_INFANCIA_norm
+  ) %>%
+  mutate(across(everything(), as.numeric)) %>%
+  na.omit()
+
+x_HAP <- model.matrix(VD ~ ., escalas_lasso_HAP)[, -1]
+y_HAP <- escalas_lasso_HAP$VD
 
 lasso_HAP <- cv.glmnet(x_HAP, y_HAP, alpha = 1)
 coef(lasso_HAP, s = "lambda.min")

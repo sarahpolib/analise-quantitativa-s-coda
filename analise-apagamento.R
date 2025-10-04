@@ -1392,7 +1392,7 @@ plot(allEffects(S0.mod_INFANCIA_MEMORIA), type = "response")
 
 # PCA ####
 escalas_S0 <- dados_S0 %>%
-  select(VD,
+  select(#VD,
          INDICE_ESCOL3_norm, 
          INDICE_ESCOL_PAI_norm,
          INDICE_ESCOL_MAE_norm, 
@@ -1432,8 +1432,35 @@ fviz_contrib(pca_S0, choice = "var", axes = 1, top = 10)
 write.csv(pca_S0$rotation[,1:4], "pca_S0_scores.csv", row.names = TRUE)
 
 # FEATURE SELECTION - LASSO ####
-x_S0 <- model.matrix(VD ~ ., escalas_S0)[, -1]
-y_S0 <- escalas_S0$VD
+escalas_lasso_S0 <- dados_S0 %>%
+  select(VD,
+    INDICE_ESCOL3_norm, 
+    INDICE_ESCOL_PAI_norm,
+    INDICE_ESCOL_MAE_norm, 
+    INDICE_OCUPACAO_norm, 
+    INDICE_OCUPACAO_PAI_norm, 
+    INDICE_OCUPACAO_MAE_norm,
+    #INDICE_OUTRO_CARGO2_norm, 
+    INDICE_OCUPACAO_SONHOS2_norm,
+    #INDICE_LOCOMOCAO_norm, 
+    INDICE_MEGA_norm,
+    INDICE_RENDA_IND_norm, 
+    #INDICE_RENDA_FAM_norm,
+    #INDICE_BAIRRO_norm,
+    #DENSIDADE_HABITACAO_norm,
+    INDICE_IMOVEL_norm,
+    INDICE_LAZER_norm, 
+    INDICE_LAZER_CAMPINAS_norm,
+    INDICE_VIAGEM_norm, 
+    INDICE_VIAGEM_LUGAR_norm, 
+    INDICE_VIAGEM_VONTADE_norm, 
+    INDICE_INFANCIA_norm) %>%
+  mutate(across(everything(), as.numeric)) %>%
+  na.omit()
+
+
+x_S0 <- model.matrix(VD ~ ., escalas_lasso_S0)[, -1]
+y_S0 <- escalas_lasso_S0$VD
 
 lasso_S0 <- cv.glmnet(x_S0, y_S0, alpha = 1)
 coef(lasso_S0, s = "lambda.min")
