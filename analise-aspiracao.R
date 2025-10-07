@@ -280,7 +280,7 @@ HAP.prop_IDADE_MIGRACAO <- dados_HAP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 47)
 
-png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_HAP-idade-migracao.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_HAP-idade-migracao.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(HAP.prop_IDADE_MIGRACAO[27:47,], aes(x = IDADE_MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
@@ -303,7 +303,7 @@ HAP.prop_TEMPO_RESIDENCIA <- dados_HAP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 39)
 
-#png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_HAP-10.idade_migracao.png")
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_HAP-10.idade_migracao.png")
 ggplot(HAP.prop_TEMPO_RESIDENCIA[24:39,], aes(x = TEMPO_RESIDENCIA, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+

@@ -13,7 +13,7 @@ library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(
 rm(list = ls())
 
 # Carregar dados ####
-setwd("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa")
+setwd("C:/Users/sah/Downloads/analise-quantitativa-s-coda")
 
 ## AMOSTRA2 ####
 amostra2 <- read_csv("dadosS-amostra2-planilha.csv", locale = locale(encoding = "latin1"),
@@ -264,6 +264,16 @@ mutate(CFP_abertura2 = case_when(
   )
 levels(dados2$ESCOLARIDADE)
 
+### Classes para LASSO ####
+
+dados2$OCUPACAO_LOCOMOCAO2 <- as.factor(dados2$OCUPACAO_LOCOMOCAO2)
+class(dados2$OCUPACAO_LOCOMOCAO2)
+
+dados2$INDICE_OUTRO_CARGO2_norm <- as.factor(dados2$INDICE_OUTRO_CARGO2_norm)
+class(dados2$INDICE_OUTRO_CARGO2_norm)
+
+dados2$INDICE_LOCOMOCAO_norm <- as.factor(dados2$INDICE_LOCOMOCAO_norm)
+class(dados2$INDICE_LOCOMOCAO_norm)
 
 ### PALATALIZAÇÃO ####
 dados_AP <- dados2 %>% 
@@ -276,8 +286,6 @@ dados_AP <- dados2 %>%
 levels(dados_AP$VD)
 levels(dados_AP$CFS_pontoc2)
 
-dados_AP$INDICE_ESCOL_PAI_norm <- as.factor(dados_AP$INDICE_ESCOL_PAI_norm)
-class(dados_AP$INDICE_ESCOL_PAI_norm)
 
 
 
@@ -317,7 +325,7 @@ distribuicao.geral <- dados2 %>%
   print()
 
 
-png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD.png", width = 6.5, height = 4.5, units = "in", res = 300)
 distribuicao.geral %>%   
 ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
@@ -349,7 +357,7 @@ distribuicao.amostra <- dados2 %>%
   print()
 
 
-png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD-amostra.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD-amostra.png", width = 6.5, height = 4.5, units = "in", res = 300)
 distribuicao.amostra %>%   
   ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
@@ -382,7 +390,7 @@ distribuicao.geral.participante <- dados2 %>%
   print()
 
 
-png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD-participante.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD-participante.png", width = 6.5, height = 4.5, units = "in", res = 300)
 distribuicao.geral.participante %>%   
   ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
