@@ -31,7 +31,6 @@ escolaridade_participante %>%
 
 
 ## OCUPAÇÃO ####
-
 ocupacao <- infs2 %>% 
   distinct(PARTICIPANTE, INDICE_OCUPACAO) %>%  #garante 1 linha por participante
   count(INDICE_OCUPACAO) %>% 
@@ -89,7 +88,7 @@ outrocargo_participante %>%
 ocupacaosonhos_participante <- infs2 %>% 
   distinct(PARTICIPANTE, INDICE_OCUPACAO_SONHOS) %>%  #garante 1 linha por participante
   count(INDICE_OCUPACAO_SONHOS) %>%
-  mutate(INDICE_OUTRO_CARGO = fct_explicit_na(INDICE_OUTRO_CARGO, "Não informado")) %>%  # Transforma NA em categoria
+  mutate(INDICE_OCUPACAO_SONHOS = fct_explicit_na(INDICE_OCUPACAO_SONHOS, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
 ocupacaosonhos_participante %>%
@@ -126,6 +125,434 @@ locomocao_participante %>%
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
         axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
   )
+
+
+
+## MEGA SENA ####
+megasena_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, MEGA_SENA2) %>%  #garante 1 linha por participante
+  count(MEGA_SENA2) %>%
+  mutate(MEGA_SENA2 = fct_explicit_na(MEGA_SENA2, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+megasena_participante %>%
+  ggplot(aes(x = MEGA_SENA2, y = n, label = n, fill = MEGA_SENA2)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Mega Sena",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## MEGA SENA TRABALAHR ####
+megasena_trabalhar_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, MEGASENA_TRABALHAR2) %>%  #garante 1 linha por participante
+  count(MEGASENA_TRABALHAR2) %>%
+  mutate(MEGASENA_TRABALHAR2 = fct_explicit_na(MEGASENA_TRABALHAR2, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+megasena_trabalhar_participante %>%
+  ggplot(aes(x = MEGASENA_TRABALHAR2, y = n, label = n, fill = MEGASENA_TRABALHAR2)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Mega Sena - Trabalho",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+
+## LAZER ####
+lazer_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, LAZER_CARACTERISTICA) %>%  #garante 1 linha por participante
+  count(LAZER_CARACTERISTICA) %>%
+  mutate(LAZER_CARACTERISTICA = fct_explicit_na(LAZER_CARACTERISTICA, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+lazer_participante %>%
+  ggplot(aes(x = LAZER_CARACTERISTICA, y = n, label = n, fill = LAZER_CARACTERISTICA)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Lazer",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+
+## LAZER CAMPINAS ####
+lazercampinas_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, LAZER_CAMPINAS_CARACTERISTICA) %>%  #garante 1 linha por participante
+  count(LAZER_CAMPINAS_CARACTERISTICA) %>%
+  mutate(LAZER_CAMPINAS_CARACTERISTICA = fct_explicit_na(LAZER_CAMPINAS_CARACTERISTICA, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+lazercampinas_participante %>%
+  ggplot(aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = n, label = n, fill = LAZER_CAMPINAS_CARACTERISTICA)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Lazer em Campinas",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## VIAGEM ####
+viagem_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, VIAGEM) %>%  #garante 1 linha por participante
+  count(VIAGEM) %>%
+  mutate(VIAGEM = fct_explicit_na(VIAGEM, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+viagem_participante %>%
+  ggplot(aes(x = VIAGEM, y = n, label = n, fill = VIAGEM)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Viagem",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## VIAGEM LUGAR ####
+viagemlugar_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, VIAGEM_LUGAR) %>%  #garante 1 linha por participante
+  count(VIAGEM_LUGAR) %>%
+  mutate(VIAGEM_LUGAR = fct_explicit_na(VIAGEM_LUGAR, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+viagemlugar_participante %>%
+  ggplot(aes(x = VIAGEM_LUGAR, y = n, label = n, fill = VIAGEM_LUGAR)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Viagem Lugar",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## VIAGEM VONTADE ####
+viagemvontade_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, LAZER_VIAGEM_VONTADE2) %>%  #garante 1 linha por participante
+  count(LAZER_VIAGEM_VONTADE2) %>%
+  mutate(LAZER_VIAGEM_VONTADE2 = fct_explicit_na(LAZER_VIAGEM_VONTADE2, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+viagemvontade_participante %>%
+  ggplot(aes(x = LAZER_VIAGEM_VONTADE2, y = n, label = n, fill = LAZER_VIAGEM_VONTADE2)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Viagem Vontade",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+
+## REGIÃO ####
+regiao_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, BAIRRO_REGIAO2) %>%  #garante 1 linha por participante
+  count(BAIRRO_REGIAO2) %>%
+  mutate(BAIRRO_REGIAO2 = fct_explicit_na(BAIRRO_REGIAO2, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+regiao_participante %>%
+  ggplot(aes(x = BAIRRO_REGIAO2, y = n, label = n, fill = BAIRRO_REGIAO2)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Região",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## MOTIVO ####
+motivo_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, MOTIVO) %>%  #garante 1 linha por participante
+  count(MOTIVO) %>%
+  mutate(MOTIVO = fct_explicit_na(MOTIVO, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+motivo_participante %>%
+  ggplot(aes(x = MOTIVO, y = n, label = n, fill = MOTIVO)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "MOTIVO",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+
+## IMOVEL ####
+imovel_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, IMOVEL) %>%  #garante 1 linha por participante
+  count(IMOVEL) %>%
+  mutate(IMOVEL = fct_explicit_na(IMOVEL, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+imovel_participante %>%
+  ggplot(aes(x = IMOVEL, y = n, label = n, fill = IMOVEL)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Região",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## NQUARTOS ####
+quartos_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, NQUARTOS) %>%  #garante 1 linha por participante
+  count(NQUARTOS) %>%
+  mutate(NQUARTOS = fct_explicit_na(NQUARTOS, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+quartos_participante %>%
+  ggplot(aes(x = NQUARTOS, y = n, label = n, fill = NQUARTOS)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Quartos",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## NBANHEIROS ####
+banheiros_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, NBANHEIROS) %>%  #garante 1 linha por participante
+  count(NBANHEIROS) %>%
+  mutate(NBANHEIROS = fct_explicit_na(NBANHEIROS, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+banheiros_participante %>%
+  ggplot(aes(x = NBANHEIROS, y = n, label = n, fill = NBANHEIROS)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Banheiros",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+
+## NBANHEIROS ####
+comodos_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, NCOMODOS) %>%  #garante 1 linha por participante
+  count(NCOMODOS) %>%
+  mutate(NCOMODOS = fct_explicit_na(NCOMODOS, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+comodos_participante %>%
+  ggplot(aes(x = NCOMODOS, y = n, label = n, fill = NCOMODOS)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Comodos",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+## DENSIDADE_HABITACAO ####
+densidade_participante <- infs2 %>%
+  distinct(PARTICIPANTE, DENSIDADE_HABITACAO) %>%
+  count(DENSIDADE_HABITACAO)
+
+ggplot(densidade_participante, aes(x = DENSIDADE_HABITACAO, y = n)) +
+  geom_line(color = "#3182bd", size = 1) +
+  geom_point(color = "#08519c", size = 2) +
+  labs(
+    x = "Densidade habitacional",
+    y = "Número de participantes",
+    title = "Distribuição da densidade habitacional"
+  ) +
+  theme_minimal(base_size = 13)
+
+## RENDA_IND ####
+rendaind_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, RENDA_IND) %>%  #garante 1 linha por participante
+  count(RENDA_IND) %>%
+  mutate(RENDA_IND = fct_explicit_na(RENDA_IND, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+rendaind_participante %>%
+  ggplot(aes(x = RENDA_IND, y = n, label = n, fill = RENDA_IND)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Renda Individual",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## RENDA_FAM ####
+rendafam_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, RENDA_FAM) %>%  #garante 1 linha por participante
+  count(RENDA_FAM) %>%
+  mutate(RENDA_FAM = fct_explicit_na(RENDA_FAM, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+rendafam_participante %>%
+  ggplot(aes(x = RENDA_FAM, y = n, label = n, fill = RENDA_FAM)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Renda Familiar",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## ESCOLA_PAI2 ####
+escolapai_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, ESCOLA_PAI2) %>%  #garante 1 linha por participante
+  count(ESCOLA_PAI2) %>%
+  mutate(ESCOLA_PAI2 = fct_explicit_na(ESCOLA_PAI2, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+escolapai_participante %>%
+  ggplot(aes(x = ESCOLA_PAI2, y = n, label = n, fill = ESCOLA_PAI2)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "escola do Pai",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## ESCOLA_MAE2 ####
+escolamae_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, ESCOLA_MAE2) %>%  #garante 1 linha por participante
+  count(ESCOLA_MAE2) %>%
+  mutate(ESCOLA_MAE2 = fct_explicit_na(ESCOLA_MAE2, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+escolamae_participante %>%
+  ggplot(aes(x = ESCOLA_MAE2, y = n, label = n, fill = ESCOLA_MAE2)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "Escola da Mãe",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+## INDICE_OCUPACAO_PAI ####
+ocupacaopai_participante <- infs2 %>%
+  distinct(PARTICIPANTE, INDICE_OCUPACAO_PAI) %>%
+  count(INDICE_OCUPACAO_PAI)
+
+ggplot(ocupacaopai_participante, aes(x = INDICE_OCUPACAO_PAI, y = n)) +
+  geom_line(color = "#3182bd", size = 1) +
+  geom_point(color = "#08519c", size = 2) +
+  labs(
+    x = "Ocupação Pai",
+    y = "Número de participantes",
+    title = "Distribuição da densidade habitacional"
+  ) +
+  theme_minimal(base_size = 13)
+
+
+## INDICE_OCUPACAO_MAE ####
+ocupacaomae_participante <- infs2 %>%
+  distinct(PARTICIPANTE, INDICE_OCUPACAO_MAE) %>%
+  count(INDICE_OCUPACAO_MAE)
+
+ggplot(ocupacaomae_participante, aes(x = INDICE_OCUPACAO_MAE, y = n)) +
+  geom_line(color = "#3182bd", size = 1) +
+  geom_point(color = "#08519c", size = 2) +
+  labs(
+    x = "Ocupação Mãe",
+    y = "Número de participantes",
+    title = "Distribuição da densidade habitacional"
+  ) +
+  theme_minimal(base_size = 13)
+
+
 
 
 # INTERAÇÕES ####

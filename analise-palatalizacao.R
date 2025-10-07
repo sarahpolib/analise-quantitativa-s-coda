@@ -256,7 +256,7 @@ AP.prop_IDADE_MIGRACAO <- dados_AP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 52)
 
-#png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_AP-10.idade_migracao.png")
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_AP-10.idade_migracao.png")
 ggplot(AP.prop_IDADE_MIGRACAO[27:52,], aes(x = IDADE_MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
@@ -279,7 +279,7 @@ AP.prop_TEMPO_RESIDENCIA <- dados_AP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 46)
 
-png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_TEMPO_RESIDENCIA[24:46,], aes(x = TEMPO_RESIDENCIA, y = prop * 100, label = round(prop * 100, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
@@ -300,7 +300,7 @@ AP.prop_INDICE_SOCIO_OUSHIRO <- dados_AP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 62)
 
-#png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_INDICE_SOCIO_OUSHIRO[32:62,], aes(x = INDICE_SOCIO_OUSHIRO, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
@@ -321,7 +321,7 @@ AP.prop_INDICE_SOCIO_POLI <- dados_AP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 92)
 
-#png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_INDICE_SOCIO_POLI[47:92,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
