@@ -137,6 +137,7 @@ infs$LAZER_CAMPINAS_CARACTERISTICA <- fct_collapse(as.factor(infs$LAZER_CAMPINAS
 levels(infs$LAZER_CAMPINAS_CARACTERISTICA)
 
 
+
 ### Normalização de índices ####
 escalas <- infs %>% 
   select(INDICE_ESCOL3, INDICE_OCUPACAO, INDICE_OUTRO_CARGO2, INDICE_OCUPACAO_SONHOS2, INDICE_LOCOMOCAO, INDICE_MEGA, INDICE_LAZER, INDICE_LAZER_CAMPINAS, INDICE_VIAGEM, INDICE_VIAGEM_LUGAR, INDICE_VIAGEM_VONTADE, INDICE_BAIRRO, INDICE_INFANCIA, INDICE_RENDA_IND, INDICE_RENDA_FAM, INDICE_ESCOL_PAI, INDICE_OCUPACAO_PAI, INDICE_ESCOL_MAE, INDICE_OCUPACAO_MAE, DENSIDADE_HABITACAO, INDICE_IMOVEL) %>% 
@@ -266,14 +267,16 @@ levels(dados2$ESCOLARIDADE)
 
 ### Classes para LASSO ####
 
-dados2$OCUPACAO_LOCOMOCAO2 <- as.factor(dados2$OCUPACAO_LOCOMOCAO2)
-class(dados2$OCUPACAO_LOCOMOCAO2)
+dados2$INDICE_OCUPACAO_MAE_norm <- as.factor(dados2$INDICE_OCUPACAO_MAE_norm)
+class(dados2$INDICE_OCUPACAO_MAE_norm)
 
-dados2$INDICE_OUTRO_CARGO2_norm <- as.factor(dados2$INDICE_OUTRO_CARGO2_norm)
-class(dados2$INDICE_OUTRO_CARGO2_norm)
 
-dados2$INDICE_LOCOMOCAO_norm <- as.factor(dados2$INDICE_LOCOMOCAO_norm)
-class(dados2$INDICE_LOCOMOCAO_norm)
+dados2$INDICE_OCUPACAO_PAI_norm <- as.factor(dados2$INDICE_OCUPACAO_PAI_norm)
+class(dados2$INDICE_OCUPACAO_PAI_norm)
+
+#densidade
+infs$DENSIDADE_HABITACAO <- fct_collapse(as.factor(infs$DENSIDADE_HABITACAO), "-uma" = c("0.25", "0.5", "0.7", "0.75"), "uma" = "1", "+uma" = c("1.25", "1.3",  "1.5", "1.75", "2", "2.3", "2.5"))
+levels(infs$DENSIDADE_HABITACAO)
 
 ### PALATALIZAÇÃO ####
 dados_AP <- dados2 %>% 

@@ -1130,7 +1130,7 @@ AP.mod_DENSIDADE_HABITACAO <- glmer(VD ~ DENSIDADE_HABITACAO +
                            (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_DENSIDADE_HABITACAO)
 lrm(VD ~ NQUARTOS, data = dados_AP)
-plot(allEffects(AP.mod_NQUARTOS), type = "response")
+plot(allEffects(AP.mod_DENSIDADE_HABITACAO), type = "response")
 
 
 ### Tipo Moradia ####
@@ -1524,8 +1524,8 @@ escalas_lasso_AP <- dados_AP %>%
     INDICE_ESCOL_PAI_norm,
     INDICE_ESCOL_MAE_norm, 
     INDICE_OCUPACAO_norm, 
-    INDICE_OCUPACAO_PAI_norm, 
-    INDICE_OCUPACAO_MAE_norm,
+    #INDICE_OCUPACAO_PAI_norm, 
+    #INDICE_OCUPACAO_MAE_norm,
     #INDICE_OUTRO_CARGO2_norm, 
     INDICE_OCUPACAO_SONHOS2_norm,
     #INDICE_LOCOMOCAO_norm, 
@@ -1534,7 +1534,7 @@ escalas_lasso_AP <- dados_AP %>%
     #INDICE_RENDA_FAM_norm,
     #INDICE_BAIRRO_norm,
     #DENSIDADE_HABITACAO_norm,
-    INDICE_IMOVEL_norm,
+    #INDICE_IMOVEL_norm,
     INDICE_LAZER_norm, 
     INDICE_LAZER_CAMPINAS_norm,
     INDICE_VIAGEM_norm, 
@@ -1550,7 +1550,9 @@ x_AP <- model.matrix(VD ~ ., escalas_lasso_AP)[, -1]
 y_AP <- escalas_lasso_AP$VD
 
 lasso_AP <- cv.glmnet(x_AP, y_AP, alpha = 1)
-coef(lasso_AP, s = "lambda.min")
+COEF_AP <- coef(lasso_AP, s = "lambda.min")
+COEF_AP
+
 
 plot(lasso_AP$glmnet.fit, xvar = "lambda", label = TRUE)
 

@@ -1438,8 +1438,8 @@ escalas_lasso_HAP <- dados_HAP %>%
          INDICE_ESCOL_PAI_norm,
          INDICE_ESCOL_MAE_norm, 
          INDICE_OCUPACAO_norm, 
-         INDICE_OCUPACAO_PAI_norm, 
-         INDICE_OCUPACAO_MAE_norm,
+         #INDICE_OCUPACAO_PAI_norm, 
+         #INDICE_OCUPACAO_MAE_norm,
          #INDICE_OUTRO_CARGO2_norm, 
          INDICE_OCUPACAO_SONHOS2_norm,
          #INDICE_LOCOMOCAO_norm, 
@@ -1448,7 +1448,7 @@ escalas_lasso_HAP <- dados_HAP %>%
          #INDICE_RENDA_FAM_norm,
          #INDICE_BAIRRO_norm,
          #DENSIDADE_HABITACAO_norm,
-         INDICE_IMOVEL_norm,
+         #INDICE_IMOVEL_norm,
          INDICE_LAZER_norm, 
          INDICE_LAZER_CAMPINAS_norm,
          INDICE_VIAGEM_norm, 
@@ -1463,8 +1463,8 @@ x_HAP <- model.matrix(VD ~ ., escalas_lasso_HAP)[, -1]
 y_HAP <- escalas_lasso_HAP$VD
 
 lasso_HAP <- cv.glmnet(x_HAP, y_HAP, alpha = 1)
-coef(lasso_HAP, s = "lambda.min")
-
+COEF_HAP <- coef(lasso_HAP, s = "lambda.min")
+COEF_HAP
 
 plot(lasso_HAP$glmnet.fit, xvar = "lambda", label = TRUE)
 

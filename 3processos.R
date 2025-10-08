@@ -2,48 +2,140 @@
 #%%%%%%%%%%%%%%%%%% Comparações entre os três processos %%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 
-#ESCOLARIDADE ####
-## Participante ####
+# FEATURE SELECTION - LASSO ####
+# Função pra extrair e arrumar
+coef_to_df <- function(coef_obj, nome){
+  as.data.frame(as.matrix(coef_obj)) %>%
+    rownames_to_column("VARIAVEL") %>%
+    rename(COEF = 2) %>%
+    filter(VARIAVEL != "(Intercept)") %>%  # 🔹 ignora intercepto
+    mutate(MODELO = nome)
+}
 
-escolaridade_3processos <- bind_rows(
-  AP.prop_ESCOLARIDADE2 %>% filter(VD == "P") %>% mutate(variavel = "P"),
-  S0.prop_ESCOLARIDADE2 %>% filter(VD == "0") %>% mutate(variavel = "0"), 
-  HAP.prop_ESCOLARIDADE2 %>% filter(VD == "H") %>% mutate(variavel = "H")) %>% 
-  mutate(variavel = factor(variavel, levels = c("P", "0", "H")))
 
-# Verificando se os dados contêm "P"
-table(escolaridade_3processos$variavel)
+AP_df <- coef_to_df(coef(lasso_AP, s = "lambda.min"), "PALATALIZACAO")
+S0_df <- coef_to_df(coef(lasso_S0, s = "lambda.min"), "APAGAMENTO")
+HAP_df  <- coef_to_df(coef(lasso_HAP, s = "lambda.min"), "ASPIRACAO")
 
-png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/escolaridade_3processos.png", width = 6.5, height = 4.5, units = "in", res = 300)
-grafico.escolaridade <- ggplot(escolaridade_3processos, aes(x = ESCOLARIDADE2, y = prop * 100, group = variavel, color = variavel)) +
-  geom_line(size = 1.2) +
-  geom_point(size = 3) +
-  geom_text(aes(label = label), vjust = -0.5, size = 3) +
-   scale_x_discrete(labels = c(
-     "fund" = "Ens. Fund.",
-     "medio" = "Ens. Médio",
-     "superior" = "Ens. Superior"))+
-  scale_y_continuous(
-    limits = c(0, NA),  # Define mínimo como 0 e máximo automático
-    expand = expansion(mult = c(0, 0.2)),  # Adiciona 20% de espaço no topo
-    labels = scales::percent_format(scale = 1)
+# garantir a ordem original das variáveis conforme aparecem nos dados combinados
+# ordem_variaveis <- coef_3processos %>%
+#   distinct(VARIAVEL) %>%
+#   pull(VARIAVEL)
+
+coef_3processos <- coef_3processos %>%
+  mutate(VARIAVEL = factor(VARIAVEL, levels = c(
+    "INDICE_ESCOL_MAE_norm",
+    "INDICE_ESCOL_PAI_norm",
+    "INDICE_ESCOL3_norm",
+    "INDICE_OCUPACAO_norm",
+    "INDICE_OCUPACAO_SONHOS2_norm",
+    "INDICE_RENDA_IND_norm",
+    "INDICE_INFANCIA_norm",
+    "INDICE_LAZER_norm",
+    "INDICE_LAZER_CAMPINAS_norm",
+    "INDICE_MEGA_norm",
+    "INDICE_VIAGEM_norm",
+    "INDICE_VIAGEM_LUGAR_norm",
+    "INDICE_VIAGEM_VONTADE_norm"
+  )))
+
+coef_3processos <- bind_rows(AP_df, S0_df, HAP_df) %>% 
+  complete(VARIAVEL, MODELO, fill = list(COEF = 0)) %>%
+  mutate(
+    MODELO = factor(MODELO, levels = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO")),
+    VARIAVEL = factor(VARIAVEL, levels = c(
+      "INDICE_ESCOL_MAE_norm",
+      "INDICE_ESCOL_PAI_norm",
+      "INDICE_ESCOL3_norm",
+      "INDICE_OCUPACAO_norm",
+      "INDICE_OCUPACAO_SONHOS2_norm",
+      "INDICE_RENDA_IND_norm",
+      "INDICE_INFANCIA_norm",
+      "INDICE_LAZER_norm",
+      "INDICE_LAZER_CAMPINAS_norm",
+      "INDICE_MEGA_norm",
+      "INDICE_VIAGEM_norm",
+      "INDICE_VIAGEM_LUGAR_norm",
+      "INDICE_VIAGEM_VONTADE_norm"
+    ))
+  )
+
+
+# gráfico
+ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, fill = MODELO)) +
+  geom_col(position = position_dodge(width = 0.8)) +
+  geom_vline(
+    xintercept = seq(1.5, length(unique(coef_3processos$VARIAVEL)) - 0.5, 1),
+    color = "grey80", linewidth = 0.4
   ) +
-  scale_color_discrete(
-    labels = c("P" = "Palatalização", 
-               "0" = "Apagamento",
-               "H" = "Aspiração"))+
-  labs(
-    x = "Escolaridade",
-    y = "Proporção da variante (%)",
-    color = "Variável Dependente"
+  coord_flip() +
+  scale_fill_manual(
+    values = c(
+      "PALATALIZACAO" = "#3366CC",
+      "APAGAMENTO" = "#DC3912",
+      "ASPIRACAO" = "#FF9900"
+    ),
+    breaks = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO")
   ) +
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle = 20, hjust = 1))
-dev.off()
+  theme_light() +
+  theme(
+    panel.grid = element_blank(),    # remove TODAS as linhas de fundo
+    axis.ticks = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank()
+  )
 
 
 
-## Pai ####
+# gráfico lollipop alinhado
+ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, color = MODELO)) +
+  # linha do lollipop
+  geom_segment(
+    aes(x = as.numeric(VARIAVEL) + 
+          (as.numeric(factor(MODELO, levels = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO"))) - 2) * 0.2, 
+        xend = as.numeric(VARIAVEL) + 
+          (as.numeric(factor(MODELO, levels = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO"))) - 2) * 0.2, 
+        y = 0, yend = COEF),
+    linewidth = 0.9
+  ) +
+  # ponto do lollipop
+  geom_point(
+    aes(x = as.numeric(VARIAVEL) + 
+          (as.numeric(factor(MODELO, levels = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO"))) - 2) * 0.2), shape = 16, size = 2 ) +
+  geom_vline(
+    xintercept = seq(1.5, length(unique(coef_3processos$VARIAVEL)) - 0.5, 1),
+    color = "grey85", linewidth = 0.4
+  ) +
+  coord_flip() +
+  scale_color_manual(
+    values = c(
+      "PALATALIZACAO" = "#3366CC",
+      "APAGAMENTO" = "#DC3912",
+      "ASPIRACAO" = "#FF9900"
+    )
+  ) +
+  scale_x_continuous(
+    breaks = 1:length(unique(coef_3processos$VARIAVEL)),
+    labels = unique(coef_3processos$VARIAVEL)
+  ) +
+  theme_light() +
+  theme(
+    panel.grid = element_blank(),
+    axis.ticks = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank()
+  )
+
+
+
+
+## Pai #############################################
 escolaridade_pai_3processos <- bind_rows(
   AP.prop_ESCOLA_PAI2 %>% filter(VD == "P", !is.na(ESCOLA_PAI2)) %>% mutate(variavel = "P"),
   S0.prop_ESCOLA_PAI2 %>% filter(VD == "0", !is.na(ESCOLA_PAI2)) %>% mutate(variavel = "0"), 
