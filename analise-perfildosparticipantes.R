@@ -421,17 +421,37 @@ comodos_participante %>%
 ## DENSIDADE_HABITACAO ####
 densidade_participante <- infs2 %>%
   distinct(PARTICIPANTE, DENSIDADE_HABITACAO) %>%
-  count(DENSIDADE_HABITACAO)
+  mutate(
+    DENSIDADE_HABITACAO = as.character(DENSIDADE_HABITACAO),
+ #   DENSIDADE_HABITACAO = fct_explicit_na(as.factor(DENSIDADE_HABITACAO), "Não informado"),
+    DENSIDADE_HABITACAO_CAT = case_when(
+      DENSIDADE_HABITACAO %in% c("0.25", "0.5", "0.7", "0.75") ~ "Menos do que uma pessoa/cômodo",
+      DENSIDADE_HABITACAO == "1" ~ "Uma pessoa/cômodo",
+#      DENSIDADE_HABITACAO == "Não informado" ~ "Não informado",
+      TRUE ~ "Mais do que uma pessoa/cômoco"
+    )
+  ) %>%
+  count(DENSIDADE_HABITACAO_CAT) %>% 
+  print()
 
-ggplot(densidade_participante, aes(x = DENSIDADE_HABITACAO, y = n)) +
-  geom_line(color = "#3182bd", size = 1) +
-  geom_point(color = "#08519c", size = 2) +
+
+densidade_participante %>%
+  ggplot(aes(x = DENSIDADE_HABITACAO_CAT, y = n, label = n, fill = DENSIDADE_HABITACAO_CAT)) +
+  geom_bar(stat = "identity", color = "white") +
   labs(
-    x = "Densidade habitacional",
-    y = "Número de participantes",
-    title = "Distribuição da densidade habitacional"
-  ) +
-  theme_minimal(base_size = 13)
+    x = "Densidade",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+
+
+
 
 ## RENDA_IND ####
 rendaind_participante <- infs2 %>% 
@@ -523,36 +543,50 @@ escolamae_participante %>%
 
 ## INDICE_OCUPACAO_PAI ####
 ocupacaopai_participante <- infs2 %>%
-  distinct(PARTICIPANTE, INDICE_OCUPACAO_PAI) %>%
-  count(INDICE_OCUPACAO_PAI)
+  distinct(PARTICIPANTE, INDICE_OCUPACAO_PAI) %>% 
+  mutate(
+    INDICE_OCUPACAO_PAI = as.factor(INDICE_OCUPACAO_PAI),
+    INDICE_OCUPACAO_PAI = fct_explicit_na(INDICE_OCUPACAO_PAI, "Não informado")) %>%
+  count(INDICE_OCUPACAO_PAI) %>%
+  print()
 
-ggplot(ocupacaopai_participante, aes(x = INDICE_OCUPACAO_PAI, y = n)) +
-  geom_line(color = "#3182bd", size = 1) +
-  geom_point(color = "#08519c", size = 2) +
+ocupacaopai_participante %>%
+  ggplot(aes(x = INDICE_OCUPACAO_PAI, y = n, label = n, fill = INDICE_OCUPACAO_PAI)) +
+  geom_bar(stat = "identity", color = "white") +
   labs(
-    x = "Ocupação Pai",
-    y = "Número de participantes",
-    title = "Distribuição da densidade habitacional"
-  ) +
-  theme_minimal(base_size = 13)
+    x = "Ocupação do Pai",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
 
 
 ## INDICE_OCUPACAO_MAE ####
 ocupacaomae_participante <- infs2 %>%
   distinct(PARTICIPANTE, INDICE_OCUPACAO_MAE) %>%
-  count(INDICE_OCUPACAO_MAE)
+  mutate(
+    INDICE_OCUPACAO_MAE = as.factor(INDICE_OCUPACAO_MAE),
+    INDICE_OCUPACAO_MAE = fct_explicit_na(INDICE_OCUPACAO_MAE, "Não informado")) %>%
+  count(INDICE_OCUPACAO_MAE)%>%
+  print()
 
-ggplot(ocupacaomae_participante, aes(x = INDICE_OCUPACAO_MAE, y = n)) +
-  geom_line(color = "#3182bd", size = 1) +
-  geom_point(color = "#08519c", size = 2) +
+ocupacaomae_participante %>%
+  ggplot(aes(x = INDICE_OCUPACAO_MAE, y = n, label = n, fill = INDICE_OCUPACAO_MAE)) +
+  geom_bar(stat = "identity", color = "white") +
   labs(
-    x = "Ocupação Mãe",
-    y = "Número de participantes",
-    title = "Distribuição da densidade habitacional"
-  ) +
-  theme_minimal(base_size = 13)
-
-
+    x = "Ocupação do Mãe",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
 
 
 # INTERAÇÕES ####
