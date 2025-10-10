@@ -396,7 +396,7 @@ r.squaredGLMM(modAP2)
 # 3 MODELAGEM DE POLI INDICE SOCIO POLI ####
 modAP3 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
-                  CFP_abertura +
+                  CFP_abertura2 +
                   CLASSE_MORFOLOGICA3 + 
                   GENERO + 
                   TEMPO_RESIDENCIA + 
@@ -407,7 +407,7 @@ modAP3 <- glmer(VD ~ TONICIDADE +
 summary(modAP3)
 lrm(VD ~ TONICIDADE + 
       POSICAO_S +
-      CFP_abertura +
+      CFP_abertura2 +
       CLASSE_MORFOLOGICA3 + 
       GENERO + 
       TEMPO_RESIDENCIA + 
@@ -419,12 +419,40 @@ check_model(modAP3)
 check_outliers(modAP3)
 r.squaredGLMM(modAP3)
 
+# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP ###
+modAP4 <- glmer(VD ~ TONICIDADE + 
+                  POSICAO_S +
+                  #CFP_abertura +
+                  CLASSE_MORFOLOGICA3 + 
+                  GENERO + 
+                  TEMPO_RESIDENCIA + 
+                  IDADE_MIGRACAO +
+                  INDICE_SOCIO_POLI +
+                  (1|ITEM_LEXICAL) +
+                  (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(modAP4)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      #CFP_abertura +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_POLI, data = dados_AP)
+
+car::vif(modAP4)
+check_model(modAP4)
+check_outliers(modAP4)
+r.squaredGLMM(modAP4)
+
+
 
 ## interações ####
 summary(glm(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_POLI, data = dados_AP, family = binomial))
 summary(glm(VD ~ IDADE_MIGRACAO * TEMPO_RESIDENCIA, data = dados_AP, family = binomial))
 summary(glm(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI, data = dados_AP, family = binomial))
 summary(glm(VD ~ IDADE_MIGRACAO * ESCOLARIDADE2, data = dados_AP, family = binomial))
+summary(glm(VD ~ IDADE_MIGRACAO * CFP_abertura, data = dados_AP, family = binomial))
 
 
 # INDICE SOCIOECONOMICO ####
@@ -1521,8 +1549,9 @@ principal(dados_AP, nfactors= 6, rotate="none")
 escalas_lasso_AP <- dados_AP %>%
   select(VD,
     INDICE_ESCOL3_norm, 
-    INDICE_ESCOL_PAI_norm,
-    INDICE_ESCOL_MAE_norm, 
+    #INDICE_ESCOL_PAI_norm,
+    #INDICE_ESCOL_MAE_norm, 
+    PAIS,
     INDICE_OCUPACAO_norm, 
     #INDICE_OCUPACAO_PAI_norm, 
     #INDICE_OCUPACAO_MAE_norm,
@@ -1535,11 +1564,13 @@ escalas_lasso_AP <- dados_AP %>%
     #INDICE_BAIRRO_norm,
     #DENSIDADE_HABITACAO_norm,
     #INDICE_IMOVEL_norm,
-    INDICE_LAZER_norm, 
-    INDICE_LAZER_CAMPINAS_norm,
-    INDICE_VIAGEM_norm, 
-    INDICE_VIAGEM_LUGAR_norm, 
-    INDICE_VIAGEM_VONTADE_norm, 
+    #INDICE_LAZER_norm, 
+    #INDICE_LAZER_CAMPINAS_norm,
+    LAZER,
+    #INDICE_VIAGEM_norm, 
+    #INDICE_VIAGEM_LUGAR_norm, 
+    #INDICE_VIAGEM_VONTADE_norm, 
+    VIAGEM,
     INDICE_INFANCIA_norm
   ) %>%
   mutate(across(everything(), as.numeric)) %>%
@@ -1554,5 +1585,5 @@ COEF_AP <- coef(lasso_AP, s = "lambda.min")
 COEF_AP
 
 
-plot(lasso_AP$glmnet.fit, xvar = "lambda", label = TRUE)
+plot(lasso_AP$glmnet.fit, xvar = "lambda", label = TRUE) 
 

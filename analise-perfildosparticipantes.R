@@ -588,6 +588,60 @@ ocupacaomae_participante %>%
         axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
   )
 
+## MEDIA PAIS ####
+pais_participante <- infs2 %>% 
+  distinct(PARTICIPANTE, PAIS) %>%  #garante 1 linha por participante
+  mutate(
+    PAIS = as.factor(PAIS),
+    #PAIS = fct_explicit_na(PAIS, "Não informado")
+    ) %>%
+  count(PAIS) %>%
+  #mutate(PAIS = fct_explicit_na(PAIS, "Não informado")) %>%  # Transforma NA em categoria
+  print()
+
+
+pais_participante %>%
+  ggplot(aes(x = PAIS, y = n, label = n, fill = PAIS)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(
+    x = "PAIS",
+    y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
+  scale_fill_brewer(palette = "Reds")+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  )
+
+hist(
+  infs2$PAIS,
+  main = "Distribuição do índice PAIS",
+  xlab = "Média escolaridade e ocupação dos pais",
+  col = "lightblue",
+  border = "white"
+)
+
+
+##MEDIA LAZER####
+hist(
+  infs2$LAZER,
+  main = "Distribuição do índice LAZER",
+#  xlab = "Média escolaridade e ocupação dos pais",
+  col = "lightblue",
+  border = "white"
+)
+
+
+##MEDIA VIAGEM####
+hist(
+  infs2$VIAGEM,
+  main = "Distribuição do índice VIAGEM",
+  #  xlab = "Média escolaridade e ocupação dos pais",
+  col = "lightblue",
+  border = "white"
+)
+
 
 # INTERAÇÕES ####
 #HABITAÇÃO ####
