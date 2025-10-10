@@ -373,7 +373,7 @@ r.squaredGLMM(modHAP2)
 # 3 MODELAGEM DE POLI INDICE SOCIO POLI ####
 modHAP3 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
-                  CFP_abertura +
+                  CFP_abertura2 +
                   CLASSE_MORFOLOGICA3 + 
                   GENERO + 
                   TEMPO_RESIDENCIA + 
@@ -384,7 +384,7 @@ modHAP3 <- glmer(VD ~ TONICIDADE +
 summary(modHAP3)
 lrm(VD ~ TONICIDADE + 
       POSICAO_S +
-      CFP_abertura +
+      CFP_abertura2 +
       CLASSE_MORFOLOGICA3 + 
       GENERO + 
       TEMPO_RESIDENCIA + 
@@ -397,11 +397,39 @@ check_outliers(modHAP3)
 r.squaredGLMM(modHAP3)
 
 
+# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFS_abertura ###
+modHAP4 <- glmer(VD ~ TONICIDADE + 
+                   POSICAO_S +
+                   #CFP_abertura +
+                   CLASSE_MORFOLOGICA3 + 
+                   GENERO + 
+                   TEMPO_RESIDENCIA + 
+                   IDADE_MIGRACAO +
+                   INDICE_SOCIO_POLI +
+                   (1|ITEM_LEXICAL) +
+                   (1|PARTICIPANTE), data = dados_HAP, family = binomial)
+summary(modHAP4)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      #CFP_abertura +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_POLI, data = dados_HAP)
+
+car::vif(modHAP4)
+check_model(modHAP4)
+check_outliers(modHAP4)
+r.squaredGLMM(modHAP4)
+
+
 ## interações ####
 summary(glm(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_POLI, data = dados_HAP, family = binomial))
 summary(glm(VD ~ IDADE_MIGRACAO * TEMPO_RESIDENCIA, data = dados_HAP, family = binomial))
 summary(glm(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI, data = dados_HAP, family = binomial))
 summary(glm(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_OUSHIRO, data = dados_HAP, family = binomial))
+summary(glm(VD ~ IDADE_MIGRACAO * MEGA_SENA2, data = dados_HAP, family = binomial))
 
 
 # INDICE SOCIOECONOMICO ####
@@ -1435,8 +1463,9 @@ write.csv(pca_HAP$rotation[,1:4], "pca_HAP_scores.csv", row.names = TRUE)
 escalas_lasso_HAP <- dados_HAP %>%
   select(VD,
          INDICE_ESCOL3_norm, 
-         INDICE_ESCOL_PAI_norm,
-         INDICE_ESCOL_MAE_norm, 
+         #INDICE_ESCOL_PAI_norm,
+         #INDICE_ESCOL_MAE_norm, 
+         PAIS,
          INDICE_OCUPACAO_norm, 
          #INDICE_OCUPACAO_PAI_norm, 
          #INDICE_OCUPACAO_MAE_norm,
@@ -1449,11 +1478,13 @@ escalas_lasso_HAP <- dados_HAP %>%
          #INDICE_BAIRRO_norm,
          #DENSIDADE_HABITACAO_norm,
          #INDICE_IMOVEL_norm,
-         INDICE_LAZER_norm, 
-         INDICE_LAZER_CAMPINAS_norm,
-         INDICE_VIAGEM_norm, 
-         INDICE_VIAGEM_LUGAR_norm, 
-         INDICE_VIAGEM_VONTADE_norm, 
+         #INDICE_LAZER_norm, 
+         #INDICE_LAZER_CAMPINAS_norm,
+         LAZER,
+         #INDICE_VIAGEM_norm, 
+         #INDICE_VIAGEM_LUGAR_norm, 
+         #INDICE_VIAGEM_VONTADE_norm, 
+         VIAGEM,
          INDICE_INFANCIA_norm
   ) %>%
   mutate(across(everything(), as.numeric)) %>%

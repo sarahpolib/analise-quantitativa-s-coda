@@ -8,7 +8,7 @@ coef_to_df <- function(coef_obj, nome){
   as.data.frame(as.matrix(coef_obj)) %>%
     rownames_to_column("VARIAVEL") %>%
     rename(COEF = 2) %>%
-    filter(VARIAVEL != "(Intercept)") %>%  # 🔹 ignora intercepto
+    filter(VARIAVEL != "(Intercept)") %>%  #ignora intercepto
     mutate(MODELO = nome)
 }
 
@@ -17,47 +17,49 @@ AP_df <- coef_to_df(coef(lasso_AP, s = "lambda.min"), "PALATALIZACAO")
 S0_df <- coef_to_df(coef(lasso_S0, s = "lambda.min"), "APAGAMENTO")
 HAP_df  <- coef_to_df(coef(lasso_HAP, s = "lambda.min"), "ASPIRACAO")
 
-# garantir a ordem original das variáveis conforme aparecem nos dados combinados
-# ordem_variaveis <- coef_3processos %>%
-#   distinct(VARIAVEL) %>%
-#   pull(VARIAVEL)
-
-coef_3processos <- coef_3processos %>%
-  mutate(VARIAVEL = factor(VARIAVEL, levels = c(
-    "INDICE_ESCOL_MAE_norm",
-    "INDICE_ESCOL_PAI_norm",
-    "INDICE_ESCOL3_norm",
-    "INDICE_OCUPACAO_norm",
-    "INDICE_OCUPACAO_SONHOS2_norm",
-    "INDICE_RENDA_IND_norm",
-    "INDICE_INFANCIA_norm",
-    "INDICE_LAZER_norm",
-    "INDICE_LAZER_CAMPINAS_norm",
-    "INDICE_MEGA_norm",
-    "INDICE_VIAGEM_norm",
-    "INDICE_VIAGEM_LUGAR_norm",
-    "INDICE_VIAGEM_VONTADE_norm"
-  )))
 
 coef_3processos <- bind_rows(AP_df, S0_df, HAP_df) %>% 
   complete(VARIAVEL, MODELO, fill = list(COEF = 0)) %>%
   mutate(
     MODELO = factor(MODELO, levels = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO")),
-    VARIAVEL = factor(VARIAVEL, levels = c(
-      "INDICE_ESCOL_MAE_norm",
-      "INDICE_ESCOL_PAI_norm",
-      "INDICE_ESCOL3_norm",
-      "INDICE_OCUPACAO_norm",
-      "INDICE_OCUPACAO_SONHOS2_norm",
-      "INDICE_RENDA_IND_norm",
-      "INDICE_INFANCIA_norm",
-      "INDICE_LAZER_norm",
-      "INDICE_LAZER_CAMPINAS_norm",
-      "INDICE_MEGA_norm",
-      "INDICE_VIAGEM_norm",
-      "INDICE_VIAGEM_LUGAR_norm",
-      "INDICE_VIAGEM_VONTADE_norm"
-    ))
+    VARIAVEL = factor(VARIAVEL, levels =  rev(c("INDICE_ESCOL3_norm", "INDICE_OCUPACAO_norm", "INDICE_RENDA_IND_norm", "PAIS", "LAZER", "VIAGEM", "INDICE_OCUPACAO_SONHOS2_norm","INDICE_MEGA_norm", "INDICE_INFANCIA_norm")))
+    )
+
+nomes_bonitos <- c(
+  "INDICE_ESCOL3_norm" = "Escolaridade",
+  "INDICE_OCUPACAO_norm" = "Ocupação",
+  "INDICE_RENDA_IND_norm" = "Renda Individual",
+  "PAIS" = "Escolaridade dos Pais",
+  "LAZER" = "Lazer",
+  "VIAGEM" = "Viagem",
+  "INDICE_OCUPACAO_SONHOS2_norm" = "Ocupação dos Sonhos",
+  "INDICE_MEGA_norm" = "Mega-Sena",
+  "INDICE_INFANCIA_norm" = "Memória de Infância"
+)
+
+# gráfico lollipop com linhas verticais (corrigido)
+ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, color = MODELO)) +
+  geom_segment(aes(x = as.numeric(VARIAVEL) + (as.numeric(MODELO) - 2) * 0.2,#desloca as linhas conforme o modelo
+      xend = as.numeric(VARIAVEL) + (as.numeric(MODELO) - 2) * 0.2,
+      y = 0, yend = COEF),linewidth = 0.8) +
+  geom_point(aes(x = as.numeric(VARIAVEL) + (as.numeric(MODELO) - 2) * 0.2, y = COEF), size = 3) +
+  geom_vline(xintercept = seq(1.5, length(unique(coef_3processos$VARIAVEL)) - 0.5, 1), color = "grey85", linewidth = 0.4) +
+  coord_flip() +
+  scale_color_manual(values = c(
+      "PALATALIZACAO" = "#3366CC",
+      "APAGAMENTO" = "#DC3912",
+      "ASPIRACAO" = "#FF9900"
+    ), breaks = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO"), labels = c("Palatalização", "Apagamento", "Aspiração")) +
+  scale_x_continuous(breaks = 1:length(levels(coef_3processos$VARIAVEL)),     labels = nomes_bonitos[levels(coef_3processos$VARIAVEL)]) +
+  theme_light() +
+  theme(
+    panel.grid = element_blank(),
+    axis.ticks = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank()
   )
 
 
@@ -75,55 +77,10 @@ ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, fill = MODELO)) +
       "APAGAMENTO" = "#DC3912",
       "ASPIRACAO" = "#FF9900"
     ),
-    breaks = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO")
-  ) +
+    breaks = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO"), labels = c("Palatalização", "Apagamento", "Aspiração")) +
   theme_light() +
   theme(
     panel.grid = element_blank(),    # remove TODAS as linhas de fundo
-    axis.ticks = element_blank(),
-    legend.position = "bottom",
-    legend.title = element_blank(),
-    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
-    axis.title.y = element_blank(),
-    axis.title.x = element_blank()
-  )
-
-
-
-# gráfico lollipop alinhado
-ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, color = MODELO)) +
-  # linha do lollipop
-  geom_segment(
-    aes(x = as.numeric(VARIAVEL) + 
-          (as.numeric(factor(MODELO, levels = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO"))) - 2) * 0.2, 
-        xend = as.numeric(VARIAVEL) + 
-          (as.numeric(factor(MODELO, levels = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO"))) - 2) * 0.2, 
-        y = 0, yend = COEF),
-    linewidth = 0.9
-  ) +
-  # ponto do lollipop
-  geom_point(
-    aes(x = as.numeric(VARIAVEL) + 
-          (as.numeric(factor(MODELO, levels = c("PALATALIZACAO", "APAGAMENTO", "ASPIRACAO"))) - 2) * 0.2), shape = 16, size = 2 ) +
-  geom_vline(
-    xintercept = seq(1.5, length(unique(coef_3processos$VARIAVEL)) - 0.5, 1),
-    color = "grey85", linewidth = 0.4
-  ) +
-  coord_flip() +
-  scale_color_manual(
-    values = c(
-      "PALATALIZACAO" = "#3366CC",
-      "APAGAMENTO" = "#DC3912",
-      "ASPIRACAO" = "#FF9900"
-    )
-  ) +
-  scale_x_continuous(
-    breaks = 1:length(unique(coef_3processos$VARIAVEL)),
-    labels = unique(coef_3processos$VARIAVEL)
-  ) +
-  theme_light() +
-  theme(
-    panel.grid = element_blank(),
     axis.ticks = element_blank(),
     legend.position = "bottom",
     legend.title = element_blank(),

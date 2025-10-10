@@ -6,9 +6,9 @@
                 # Carregar amostras e manipulação dos dados # 
 
 # Carregar pacotes ###
-#install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork"); install.packages("factoextra"); install.packages("glmnet")
+#install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork"); install.packages("factoextra"); install.packages("glmnet"); install.packages("coefplot")
 
-library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet); library(MuMIn)
+library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet); library(MuMIn); library(coefplot)
 
 rm(list = ls())
 
@@ -184,41 +184,57 @@ setdiff(levels(infs$BAIRRO), levels(media_m2_bairro$BAIRRO))
 infs2 <- left_join(infs, media_m2_bairro, by = "BAIRRO")
 infs2$media_m2
 
-### CALCULO INDICE SOCIOECONÔMICO ####
-#escolaridade
-#Media escolaridade e ocupação dos pais
-#Ocupação sonhos
-#Mega sena
-#Renda ind
-#média lazer e Lazer em Campinas
-#média Viagem, Viagem Lugar e Viagem vontade
-#Infância
+### média pais ####
+#media da ocupação e escolaridade do pai e da mae
+infs2$PAIS <- rowMeans(
+  infs2[, c("INDICE_ESCOL_PAI_norm", "INDICE_ESCOL_MAE_norm"
+            #, "INDICE_OCUPACAO_PAI_norm", "INDICE_OCUPACAO_MAE_norm"
+            )],
+  na.rm = TRUE
+)
+
+infs2$PAIS
+
+### média lazer ####
+infs2$LAZER <- rowMeans(
+  infs2[, c("INDICE_LAZER_CAMPINAS_norm", "INDICE_LAZER_norm")],
+  na.rm = TRUE
+)
+infs2$LAZER
 
 
+### média lazer ####
+infs2$VIAGEM <- rowMeans(
+  infs2[, c("INDICE_VIAGEM_norm", "INDICE_VIAGEM_LUGAR_norm", "INDICE_VIAGEM_VONTADE_norm")],
+  na.rm = TRUE
+)
+infs2$VIAGEM
+
+## CALCULO INDICE SOCIOECONÔMICO ####
 # Função para calcular o índice ajustado
 calcular_indice <- function(df) {
   apply(df, 1, function(x) {
     
     esc <- as.numeric(x["INDICE_ESCOL3_norm"])
     
-    pais <- mean(as.numeric(c(x["INDICE_ESCOL_PAI_norm"],
-                              x["INDICE_ESCOL_MAE_norm"],
-                              x["INDICE_OCUPACAO_PAI_norm"],
-                              x["INDICE_OCUPACAO_MAE_norm"])), na.rm = TRUE)
+    pais <- as.numeric(x["PAIS"])
     
-    lazer <- mean(as.numeric(c(x["INDICE_LAZER_norm"],
-                               x["INDICE_LAZER_CAMPINAS_norm"])), na.rm = TRUE)
+    lazer <- as.numeric(x["LAZER"])
     
-    viagem <- mean(as.numeric(c(x["INDICE_VIAGEM_norm"],
-                                x["INDICE_VIAGEM_LUGAR_norm"],
-                                x["INDICE_VIAGEM_VONTADE_norm"])), na.rm = TRUE)
+    viagem <- as.numeric(x["VIAGEM"])
     
     ocup_sonhos <- as.numeric(x["INDICE_OCUPACAO_SONHOS2_norm"])
+    
     mega        <- as.numeric(x["INDICE_MEGA_norm"])
+    
     renda       <- as.numeric(x["INDICE_RENDA_IND_norm"])
+    
     infancia    <- as.numeric(x["INDICE_INFANCIA_norm"])
     
-    componentes <- c(esc, pais, ocup_sonhos, mega, renda, infancia, lazer, viagem)
+    ocupacao    <- as.numeric(x["INDICE_OCUPACAO_norm"])
+    
+    componentes <- c(esc, pais, lazer, viagem, ocup_sonhos, mega, 
+                     renda, infancia, ocupacao)
     
     mean(componentes, na.rm = TRUE)
   })
@@ -227,6 +243,13 @@ calcular_indice <- function(df) {
 #calculo
 infs2$INDICE_SOCIO_POLI <- calcular_indice(infs2)
 infs2$INDICE_SOCIO_POLI
+
+hist(
+  infs2$INDICE_SOCIO_POLI,
+  col = "lightblue",
+  border = "white"
+)
+
 
 ## Amostra2Poli + INFS ####
 dados <- left_join(dadosAmostra2Poli, infs2, by = "PARTICIPANTE")
@@ -264,6 +287,8 @@ mutate(CFP_abertura2 = case_when(
     CFS_sonoridade = factor(CFS_sonoridade, levels = c("pausa", "sonora", "surda"))
   )
 levels(dados2$ESCOLARIDADE)
+
+write.csv(dados2, "dados2.csv", row.names = TRUE)
 
 ### Classes para LASSO ####
 

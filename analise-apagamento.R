@@ -362,7 +362,7 @@ r.squaredGLMM(modS02)
 # 3 MODELAGEM DE POLI INDICE SOCIO POLI ####
 modS03 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
-                  CFP_abertura +
+                  CFP_abertura2 +
                   CFS_sonoridade +
                   CLASSE_MORFOLOGICA3 + 
                   GENERO + 
@@ -374,7 +374,7 @@ modS03 <- glmer(VD ~ TONICIDADE +
 summary(modS03)
 lrm(VD ~ TONICIDADE + 
       POSICAO_S +
-      CFP_abertura +
+      CFP_abertura2 +
       CFS_sonoridade +
       CLASSE_MORFOLOGICA3 + 
       GENERO + 
@@ -387,7 +387,33 @@ check_model(modS03)
 check_outliers(modS03)
 r.squaredGLMM(modS03)
 
+# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP_abertura ###
+modS04 <- glmer(VD ~ TONICIDADE + 
+                  POSICAO_S +
+                  #CFP_abertura +
+                  CFS_sonoridade +
+                  CLASSE_MORFOLOGICA3 + 
+                  GENERO + 
+                  TEMPO_RESIDENCIA + 
+                  IDADE_MIGRACAO +
+                  INDICE_SOCIO_POLI +
+                  (1|ITEM_LEXICAL) +
+                  (1|PARTICIPANTE), data = dados_S0, family = binomial)
+summary(modS04)
+lrm(VD ~ TONICIDADE + 
+      POSICAO_S +
+      #CFP_abertura +
+      CFS_sonoridade +
+      CLASSE_MORFOLOGICA3 + 
+      GENERO + 
+      TEMPO_RESIDENCIA + 
+      IDADE_MIGRACAO +
+      INDICE_SOCIO_POLI, data = dados_S0)
 
+car::vif(modS04)
+check_model(modS04)
+check_outliers(modS04)
+r.squaredGLMM(modS04)
 
 # INDICE SOCIOECONOMICO ####
 ### Escolaridade ####
@@ -1434,27 +1460,31 @@ write.csv(pca_S0$rotation[,1:4], "pca_S0_scores.csv", row.names = TRUE)
 # FEATURE SELECTION - LASSO ####
 escalas_lasso_S0 <- dados_S0 %>%
   select(VD,
-    INDICE_ESCOL3_norm, 
-    INDICE_ESCOL_PAI_norm,
-    INDICE_ESCOL_MAE_norm, 
-    INDICE_OCUPACAO_norm, 
-    #INDICE_OCUPACAO_PAI_norm, 
-    #INDICE_OCUPACAO_MAE_norm,
-    #INDICE_OUTRO_CARGO2_norm, 
-    INDICE_OCUPACAO_SONHOS2_norm,
-    #INDICE_LOCOMOCAO_norm, 
-    INDICE_MEGA_norm,
-    INDICE_RENDA_IND_norm, 
-    #INDICE_RENDA_FAM_norm,
-    #INDICE_BAIRRO_norm,
-    #DENSIDADE_HABITACAO_norm,
-    #INDICE_IMOVEL_norm,
-    INDICE_LAZER_norm, 
-    INDICE_LAZER_CAMPINAS_norm,
-    INDICE_VIAGEM_norm, 
-    INDICE_VIAGEM_LUGAR_norm, 
-    INDICE_VIAGEM_VONTADE_norm, 
-    INDICE_INFANCIA_norm) %>%
+         INDICE_ESCOL3_norm, 
+         #INDICE_ESCOL_PAI_norm,
+         #INDICE_ESCOL_MAE_norm, 
+         PAIS,
+         INDICE_OCUPACAO_norm, 
+         #INDICE_OCUPACAO_PAI_norm, 
+         #INDICE_OCUPACAO_MAE_norm,
+         #INDICE_OUTRO_CARGO2_norm, 
+         INDICE_OCUPACAO_SONHOS2_norm,
+         #INDICE_LOCOMOCAO_norm, 
+         INDICE_MEGA_norm,
+         INDICE_RENDA_IND_norm, 
+         #INDICE_RENDA_FAM_norm,
+         #INDICE_BAIRRO_norm,
+         #DENSIDADE_HABITACAO_norm,
+         #INDICE_IMOVEL_norm,
+         #INDICE_LAZER_norm, 
+         #INDICE_LAZER_CAMPINAS_norm,
+         LAZER,
+         #INDICE_VIAGEM_norm, 
+         #INDICE_VIAGEM_LUGAR_norm, 
+         #INDICE_VIAGEM_VONTADE_norm, 
+         VIAGEM,
+         INDICE_INFANCIA_norm
+  ) %>%
   mutate(across(everything(), as.numeric)) %>%
   na.omit()
 
