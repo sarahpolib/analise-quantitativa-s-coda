@@ -38,6 +38,7 @@ nomes_bonitos <- c(
 )
 
 # gráfico lollipop com linhas verticais (corrigido)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/LASSO.png", width = 6.5, height = 4.5, units = "in", res = 300)
 ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, color = MODELO)) +
   geom_segment(aes(x = as.numeric(VARIAVEL) + (as.numeric(MODELO) - 2) * 0.2,#desloca as linhas conforme o modelo
       xend = as.numeric(VARIAVEL) + (as.numeric(MODELO) - 2) * 0.2,
@@ -61,7 +62,7 @@ ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, color = MODELO)) +
     axis.title.y = element_blank(),
     axis.title.x = element_blank()
   )
-
+dev.off()
 
 # gráfico
 ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, fill = MODELO)) +

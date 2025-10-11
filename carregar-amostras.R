@@ -14,7 +14,7 @@
 
 library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet); library(MuMIn); library(coefplot)
 
-rm(list = ls())
+#rm(list = ls())
 
 # Carregar dados ####
 setwd("C:/Users/sah/Downloads/analise-quantitativa-s-coda")
