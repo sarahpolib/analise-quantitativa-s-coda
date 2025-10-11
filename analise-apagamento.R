@@ -302,6 +302,35 @@ lrm(VD ~ TEMPO_RESIDENCIA, data = dados_S0)
 
 plot(allEffects(S0.mod_TEMPO_RESIDENCIA), type = "response")
 
+# INDICE SOCIO POLI ####
+S0.prop_INDICE_SOCIO_POLI <- dados_S0 %>% 
+  count(VD, INDICE_SOCIO_POLI) %>%
+  group_by(INDICE_SOCIO_POLI) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print(n = 92)
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_S0-indicesocio.png", width = 3.5, height = 4.5, units = "in", res = 300)
+ggplot(S0.prop_INDICE_SOCIO_POLI[46:87,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="red")+
+  labs(x = "Índice Socioeconomico", y = "Proporção de Apagamento") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    #axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    #axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+    legend.position = "none")
+dev.off()
+
+AP.mod_INDICE_SOCIO_POLI <- glm(VD ~ INDICE_SOCIO_POLI, data = dados_AP, family = binomial)
+summary(AP.mod_INDICE_SOCIO_POLI)
+lrm(VD ~ INDICE_SOCIO_POLI, data = dados_AP)
+plot(allEffects(AP.mod_INDICE_SOCIO_POLI), type = "response") 
+
+
+
 
 # 1 MODELAGEM DE BARBOSA(2023) ####
 modS01 <- glmer(VD ~ TONICIDADE + 

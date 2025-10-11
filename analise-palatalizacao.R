@@ -321,14 +321,19 @@ AP.prop_INDICE_SOCIO_POLI <- dados_AP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 92)
 
-#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_AP-tempo-residencia.png", width = 6.5, height = 4.5, units = "in", res = 300)
-ggplot(AP.prop_INDICE_SOCIO_POLI[47:92,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_AP-indicesocio.png", width = 3.5, height = 4.5, units = "in", res = 300)
+ggplot(AP.prop_INDICE_SOCIO_POLI[46:90,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Índice Socioeconomico (POLI, 2025)", y = "Proporção de Palatalização") +
-  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
-  theme_light()
-#dev.off()
+  labs(x = "Índice Socioeconomico", y = "Proporção de Palatalização") +
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    #axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    #axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+    legend.position = "none")
+dev.off()
 
 AP.mod_INDICE_SOCIO_POLI <- glm(VD ~ INDICE_SOCIO_POLI, data = dados_AP, family = binomial)
 summary(AP.mod_INDICE_SOCIO_POLI)
