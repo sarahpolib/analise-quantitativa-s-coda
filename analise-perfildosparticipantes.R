@@ -24,8 +24,8 @@ escolaridade_participante %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
         )
   
 
@@ -57,9 +57,7 @@ ocupacao %>%
   scale_x_continuous(breaks = ocupacao$INDICE_OCUPACAO) +
   labs(
     x = "Índice de ocupação",
-    y = "Número de participantes",
-    title = "Distribuição contínua do índice de ocupação"
-  ) +
+    y = "Número de participantes") +
   theme_minimal()
 
 
@@ -80,8 +78,8 @@ outrocargo_participante %>%
  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 ## OCUPAÇÃO DOS SONHOS ####
@@ -101,8 +99,8 @@ ocupacaosonhos_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 ## LOCOMOÇÃO ####
@@ -122,8 +120,8 @@ locomocao_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -145,8 +143,8 @@ megasena_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -167,8 +165,8 @@ megasena_trabalhar_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -190,8 +188,8 @@ lazer_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -211,10 +209,10 @@ lazercampinas_participante %>%
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Lazer em Campinas")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -235,8 +233,10 @@ viagem_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
+        ,
+        legend.position = "none"
   )
 
 
@@ -257,9 +257,11 @@ viagemlugar_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), 
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
 
 
 ## VIAGEM VONTADE ####
@@ -279,9 +281,8 @@ viagemvontade_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9), axis.title.y = element_text(size = 9), legend.position = "none"
+        )
 
 
 
@@ -302,9 +303,9 @@ regiao_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none")
 
 
 ## MOTIVO ####
@@ -324,8 +325,8 @@ motivo_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -341,15 +342,16 @@ imovel_participante %>%
   ggplot(aes(x = IMOVEL, y = n, label = n, fill = IMOVEL)) +
   geom_bar(stat = "identity", color = "white") +
   labs(
-    x = "Região",
+    x = "Tipo de Imóvel",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
 
 
 ## NQUARTOS ####
@@ -369,8 +371,8 @@ quartos_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -391,8 +393,8 @@ banheiros_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -411,25 +413,24 @@ comodos_participante %>%
     x = "Comodos",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
-  #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
 
 ## DENSIDADE_HABITACAO ####
 densidade_participante <- infs2 %>%
   distinct(PARTICIPANTE, DENSIDADE_HABITACAO) %>%
   mutate(
     DENSIDADE_HABITACAO = as.character(DENSIDADE_HABITACAO),
- #   DENSIDADE_HABITACAO = fct_explicit_na(as.factor(DENSIDADE_HABITACAO), "Não informado"),
     DENSIDADE_HABITACAO_CAT = case_when(
-      DENSIDADE_HABITACAO %in% c("0.25", "0.5", "0.7", "0.75") ~ "Menos do que uma pessoa/cômodo",
-      DENSIDADE_HABITACAO == "1" ~ "Uma pessoa/cômodo",
-#      DENSIDADE_HABITACAO == "Não informado" ~ "Não informado",
-      TRUE ~ "Mais do que uma pessoa/cômoco"
-    )
+      DENSIDADE_HABITACAO %in% c("0.25", "0.5", "0.7", "0.75") ~ "Menos de 1",
+      DENSIDADE_HABITACAO == "1" ~ "1",
+      TRUE ~ "Mais de 1"),
+      DENSIDADE_HABITACAO_CAT = fct_relevel(DENSIDADE_HABITACAO_CAT, 
+                                      "Menos de 1", "1", "Mais de 1")
   ) %>%
   count(DENSIDADE_HABITACAO_CAT) %>% 
   print()
@@ -445,9 +446,10 @@ densidade_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
 
 
 
@@ -470,8 +472,9 @@ rendaind_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
   )
 
 
@@ -492,9 +495,10 @@ rendafam_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
 
 
 ## ESCOLA_PAI2 ####
@@ -508,15 +512,16 @@ escolapai_participante %>%
   ggplot(aes(x = ESCOLA_PAI2, y = n, label = n, fill = ESCOLA_PAI2)) +
   geom_bar(stat = "identity", color = "white") +
   labs(
-    x = "escola do Pai",
+    x = "Escolaridade do pai",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
 
 
 ## ESCOLA_MAE2 ####
@@ -530,15 +535,17 @@ escolamae_participante %>%
   ggplot(aes(x = ESCOLA_MAE2, y = n, label = n, fill = ESCOLA_MAE2)) +
   geom_bar(stat = "identity", color = "white") +
   labs(
-    x = "Escola da Mãe",
+    x = "Escolaridade da mãe",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
-  )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
+
 
 
 ## INDICE_OCUPACAO_PAI ####
@@ -560,8 +567,8 @@ ocupacaopai_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 
@@ -584,8 +591,8 @@ ocupacaomae_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 ## MEDIA PAIS ####
@@ -610,8 +617,8 @@ pais_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9)   # tamanho do título eixo Y
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9)#tamanho título eixo Y
   )
 
 hist(
@@ -725,8 +732,8 @@ ggplot(tab.BAIRO.REGIAO, aes(x = BAIRRO_REGIAO2, y = n)) +
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 
@@ -848,8 +855,8 @@ ocupacao_pai %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
   )
 
 ### ocupacao mae ####
@@ -885,8 +892,8 @@ ocupacao_mae %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
   )
 
 
@@ -908,8 +915,8 @@ ocupacao_outro_cargo %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 
@@ -930,8 +937,8 @@ ocupacao_sonhos %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 
@@ -978,8 +985,8 @@ locomocao %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 distancia <- infs2%>% 
@@ -997,8 +1004,8 @@ distancia %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 
@@ -1026,8 +1033,8 @@ escolaridade %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 ## Escolaridade dos pais ####
@@ -1047,8 +1054,8 @@ escolaridade_pai %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 
@@ -1068,8 +1075,8 @@ escolaridade_mae %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 
@@ -1160,8 +1167,8 @@ renda_individual %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 # RENDA ####
@@ -1182,8 +1189,8 @@ renda_familiar %>%
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-        axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+        axis.title.x = element_text(size = 9),#tamanho título eixo X
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
         legend.position = "none")
 
 ### Renda X Escolaridade ####
