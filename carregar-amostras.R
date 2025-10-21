@@ -5,10 +5,6 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
                 # Carregar amostras e manipulação dos dados # 
 
-
-#test github faisca
-
-
 # Carregar pacotes ###
 #install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork"); install.packages("factoextra"); install.packages("glmnet"); install.packages("coefplot")
 
@@ -208,11 +204,11 @@ infs2$LAZER
 
 
 ### média lazer ####
-infs2$VIAGEM <- rowMeans(
+infs2$VIAGEM2 <- rowMeans(
   infs2[, c("INDICE_VIAGEM_norm", "INDICE_VIAGEM_LUGAR_norm", "INDICE_VIAGEM_VONTADE_norm")],
   na.rm = TRUE
 )
-infs2$VIAGEM
+infs2$VIAGEM2
 
 ## CALCULO INDICE SOCIOECONÔMICO ####
 # Função para calcular o índice ajustado
@@ -225,7 +221,7 @@ calcular_indice <- function(df) {
     
     lazer <- as.numeric(x["LAZER"])
     
-    viagem <- as.numeric(x["VIAGEM"])
+    viagem <- as.numeric(x["VIAGEM2"])
     
     ocup_sonhos <- as.numeric(x["INDICE_OCUPACAO_SONHOS2_norm"])
     
