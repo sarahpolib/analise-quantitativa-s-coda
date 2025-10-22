@@ -349,7 +349,7 @@ dados_AP
 
 modAP1 <- glmer(VD ~ TONICIDADE + 
                  POSICAO_S +
-                 CFP_abertura +
+                 CFP_abertura2 +
                  CLASSE_MORFOLOGICA3 + 
                  GENERO + 
                  TEMPO_RESIDENCIA + 
@@ -359,7 +359,7 @@ modAP1 <- glmer(VD ~ TONICIDADE +
 summary(modAP1)
 lrm(VD ~ TONICIDADE + 
       POSICAO_S +
-      CFP_abertura +
+      CFP_abertura2 +
       CLASSE_MORFOLOGICA3 + 
       GENERO + 
       TEMPO_RESIDENCIA + 
@@ -374,7 +374,7 @@ r.squaredGLMM(modAP1)
 # 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
 modAP2 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
-                  CFP_abertura +
+                  CFP_abertura2 +
                   CLASSE_MORFOLOGICA3 + 
                   GENERO + 
                   TEMPO_RESIDENCIA + 
@@ -385,7 +385,7 @@ modAP2 <- glmer(VD ~ TONICIDADE +
 summary(modAP2)
 lrm(VD ~ TONICIDADE + 
       POSICAO_S +
-      CFP_abertura +
+      CFP_abertura2 +
       CLASSE_MORFOLOGICA3 + 
       GENERO + 
       TEMPO_RESIDENCIA + 
@@ -424,11 +424,11 @@ check_model(modAP3)
 check_outliers(modAP3)
 r.squaredGLMM(modAP3)
 
-# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP ###
+# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP CLASSE MORFO###
 modAP4 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
                   #CFP_abertura +
-                  CLASSE_MORFOLOGICA3 + 
+                  #CLASSE_MORFOLOGICA3 + 
                   GENERO + 
                   TEMPO_RESIDENCIA + 
                   IDADE_MIGRACAO +
@@ -453,11 +453,35 @@ r.squaredGLMM(modAP4)
 
 
 ## interações ####
-summary(glm(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_POLI, data = dados_AP, family = binomial))
-summary(glm(VD ~ IDADE_MIGRACAO * TEMPO_RESIDENCIA, data = dados_AP, family = binomial))
-summary(glm(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI, data = dados_AP, family = binomial))
-summary(glm(VD ~ IDADE_MIGRACAO * ESCOLARIDADE2, data = dados_AP, family = binomial))
-summary(glm(VD ~ IDADE_MIGRACAO * CFP_abertura, data = dados_AP, family = binomial))
+idade_migracao_indice <- glmer(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_POLI +
+                               (1|ITEM_LEXICAL) +
+                               (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(idade_migracao_indice)
+plot(allEffects(idade_migracao_indice))
+
+
+# IDADE MIGRAÇAO X TEMPO DE RESIDENCIA
+idade_migracao_tempo_residencia <- glmer(VD ~ IDADE_MIGRACAO * TEMPO_RESIDENCIA +
+                                         (1|ITEM_LEXICAL) +
+                                         (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(idade_migracao_tempo_residencia)
+plot(allEffects(idade_migracao_tempo_residencia))
+
+#TEMPO DE RESIDENCIA X INDICE SOCIO
+idade_migracao_indicesocio <- glmer(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI +
+                                    (1|ITEM_LEXICAL) +
+                                    (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(idade_migracao_indicesocio)
+plot(allEffects(idade_migracao_indicesocio))
+
+#IDADE MIGRACAO X ESCOLARIDADE
+idade_migracao_escolaridade <- glmer(VD ~ IDADE_MIGRACAO * ESCOLARIDADE2 +
+                (1|ITEM_LEXICAL) +
+                (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(idade_migracao_escolaridade)
+
+
+
 
 
 # INDICE SOCIOECONOMICO ####
