@@ -351,7 +351,7 @@ plot(allEffects(HAP.mod_INDICE_SOCIO_POLI), type = "response")
 # 1 MODELAGEM DE BARBOSA(2023) ####
 modHAP1 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
-                  CFP_abertura +
+                  CFP_abertura2 +
                   CLASSE_MORFOLOGICA3 + 
                   GENERO + 
                   TEMPO_RESIDENCIA + 
@@ -361,7 +361,7 @@ modHAP1 <- glmer(VD ~ TONICIDADE +
 summary(modHAP1)
 lrm(VD ~ TONICIDADE + 
       POSICAO_S +
-      CFP_abertura +
+      CFP_abertura2 +
       CLASSE_MORFOLOGICA3 + 
       GENERO + 
       TEMPO_RESIDENCIA + 
@@ -376,7 +376,7 @@ r.squaredGLMM(modHAP1)
 # 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
 modHAP2 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
-                  CFP_abertura +
+                  CFP_abertura2 +
                   CLASSE_MORFOLOGICA3 + 
                   GENERO + 
                   TEMPO_RESIDENCIA + 
@@ -387,7 +387,7 @@ modHAP2 <- glmer(VD ~ TONICIDADE +
 summary(modHAP2)
 lrm(VD ~ TONICIDADE + 
       POSICAO_S +
-      CFP_abertura +
+      CFP_abertura2 +
       CLASSE_MORFOLOGICA3 + 
       GENERO + 
       TEMPO_RESIDENCIA + 
@@ -427,11 +427,11 @@ check_outliers(modHAP3)
 r.squaredGLMM(modHAP3)
 
 
-# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFS_abertura ###
+# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFS_abertura e classe ###
 modHAP4 <- glmer(VD ~ TONICIDADE + 
                    POSICAO_S +
-                   #CFP_abertura +
-                   CLASSE_MORFOLOGICA3 + 
+                   #CFP_abertura2 +
+                   #CLASSE_MORFOLOGICA3 + 
                    GENERO + 
                    TEMPO_RESIDENCIA + 
                    IDADE_MIGRACAO +
@@ -441,8 +441,6 @@ modHAP4 <- glmer(VD ~ TONICIDADE +
 summary(modHAP4)
 lrm(VD ~ TONICIDADE + 
       POSICAO_S +
-      #CFP_abertura +
-      CLASSE_MORFOLOGICA3 + 
       GENERO + 
       TEMPO_RESIDENCIA + 
       IDADE_MIGRACAO +

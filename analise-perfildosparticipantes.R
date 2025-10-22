@@ -568,8 +568,9 @@ ocupacaopai_participante %>%
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
-        axis.title.y = element_text(size = 9)#tamanho título eixo Y
-  )
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
 
 
 ## INDICE_OCUPACAO_MAE ####
@@ -592,8 +593,9 @@ ocupacaomae_participante %>%
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), axis.title.x = element_text(size = 9),#tamanho título eixo X
-        axis.title.y = element_text(size = 9)#tamanho título eixo Y
-  )
+        axis.title.y = element_text(size = 9),#tamanho título eixo Y
+        legend.position = "none"
+        )
 
 ## MEDIA PAIS ####
 pais_participante <- infs2 %>% 
@@ -642,7 +644,7 @@ hist(
 
 ##MEDIA VIAGEM####
 hist(
-  infs2$VIAGEM,
+  infs2$VIAGEM2,
   main = "Distribuição do índice VIAGEM",
   #  xlab = "Média escolaridade e ocupação dos pais",
   col = "lightblue",

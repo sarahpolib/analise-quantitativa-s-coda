@@ -335,7 +335,7 @@ plot(allEffects(AP.mod_INDICE_SOCIO_POLI), type = "response")
 # 1 MODELAGEM DE BARBOSA(2023) ####
 modS01 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
-                  CFP_abertura +
+                  CFP_abertura2 +
                   CFS_sonoridade +
                   CLASSE_MORFOLOGICA3 + 
                   GENERO + 
@@ -362,7 +362,7 @@ r.squaredGLMM(modS01)
 # 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
 modS02 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
-                  CFP_abertura +
+                  CFP_abertura2 +
                   CFS_sonoridade +
                   CLASSE_MORFOLOGICA3 + 
                   GENERO + 
@@ -416,12 +416,12 @@ check_model(modS03)
 check_outliers(modS03)
 r.squaredGLMM(modS03)
 
-# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP_abertura ###
+# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP_abertura E CLASSE ###
 modS04 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
                   #CFP_abertura +
-                  CFS_sonoridade +
-                  CLASSE_MORFOLOGICA3 + 
+                  #CFS_sonoridade +
+                  #CLASSE_MORFOLOGICA3 + 
                   GENERO + 
                   TEMPO_RESIDENCIA + 
                   IDADE_MIGRACAO +
@@ -443,6 +443,12 @@ car::vif(modS04)
 check_model(modS04)
 check_outliers(modS04)
 r.squaredGLMM(modS04)
+
+
+
+
+
+
 
 # INDICE SOCIOECONOMICO ####
 ### Escolaridade ####
