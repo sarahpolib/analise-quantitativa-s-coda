@@ -29,6 +29,38 @@ ggplot(S0.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) +
     legend.position = "none")
 
 
+## Por participante ####
+S0.participante <- dados_S0 %>% 
+  count(PARTICIPANTE, VD) %>%
+  group_by(PARTICIPANTE) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
+  print()
+
+
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD-participante.png", width = 6.5, height = 4.5, units = "in", res = 300)
+S0.participante %>%   
+  ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  geom_text(aes(label = label), 
+            vjust = -0.2,
+            size = 3.5) +
+  facet_wrap(. ~ PARTICIPANTE)+
+  scale_fill_brewer(palette = "Reds")+
+  scale_y_continuous(labels = percent_format(accuracy = 1), 
+                     expand = expansion(mult = c(0, 0.9))) + #espaço no topo para texto
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+    legend.position = "bottom")
+#dev.off()
+
+
 # TONICIDADE ####
 S0.prop_TONICIDADE <- dados_S0 %>%
   count(VD, TONICIDADE) %>%
