@@ -396,6 +396,7 @@ lrm(VD ~ TONICIDADE +
       TEMPO_RESIDENCIA + 
       IDADE_MIGRACAO, data = dados_AP)
 
+
 car::vif(modAP1)
 check_model(modAP1)
 check_outliers(modAP1)
@@ -455,7 +456,9 @@ check_model(modAP3)
 check_outliers(modAP3)
 r.squaredGLMM(modAP3)
 
-# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP CLASSE MORFO###
+compare_performance(modAP2, modAP3)
+
+# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP CLASSE MORFO####
 modAP4 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
                   #CFP_abertura +
@@ -504,6 +507,13 @@ idade_migracao_indicesocio <- glmer(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI +
                                     (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(idade_migracao_indicesocio)
 plot(allEffects(idade_migracao_indicesocio))
+
+#TEMPO DE RESIDENCIA X INDICE SOCIO
+idade_migracao_indicesocio_oushiro <- glmer(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_OUSHIRO +
+                                      (1|ITEM_LEXICAL) +
+                                      (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(idade_migracao_indicesocio_oushiro)
+plot(allEffects(idade_migracao_indicesocio_oushiro))
 
 #IDADE MIGRACAO X ESCOLARIDADE
 idade_migracao_escolaridade <- glmer(VD ~ IDADE_MIGRACAO * ESCOLARIDADE2 +
@@ -1636,6 +1646,25 @@ escalas_lasso_AP <- dados_AP %>%
   mutate(across(everything(), as.numeric)) %>%
   na.omit()
 
+
+modelo_lasso_misto <- glmmLasso(
+  VD ~ INDICE_ESCOL3_norm + 
+    PAIS + 
+    INDICE_OCUPACAO_norm +
+    INDICE_OCUPACAO_SONHOS2_norm + 
+    INDICE_MEGA_norm +
+    INDICE_RENDA_IND_norm + 
+    LAZER + 
+    VIAGEM + 
+    INDICE_INFANCIA_norm,
+  rnd = list(PARTICIPANTE = ~1, ITEM_LEXICAL = ~1),
+  lambda = 10, # ajustar via validação
+  family = gaussian(link = "identity"),
+  data = dados_AP
+) %>% 
+  mutate(across(everything(), as.numeric)) %>%
+  na.omit()
+  
 
 x_AP <- model.matrix(VD ~ ., escalas_lasso_AP)[, -1]
 y_AP <- escalas_lasso_AP$VD

@@ -64,6 +64,15 @@ ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, color = MODELO)) +
   )
 dev.off()
 
+cor.test(dados2$INDICE_ESCOL3_norm, dados2$INDICE_OCUPACAO_norm)
+plot(dados2$INDICE_ESCOL3_norm, dados2$INDICE_OCUPACAO_norm)
+
+ocup <- glmer(VD ~ INDICE_OCUPACAO_norm +
+       (1|PARTICIPANTE)+
+       (1|ITEM_LEXICAL), family = binomial, data = dados_AP)
+summary(ocup)
+
+
 # gráfico
 ggplot(coef_3processos, aes(x = VARIAVEL, y = COEF, fill = MODELO)) +
   geom_col(position = position_dodge(width = 0.8)) +
