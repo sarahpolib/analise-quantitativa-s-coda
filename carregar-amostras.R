@@ -7,8 +7,10 @@
 
 # Carregar pacotes ###
 #install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork"); install.packages("factoextra"); install.packages("glmnet"); install.packages("coefplot")
+install.packages("glmmLasso")
+install.packages("performance")
 
-library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet); library(MuMIn); library(coefplot)
+library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet); library(MuMIn); library(coefplot);library(glmmLasso); library(performance)
 
 #rm(list = ls())
 
@@ -440,5 +442,7 @@ distribuicao.geral.participante %>%
     legend.position = "bottom")
 dev.off()
 
+
+indices_OP <- infs2
 
 
