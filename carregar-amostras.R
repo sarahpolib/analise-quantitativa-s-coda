@@ -6,13 +6,11 @@
                 # Carregar amostras e manipulação dos dados # 
 
 # Carregar pacotes ###
-#install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork"); install.packages("factoextra"); install.packages("glmnet"); install.packages("coefplot")
-install.packages("glmmLasso")
-install.packages("performance")
+#install.packages("ggplot2"); install.packages("tidyverse"); install.packages("lme4"); install.packages("lmerTest"); install.packages("effects"); install.packages("openxlsx"); install.packages("rms"); install.packages("statmod"); install.packages("RColorBrewer"); install.packages("stargazer");install.packages("hrbrthemes"); install.packages("scales"); install.packages("performance");install.packages("patchwork"); install.packages("factoextra"); install.packages("glmnet"); install.packages("coefplot"); install.packages("glmmLasso"); install.packages("performance")
 
-library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(hrbrthemes); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet); library(MuMIn); library(coefplot);library(glmmLasso); library(performance)
+library(ggplot2); library(tidyverse); library(lme4); library(lmerTest); library(effects); library(openxlsx); library(rms); library(statmod); library(RColorBrewer); library(stargazer); library(scales); library(performance); library(patchwork); library(factoextra); library(glmnet); library(MuMIn); library(coefplot);library(glmmLasso); library(performance)
 
-#rm(list = ls())
+rm(list = ls())
 
 # Carregar dados ####
 setwd("C:/Users/sah/Downloads/analise-quantitativa-s-coda")
@@ -189,8 +187,8 @@ infs2$media_m2
 ### média pais ####
 #media da ocupação e escolaridade do pai e da mae
 infs2$PAIS <- rowMeans(
-  infs2[, c("INDICE_ESCOL_PAI_norm", "INDICE_ESCOL_MAE_norm"
-            #, "INDICE_OCUPACAO_PAI_norm", "INDICE_OCUPACAO_MAE_norm"
+  infs2[, c("INDICE_ESCOL_PAI_norm", "INDICE_ESCOL_MAE_norm" #, 
+            #"INDICE_OCUPACAO_PAI_norm", "INDICE_OCUPACAO_MAE_norm"
             )],
   na.rm = TRUE
 )
@@ -238,7 +236,7 @@ calcular_indice <- function(df) {
     componentes <- c(esc, pais, lazer, viagem, ocup_sonhos, mega, 
                      renda, infancia, ocupacao)
     
-    mean(componentes, na.rm = TRUE)
+    round(mean(componentes, na.rm = TRUE), 2)
   })
 }
 
@@ -361,19 +359,16 @@ ggplot(aes(x = VD, y = prop, fill = VD, label = label)) +
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
   scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(aes(label = label), 
-            vjust = -0.2,
-            size = 3.5) +
+  geom_text(aes(label = label), vjust = -0.2, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(labels = percent_format(accuracy = 1), 
-                     expand = expansion(mult = c(0, 0.15))) +  # aumenta espaço no topo para texto
+                     expand = expansion(mult = c(0, 0.15))) +  #aumenta espaço no topo para texto
   theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
-    legend.position = "none")
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+        #axis.title.x = element_text(size = 11),  #tamanho título X
+        #axis.title.y = element_text(size = 11),   #tamanho título Y
+        legend.position = "none")
 dev.off()
 
 
@@ -404,9 +399,9 @@ distribuicao.amostra %>%
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
-    legend.position = "bottom")
+    #axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    #axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+    legend.position = "none")
 dev.off()
 
 
@@ -420,15 +415,13 @@ distribuicao.geral.participante <- dados2 %>%
   print()
 
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD-participante.png", width = 6.5, height = 4.5, units = "in", res = 300)
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD-participante.png", width = 6.5, height = 4.5, units = "in", res = 300)
 distribuicao.geral.participante %>%   
   ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
   scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(aes(label = label), 
-            vjust = -0.2,
-            size = 3.5) +
+  geom_text(aes(label = label), vjust = -0.2, size = 3.5) +
   facet_wrap(. ~ PARTICIPANTE)+
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(labels = percent_format(accuracy = 1), 
@@ -437,12 +430,19 @@ distribuicao.geral.participante %>%
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
+    #axis.title.x = element_text(size = 9),  # tamanho do título eixo X
+    #axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "bottom")
-dev.off()
+#dev.off()
 
 
-indices_OP <- infs2
+indices_OP <- infs2 %>% 
+  select(PARTICIPANTE, INDICE_SOCIO_OUSHIRO, INDICE_SOCIO_POLI, IDADE) %>% 
+  mutate(dif = abs(INDICE_SOCIO_OUSHIRO - INDICE_SOCIO_POLI)) %>% 
+  arrange(desc(dif)) %>% 
+  print()
 
+
+view(indices_OP)
+hist(indices_OP$dif)
 
