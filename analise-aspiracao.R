@@ -14,7 +14,7 @@ distribuicao.geral <- dados2 %>%
 distribuicao.geral %>%   
   ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
   scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(aes(label = label), 
             vjust = -0.2,
@@ -42,7 +42,7 @@ distribuicao.geral %>%
 # 
 # ggplot(HAP.prop_CONT_FON_SEG, aes(x = CONT_FON_SEG, y = prop * 100, fill = VD, label = label)) + 
 #   geom_bar(stat = "identity", color = "white") + 
-#   labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+#   labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
 #   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
 #   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
 #   scale_fill_brewer(palette = "Reds")+
@@ -63,7 +63,7 @@ distribuicao.geral %>%
 # 
 # ggplot(HAP.prop_CFS_sonoridade, aes(x = CFS_sonoridade, y = prop * 100, fill = VD, label = label)) + 
 #   geom_bar(stat = "identity", color = "white") + 
-#   #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+#   #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
 #   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
 #   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
 #   scale_fill_brewer(palette = "Reds")+
@@ -82,9 +82,11 @@ HAP.prop_VD <- dados_HAP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/HAP/1HAP_vd.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(HAP.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(aes(label = label), vjust = -0.3, size = 4) + 
   scale_fill_brewer(palette = "Reds")+
@@ -94,9 +96,8 @@ ggplot(HAP.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) +
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "none")
+dev.off()
 
 ## Por participante ####
 HAP.participante <- dados_HAP %>% 
@@ -111,7 +112,7 @@ HAP.participante <- dados_HAP %>%
 HAP.participante %>%   
   ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(aes(label = label), 
             vjust = -0.2,
@@ -138,18 +139,20 @@ HAP.prop_TONICIDADE <- dados_HAP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/HAP/2HAP_tonicidade.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(HAP.prop_TONICIDADE, aes(x = TONICIDADE, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
+  labs(x = "Tonicidade", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Átona", "Tônica"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspiração"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+dev.off()
+
 
 (HAP.tab_TONICIDADE <- with(dados_HAP, table(TONICIDADE, VD)))
 chisq.test(HAP.tab_TONICIDADE)
@@ -165,7 +168,7 @@ HAP.prop_POSICAO <- dados_HAP %>%
 
 ggplot(HAP.prop_POSICAO, aes(x = POSICAO_S, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -190,7 +193,7 @@ HAP.prop_CONT_FON_PREC <- dados_HAP %>%
 
 ggplot(HAP.prop_CONT_FON_PREC, aes(x = CONT_FON_PREC, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -212,7 +215,7 @@ HAP.prop_CFP_abertura2 <- dados_HAP %>%
 
 ggplot(HAP.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -237,7 +240,7 @@ HAP.prop_CLASSE_MORFOLOGICA3 <- dados_HAP %>%
 
 ggplot(HAP.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100, fill = VD, label = label)) +
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -262,7 +265,7 @@ HAP.prop_ESTILO <- dados_HAP %>%
 
 ggplot(HAP.prop_ESTILO, aes(x = ESTILO, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -288,7 +291,7 @@ HAP.prop_GENERO <- dados_HAP %>%
 
 ggplot(HAP.prop_GENERO, aes(x = GENERO, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -304,6 +307,30 @@ ggplot(HAP.prop_GENERO, aes(x = GENERO, y = prop * 100, fill = VD, label = label
 chisq.test(HAP.tab_GENERO)
 
 
+
+# TEMPO DE RESIDENCIA ####
+HAP.prop_TEMPO_RESIDENCIA <- dados_HAP %>% 
+  count(VD, TEMPO_RESIDENCIA) %>%
+  group_by(TEMPO_RESIDENCIA) %>% 
+  mutate(prop = prop.table(n)) %>% 
+  print(n = 39)
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/HAP/3HAP_tempo_residencia.png", width = 5, height = 4.5, units = "in", res = 300)
+ggplot(HAP.prop_TEMPO_RESIDENCIA[24:39,], aes(x = TEMPO_RESIDENCIA, y = prop * 100)) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="red")+
+  labs(x = "Tempo de Residência", y = "Proporção de Aspiração") +
+  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+  theme_light()
+dev.off()
+
+HAP.mod_TEMPO_RESIDENCIA <- glm(VD ~ TEMPO_RESIDENCIA, data = dados_HAP, family = binomial)
+summary(HAP.mod_TEMPO_RESIDENCIA)
+lrm(VD ~ TEMPO_RESIDENCIA, data = dados_HAP)
+plot(allEffects(HAP.mod_TEMPO_RESIDENCIA), type = "response")
+
+
+
 # IDADE DE MIGRACAO ####
 HAP.prop_IDADE_MIGRACAO <- dados_HAP %>% 
   count(VD, IDADE_MIGRACAO) %>%
@@ -311,8 +338,8 @@ HAP.prop_IDADE_MIGRACAO <- dados_HAP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 47)
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_HAP-idade-migracao.png", width = 6.5, height = 4.5, units = "in", res = 300)
-ggplot(HAP.prop_IDADE_MIGRACAO[27:47,], aes(x = IDADE_MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/HAP/4HAP_idade_migracao.png", width = 5, height = 4.5, units = "in", res = 300)
+ggplot(HAP.prop_IDADE_MIGRACAO[27:47,], aes(x = IDADE_MIGRACAO, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   labs(x = "Idade de Migração", y = "Proporção de Aspiração") +
@@ -327,28 +354,6 @@ plot(allEffects(HAP.mod_IDADE_MIGRACAO), type = "response")
 
 
 
-# TEMPO DE RESIDENCIA ####
-HAP.prop_TEMPO_RESIDENCIA <- dados_HAP %>% 
-  count(VD, TEMPO_RESIDENCIA) %>%
-  group_by(TEMPO_RESIDENCIA) %>% 
-  mutate(prop = prop.table(n)) %>% 
-  print(n = 39)
-
-#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_HAP-10.idade_migracao.png")
-ggplot(HAP.prop_TEMPO_RESIDENCIA[24:39,], aes(x = TEMPO_RESIDENCIA, y = prop * 100, label = round(prop * 100, 1))) + 
-  geom_point(stat = "identity", color = "black") + 
-  stat_smooth(method=lm, se=TRUE, color="red")+
-  #labs(x = "Idade de Migração", y = "Proporção de Aspiradaização") +
-  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
-  theme_light()
-#dev.off()
-
-HAP.mod_TEMPO_RESIDENCIA <- glm(VD ~ TEMPO_RESIDENCIA, data = dados_HAP, family = binomial)
-summary(HAP.mod_TEMPO_RESIDENCIA)
-lrm(VD ~ TEMPO_RESIDENCIA, data = dados_HAP)
-plot(allEffects(HAP.mod_TEMPO_RESIDENCIA), type = "response")
-
-
 
 # INDICE SOCIO POLI ####
 HAP.prop_INDICE_SOCIO_POLI <- dados_HAP %>% 
@@ -357,19 +362,12 @@ HAP.prop_INDICE_SOCIO_POLI <- dados_HAP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 92)
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_HAP-indicesocio.png", width = 3.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/HAP/5HAP_indicesocio.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(HAP.prop_INDICE_SOCIO_POLI[46:77,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Índice Socioeconomico", y = "Proporção de Aspiração") +
-  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    #axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    #axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
-    legend.position = "none")
+  labs(x = "Índice Socioeconômico", y = "Proporção de Aspiração") +
+  theme_light()
 dev.off()
 
 HAP.mod_INDICE_SOCIO_POLI <- glm(VD ~ INDICE_SOCIO_POLI, data = dados_HAP, family = binomial)
@@ -402,6 +400,14 @@ car::vif(modHAP1)
 check_model(modHAP1)
 #check_outliers(modHAP1)
 r.squaredGLMM(modHAP1)
+
+
+
+addmargins(table(dados_HAP$TONICIDADE, dados_HAP$VD))
+addmargins(table(dados_HAP$POSICAO_S, dados_HAP$VD))
+addmargins(table(dados_HAP$CFP_abertura2, dados_HAP$VD))
+addmargins(table(dados_HAP$CLASSE_MORFOLOGICA3, dados_HAP$VD))
+addmargins(table(dados_HAP$GENERO, dados_HAP$VD))
 
 
 # 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
@@ -458,6 +464,9 @@ check_outliers(modHAP3)
 r.squaredGLMM(modHAP3)
 
 
+compare_performance(modHAP2, modHAP3)
+
+
 # 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFS_abertura e classe ###
 modHAP4 <- glmer(VD ~ TONICIDADE + 
                    POSICAO_S +
@@ -502,7 +511,7 @@ HAP.prop_ESCOLARIDADE2 <- dados_HAP %>%
 
 ggplot(HAP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -544,7 +553,7 @@ HAP.prop_ESCOLA_PAI2 <- dados_HAP %>%
 
 ggplot(HAP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -581,7 +590,7 @@ HAP.prop_ESCOLA_MAE2 <- dados_HAP %>%
 
 ggplot(HAP.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -598,7 +607,7 @@ HAP.grafico_escolaridade_mae <- HAP.prop_ESCOLA_MAE2 %>%
   ggplot(aes(x = ESCOLA_MAE2, y = prop * 100, group = VD, color = VD, label = label)) + 
   geom_line(size = 1.2) +
   geom_point(size = 3) +
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
   geom_text(size = 3, vjust = -0.5) +
   scale_y_continuous(labels = function(x) paste0(x, "%")) +

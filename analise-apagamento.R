@@ -12,9 +12,10 @@ S0.prop_VD <- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/1S0_VD.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Realização", "Apagamento"))+
   geom_text(aes(label = label), vjust = -0.3, size = 4) + 
   scale_fill_brewer(palette = "Reds")+
@@ -24,9 +25,8 @@ ggplot(S0.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) +
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "none")
+dev.off()
 
 
 ## Por participante ####
@@ -38,11 +38,11 @@ S0.participante <- dados_S0 %>%
   print()
 
 
-#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD-participante.png", width = 6.5, height = 4.5, units = "in", res = 300)
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/VD-participante.png", width = 6.5, height = 4.5, units = "in", res = 300)
 S0.participante %>%   
   ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(aes(label = label), 
             vjust = -0.2,
@@ -69,18 +69,18 @@ S0.prop_TONICIDADE <- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/2S0_tonicidade.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_TONICIDADE, aes(x = TONICIDADE, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Átona", "Tônica"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamanto"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+dev.off()
 
 (S0.tab_TONICIDADE <- with(dados_S0, table(TONICIDADE, VD)))
 chisq.test(S0.tab_TONICIDADE)
@@ -94,18 +94,22 @@ S0.prop_POSICAO <- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/3S0_posicao.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_POSICAO, aes(x = POSICAO_S, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
+  labs(x = "Posição na palavra", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Final", "Medial"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamento"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+dev.off()
+
+
+
 
 (S0.tab_POSICAO <- with(dados_S0, table(POSICAO_S, VD)))
 chisq.test(S0.tab_POSICAO)
@@ -121,7 +125,7 @@ S0.prop_CONT_FON_PREC <- dados_S0 %>%
 
 ggplot(S0.prop_CONT_FON_PREC, aes(x = CONT_FON_PREC, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -143,7 +147,7 @@ S0.prop_CFP_abertura2 <- dados_S0 %>%
 
 ggplot(S0.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -168,7 +172,7 @@ S0.prop_CONT_FON_SEG <- dados_S0 %>%
 
 ggplot(S0.prop_CONT_FON_SEG, aes(x = CONT_FON_SEG, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -187,19 +191,19 @@ S0.prop_CFS_sonoridade<- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/4S0_cfs.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_CFS_sonoridade, aes(x = CFS_sonoridade, y = prop * 100, fill = VD, label = label)) +
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Pausa", "Sonoro", "Surdo"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamento"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
-
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+dev.off()
 
 (S0.tab_CFS_sonoridade <- with(dados_S0, table(CFS_sonoridade, VD)))
 chisq.test(S0.tab_CFS_sonoridade)
@@ -217,7 +221,7 @@ S0.prop_CLASSE_MORFOLOGICA3 <- dados_S0 %>%
 
 ggplot(S0.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -244,7 +248,7 @@ S0.prop_ESTILO <- dados_S0 %>%
 
 ggplot(S0.prop_ESTILO, aes(x = ESTILO, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -268,13 +272,13 @@ S0.prop_GENERO <- dados_S0 %>%
   print()
 
 
-png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_S0-genero.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/5S0_genero.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_GENERO, aes(x = GENERO, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Gênero", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Feminino", "Masculino"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "Variante", labels = c("Realização", "Apagamento"))+
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamento"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
@@ -286,21 +290,41 @@ dev.off()
 (S0.tab_GENERO <- with(dados_S0, table(GENERO, VD)))
 chisq.test(S0.tab_GENERO)
 
+# TEMPO DE RESIDENCIA ####
+S0.prop_TEMPO_RESIDENCIA <- dados_S0 %>% 
+  count(VD, TEMPO_RESIDENCIA) %>%
+  group_by(TEMPO_RESIDENCIA) %>% 
+  mutate(prop = prop.table(n)) %>%
+  print(n = 45)
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/6S0_tempo_residencia.png", width = 5, height = 4.5, units = "in", res = 300)
+ggplot(S0.prop_TEMPO_RESIDENCIA[24:45,], aes(x = TEMPO_RESIDENCIA, y = prop * 100)) + 
+  geom_point(stat = "identity", color = "black") + 
+  stat_smooth(method=lm, se=TRUE, color="red")+
+  labs(x = "Tempo de Residência", y = "Proporção de Apagamento") +
+  theme_light()
+dev.off()
+
+S0.mod_TEMPO_RESIDENCIA <- glm(VD ~ TEMPO_RESIDENCIA, data = dados_S0, family = binomial)
+summary(S0.mod_TEMPO_RESIDENCIA)
+lrm(VD ~ TEMPO_RESIDENCIA, data = dados_S0)
+
+plot(allEffects(S0.mod_TEMPO_RESIDENCIA), type = "response")
+
 
 # IDADE DE MIGRACAO ####
 
 S0.prop_IDADE_MIGRACAO <- dados_S0 %>% 
   count(VD, IDADE_MIGRACAO) %>%
   group_by(IDADE_MIGRACAO) %>% 
-  mutate(prop = prop.table(n)) %>% 
+  mutate(prop = prop.table(n)) %>%
   print(n = 51)
 
-png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_S0-idade-migracao.png", width = 6.5, height = 4.5, units = "in", res = 300)
-ggplot(S0.prop_IDADE_MIGRACAO[27:51,], aes(x = IDADE_MIGRACAO, y = prop * 100, label = round(prop * 100, 1))) + 
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/7S0_idade_migracao.png", width = 5, height = 4.5, units = "in", res = 300)
+ggplot(S0.prop_IDADE_MIGRACAO[27:51,], aes(x = IDADE_MIGRACAO, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   labs(x = "Idade de Migração", y = "Proporção de Apagamento") +
-  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
   theme_light()
 dev.off()
 
@@ -312,53 +336,25 @@ plot(allEffects(S0.mod_IDADE_MIGRACAO), type = "response")
 
 
 
-# TEMPO DE RESIDENCIA ####
-S0.prop_TEMPO_RESIDENCIA <- dados_S0 %>% 
-  count(VD, TEMPO_RESIDENCIA) %>%
-  group_by(TEMPO_RESIDENCIA) %>% 
-  mutate(prop = prop.table(n)) %>% 
-  print(n = 45)
-
-#png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/VD_S0-10.idade_migracao.png")
-ggplot(S0.prop_TEMPO_RESIDENCIA[24:45,], aes(x = TEMPO_RESIDENCIA, y = prop * 100, label = round(prop * 100, 1))) + 
-  geom_point(stat = "identity", color = "black") + 
-  stat_smooth(method=lm, se=TRUE, color="red")+
-  #labs(x = "Idade de Migração", y = "Proporção de Apagamento") +
-  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
-  theme_light()
-#dev.off()
-
-S0.mod_TEMPO_RESIDENCIA <- glm(VD ~ TEMPO_RESIDENCIA, data = dados_S0, family = binomial)
-summary(S0.mod_TEMPO_RESIDENCIA)
-lrm(VD ~ TEMPO_RESIDENCIA, data = dados_S0)
-
-plot(allEffects(S0.mod_TEMPO_RESIDENCIA), type = "response")
 
 # INDICE SOCIO POLI ####
 S0.prop_INDICE_SOCIO_POLI <- dados_S0 %>% 
   count(VD, INDICE_SOCIO_POLI) %>%
   group_by(INDICE_SOCIO_POLI) %>% 
-  mutate(prop = prop.table(n)) %>% 
+  mutate(prop = prop.table(n)) %>%
   print(n = 92)
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD_S0-indicesocio.png", width = 3.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/8S0_indicesocio.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_INDICE_SOCIO_POLI[46:87,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Índice Socioeconomico", y = "Proporção de Apagamento") +
-  #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    #axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    #axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
-    legend.position = "none")
+  labs(x = "Índice Socioeconômico", y = "Proporção de Apagamento") +
+  theme_light()
 dev.off()
 
-AP.mod_INDICE_SOCIO_POLI <- glm(VD ~ INDICE_SOCIO_POLI, data = dados_AP, family = binomial)
+AP.mod_INDICE_SOCIO_POLI <- glm(VD ~ INDICE_SOCIO_POLI, data = dados_S0, family = binomial)
 summary(AP.mod_INDICE_SOCIO_POLI)
-lrm(VD ~ INDICE_SOCIO_POLI, data = dados_AP)
+lrm(VD ~ INDICE_SOCIO_POLI, data = dados_S0)
 plot(allEffects(AP.mod_INDICE_SOCIO_POLI), type = "response") 
 
 
@@ -390,8 +386,15 @@ check_model(modS01)
 #check_outliers(modS01)
 r.squaredGLMM(modS01)
 
+addmargins(table(dados_S0$TONICIDADE, dados_S0$VD))
+addmargins(table(dados_S0$POSICAO_S, dados_S0$VD))
+addmargins(table(dados_S0$CFP_abertura2, dados_S0$VD))
+addmargins(table(dados_S0$CFS_sonoridade, dados_S0$VD))
+addmargins(table(dados_S0$CLASSE_MORFOLOGICA3, dados_S0$VD))
+addmargins(table(dados_S0$GENERO, dados_S0$VD))
 
-# 2 MODELAGEM DE POLI INDICE SOCIO OUSHIRO ####
+
+# 2 MODELAGEM DE barbosa INDICE SOCIO OUSHIRO ####
 modS02 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
                   CFP_abertura2 +
@@ -448,7 +451,11 @@ check_model(modS03)
 check_outliers(modS03)
 r.squaredGLMM(modS03)
 
-# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP_abertura E CLASSE ###
+compare_performance(modS02, modS03)
+
+
+
+# 4 MODELAGEM DE POLI INDICE SOCIO POLI sem CFP_abertura E CLASSE ####
 modS04 <- glmer(VD ~ TONICIDADE + 
                   POSICAO_S +
                   #CFP_abertura +
@@ -479,9 +486,6 @@ r.squaredGLMM(modS04)
 
 
 
-
-
-
 # INDICE SOCIOECONOMICO ####
 ### Escolaridade ####
 S0.prop_ESCOLARIDADE2 <- dados_S0 %>%
@@ -493,7 +497,7 @@ S0.prop_ESCOLARIDADE2 <- dados_S0 %>%
 
 ggplot(S0.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -536,7 +540,7 @@ S0.prop_ESCOLA_PAI2 <- dados_S0 %>%
 
 ggplot(S0.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -574,7 +578,7 @@ S0.prop_ESCOLA_MAE2 <- dados_S0 %>%
 
 ggplot(S0.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Dependente", y = "Proporção de Ocorrência") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
