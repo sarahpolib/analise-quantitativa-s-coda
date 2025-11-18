@@ -314,7 +314,9 @@ dados_AP <- dados2 %>%
 levels(dados_AP$VD)
 levels(dados_AP$CFS_pontoc2)
 
-
+dados_AP.cfs <- dados2 %>% 
+  filter(VD %in% c("P", "A")) %>% 
+  droplevels()
 
 
 ### APAGAMENTO ####
@@ -339,6 +341,13 @@ dados_HAP <- dados2 %>%
 levels(dados_HAP$VD) 
 levels(dados_HAP$CFS_sonoridade) 
 
+dados_HAP.cfs <- dados2 %>% 
+  filter(VD %in% c("A", "H", "P")) %>%
+  mutate(VD = fct_collapse(VD,
+                           H = "H",
+                           AP = c("A", "P"))) %>%
+  droplevels()
+
 # EXPORTAR dados2 ####
 
 write.csv(dados2, "dados2.csv", row.names = TRUE)
@@ -353,11 +362,11 @@ distribuicao.geral <- dados2 %>%
   print()
 
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD.png", width = 5, height = 4.5, units = "in", res = 300)
 distribuicao.geral %>%   
 ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
   scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(aes(label = label), vjust = -0.2, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
@@ -366,8 +375,6 @@ ggplot(aes(x = VD, y = prop, fill = VD, label = label)) +
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        #axis.title.x = element_text(size = 11),  #tamanho título X
-        #axis.title.y = element_text(size = 11),   #tamanho título Y
         legend.position = "none")
 dev.off()
 
@@ -382,16 +389,18 @@ distribuicao.amostra <- dados2 %>%
   print()
 
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD-amostra.png", width = 6.5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/VD-amostra.png", width = 5, height = 4.5, units = "in", res = 300)
 distribuicao.amostra %>%   
   ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Dependente", y = "Proporção de Ocorrência", fill = "VD") + 
+  labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
   scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(aes(label = label), 
             vjust = -0.2,
             size = 3.5) +
-  facet_wrap(. ~ AMOSTRA)+
+  facet_wrap(. ~ AMOSTRA, labeller = as_labeller(c("amostra2" = "Amostra 2",
+    "poli" = "Novos participantes"
+  )))+
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(labels = percent_format(accuracy = 1), 
                      expand = expansion(mult = c(0, 0.15))) + #espaço no topo para texto
@@ -399,8 +408,6 @@ distribuicao.amostra %>%
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    #axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    #axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "none")
 dev.off()
 
@@ -430,8 +437,6 @@ distribuicao.geral.participante %>%
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    #axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    #axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
     legend.position = "bottom")
 #dev.off()
 
@@ -443,6 +448,6 @@ indices_OP <- infs2 %>%
   print()
 
 
-view(indices_OP)
-hist(indices_OP$dif)
+#view(indices_OP)
+#hist(indices_OP$dif)
 

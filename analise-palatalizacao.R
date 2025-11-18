@@ -28,26 +28,26 @@
 #     )
 # 
 # #CFS_coronal de acordo com BARBOSA (2023)
-# AP.prop_CFS_pontoc2<- dados_AP %>% 
-#   count(VD, CFS_pontoc2) %>%
-#   group_by(CFS_pontoc2) %>% 
-#   mutate(prop = prop.table(n),
-#          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
-#   print()
-# 
-# ggplot(AP.prop_CFS_pontoc2, aes(x = CFS_pontoc2, y = prop * 100, fill = VD, label = label)) + 
-#   geom_bar(stat = "identity", color = "white") + 
-#   labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-#   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-#   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-#   scale_fill_brewer(palette = "Reds")+
-#   theme_minimal()+
-#   theme(
-#     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-#     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-#    
-#     )
+AP.prop_CFS_pontoc2<- dados_AP.cfs %>%
+  count(VD, CFS_pontoc2) %>%
+  group_by(CFS_pontoc2) %>%
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
+  print()
 
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/1.1AP_cfs.png", width = 5, height = 4.5, units = "in", res = 300)
+ggplot(AP.prop_CFS_pontoc2, aes(x = CFS_pontoc2, y = prop * 100, fill = VD, label = label)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência") +
+  scale_x_discrete(labels = c("Pausa", "Coronal", "Dorsal", "Labial"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar", "Palatal"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+dev.off()
 
 # VD ####
 AP.prop_VD <- dados_AP %>% 
@@ -56,7 +56,7 @@ AP.prop_VD <- dados_AP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/1AP_VD.png", width = 5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/1AP_VD.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_VD, aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
@@ -86,7 +86,7 @@ AP.participante <- dados_AP %>%
 AP.participante %>%   
   ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
+  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
   geom_text(aes(label = label), 
             vjust = -0.2,
@@ -99,8 +99,6 @@ AP.participante %>%
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-   
-    
     legend.position = "bottom")
 #dev.off()
 
@@ -113,15 +111,20 @@ AP.prop_TONICIDADE <- dados_AP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/2AP_tonicidade.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_TONICIDADE, aes(x = TONICIDADE, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  labs(x = "Tonicidade", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Átona", "Tônica"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar", "Palatal"))+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
         panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+dev.off()
+
+
 
 
 (AP.tab_TONICIDADE <- with(dados_AP, table(TONICIDADE, VD)))
@@ -136,7 +139,7 @@ AP.prop_POSICAO <- dados_AP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/2AP_posicao.png", width = 5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/3AP_posicao.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_POSICAO, aes(x = POSICAO_S, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Posição", y = "Proporção de Ocorrência") + 
@@ -153,8 +156,36 @@ dev.off()
 chisq.test(AP.tab_POSICAO)
 
 
-# CONT.FON.PREC ####
+# CLASSE MORFOLOGICA ####
+AP.prop_CLASSE_MORFOLOGICA3 <- dados_AP %>%
+  count(VD, CLASSE_MORFOLOGICA3) %>%
+  group_by(CLASSE_MORFOLOGICA3) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+  print()
 
+
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/4AP_classe_morfologica.png", width = 5, height = 4.5, units = "in", res = 300)
+ggplot(AP.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Gramatical", "Lexical"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar", "Palatal"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+dev.off()
+
+
+(AP.tab_CLASSE_MORFOLOGICA3 <- with(dados_AP, table(CLASSE_MORFOLOGICA3, VD)))
+chisq.test(AP.tab_CLASSE_MORFOLOGICA3)
+
+
+
+# CONT.FON.PREC ####
 AP.prop_CONT_FON_PREC <- dados_AP %>% 
   count(VD, CONT_FON_PREC) %>%
   group_by(CONT_FON_PREC) %>% 
@@ -182,48 +213,26 @@ AP.prop_CFP_abertura2 <- dados_AP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/5AP_cfp.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Fechada", "Meio fechada", "Meio aberta", "Aberta"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar", "Palatal"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-   
-    )
-
+    
+  )
+dev.off()
 
 (AP.tab_CFP_abertura2 <- with(dados_AP, table(CFP_abertura2, VD)))
 chisq.test(AP.tab_CFP_abertura2[c(1,2),]) #sem diferença entre fechada e meio fechada
 
 
-# CLASSE MORFOLOGICA ####
-AP.prop_CLASSE_MORFOLOGICA3 <- dados_AP %>%
-  count(VD, CLASSE_MORFOLOGICA3) %>%
-  group_by(CLASSE_MORFOLOGICA3) %>% 
-  mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
-  print()
-
-ggplot(AP.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-   
-    )
-
-
-(AP.tab_CLASSE_MORFOLOGICA3 <- with(dados_AP, table(CLASSE_MORFOLOGICA3, VD)))
-chisq.test(AP.tab_CLASSE_MORFOLOGICA3)
 
 # ESTILO ####
 AP.prop_ESTILO <- dados_AP %>%
@@ -259,18 +268,20 @@ AP.prop_GENERO <- dados_AP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
+
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/6AP_genero.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_GENERO, aes(x = GENERO, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  labs(x = "Gênero", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Feminino", "Masculino"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar", "Palatal"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-   
-    )
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+dev.off()
 
 
 (AP.tab_GENERO <- with(dados_AP, table(GENERO, VD)))
@@ -284,13 +295,13 @@ AP.prop_TEMPO_RESIDENCIA <- dados_AP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 46)
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/3AP_tempo_residencia.png", width = 5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/7AP_tempo_residencia.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_TEMPO_RESIDENCIA[24:46,], aes(x = TEMPO_RESIDENCIA, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   labs(x = "Tempo de Residência", y = "Proporção de Palatalização") +
   #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
-  theme_light()
+  theme_minimal()
 dev.off()
 
 AP.mod_TEMPO_RESIDENCIA <- glm(VD ~ TEMPO_RESIDENCIA, data = dados_AP, family = binomial)
@@ -305,12 +316,12 @@ AP.prop_IDADE_MIGRACAO <- dados_AP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 52)
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/4AP_idade_migracao.png", width = 5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/8AP_idade_migracao.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(AP.prop_IDADE_MIGRACAO[27:52,], aes(x = IDADE_MIGRACAO, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   labs(x = "Idade de Migração", y = "Proporção de Palatalização") +
-  theme_light()
+  theme_minimal()
 dev.off()
 
 AP.mod_IDADE_MIGRACAO <- glm(VD ~ IDADE_MIGRACAO, data = dados_AP, family = binomial)
@@ -333,7 +344,7 @@ ggplot(AP.prop_INDICE_SOCIO_OUSHIRO[32:62,], aes(x = INDICE_SOCIO_OUSHIRO, y = p
   stat_smooth(method=lm, se=TRUE, color="red")+
   labs(x = "Índice Socioeconomico (Oushiro, 2015)", y = "Proporção de Palatalização") +
   #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
-  theme_light()
+  theme_minimal()
 #dev.off()
 
 AP.mod_INDICE_SOCIO_OUSHIRO <- glm(VD ~ INDICE_SOCIO_OUSHIRO, data = dados_AP, family = binomial)
@@ -348,16 +359,12 @@ AP.prop_INDICE_SOCIO_POLI <- dados_AP %>%
   mutate(prop = prop.table(n)) %>% 
   print(n = 92)
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/5AP_indicesocio.png", width = 6, height = 4.5, units = "in", res = 300)
-ggplot(AP.prop_INDICE_SOCIO_POLI[46:90,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/9AP_indicesocio.png", width = 6, height = 4.5, units = "in", res = 300)
+ggplot(AP.prop_INDICE_SOCIO_POLI[44:86,], aes(x = INDICE_SOCIO_POLI, y = prop * 100)) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Índice Socioeconomico", y = "Proporção de Palatalização") +
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    legend.position = "none")
+  labs(x = "Índice Socioeconômico", y = "Proporção de Palatalização") +
+  theme_minimal()
 dev.off()
 
 AP.mod_INDICE_SOCIO_POLI <- glm(VD ~ INDICE_SOCIO_POLI, data = dados_AP, family = binomial)
@@ -668,7 +675,7 @@ ggplot(AP.prop_INDICE_OCUPACAO[9:16,], aes(x = INDICE_OCUPACAO, y = prop * 100, 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   labs(x = "Índice de Ocupação", y = "Proporção de Palatalização") +
-  theme_light()
+  theme_minimal()
 
 ggplot(AP.prop_INDICE_OCUPACAO, aes(x = INDICE_OCUPACAO, y = prop * 100, fill = VD, label = label)) +
   geom_bar(stat = "identity", color = "white") + 
@@ -1078,7 +1085,7 @@ ggplot(AP.prop_media_m2[21:40,], aes(x = media_m2, y = prop * 100, label = round
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   labs(x = "Índice de Ocupação", y = "Proporção de Palatalização") +
-  theme_light()
+  theme_minimal()
 
 
 AP.mod_media_m2 <- glmer(VD ~ media_m2+
