@@ -4,32 +4,6 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% V1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 
-# DISTRIBUIÇÃO GERAL ####
-distribuicao.geral <- dados2 %>% 
-  count(VD) %>%
-  mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
-  print()
-
-distribuicao.geral %>%   
-  ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
-  scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(aes(label = label), 
-            vjust = -0.2,
-            size = 3.5) +
-  scale_fill_brewer(palette = "Reds")+
-  scale_y_continuous(labels = percent_format(accuracy = 1), 
-                     expand = expansion(mult = c(0, 0.15))) + #aumenta espaço no topo
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9),   # tamanho do título eixo Y
-    legend.position = "none")
-
 
 # CONT.FON.SEG ####
 # filtragem foi feita no arquivo carregar-amostras. Dados mostram envelope de variação semelhante ao de Barbosa 2023, ou seja, ocorrência de aspiração se dá só quando seguida por consoante sonora
