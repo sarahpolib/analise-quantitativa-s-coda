@@ -517,24 +517,47 @@ summary(idade_migracao_tempo_residencia)
 plot(allEffects(idade_migracao_tempo_residencia))
 
 #TEMPO DE RESIDENCIA X INDICE SOCIO
-idade_migracao_indicesocio <- glmer(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_POLI +
+
+dados_AP$INDICE_SOCIOECONOMICO <- dados_AP$INDICE_SOCIO_POLI
+
+tempo_residencia_indicesocio <- glmer(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIOECONOMICO +
                                     (1|ITEM_LEXICAL) +
                                     (1|PARTICIPANTE), data = dados_AP, family = binomial)
-summary(idade_migracao_indicesocio)
-plot(allEffects(idade_migracao_indicesocio))
+summary(tempo_residencia_indicesocio)
 
-#TEMPO DE RESIDENCIA X INDICE SOCIO
-idade_migracao_indicesocio_oushiro <- glmer(VD ~ TEMPO_RESIDENCIA * INDICE_SOCIO_OUSHIRO +
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/10AP_interacao.png", width = 9, height = 13, units = "in", res = 300)
+plot(allEffects(tempo_residencia_indicesocio),      
+     xlab = "Tempo de Residência",
+     ylab = "Proporção de Palatalização",
+     main = "Efeito da Idade de Migração por Índice Socioeconômico")
+dev.off()
+
+
+  #IDADE_MIGRACAO X INDICE SOCIO
+idade_migracao_indicesocio_oushiro <- glmer(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_OUSHIRO +
                                       (1|ITEM_LEXICAL) +
                                       (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(idade_migracao_indicesocio_oushiro)
-plot(allEffects(idade_migracao_indicesocio_oushiro))
+plot(allEffects(idade_migracao_indicesocio_oushiro),
+     xlab = "Idade de Migração",
+     ylab = "Proporção de Palatalização",
+     main = "Efeito da Idade de Migração por Índice Socioeconômico",
+)
 
 #IDADE MIGRACAO X ESCOLARIDADE
 idade_migracao_escolaridade <- glmer(VD ~ IDADE_MIGRACAO * ESCOLARIDADE2 +
                 (1|ITEM_LEXICAL) +
                 (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(idade_migracao_escolaridade)
+
+
+
+#IDADE MIGRACAO X ESCOLARIDADE
+tempo_residencia_escolaridade <- glmer(VD ~ TEMPO_RESIDENCIA * ESCOLARIDADE2 +
+                                       (1|ITEM_LEXICAL) +
+                                       (1|PARTICIPANTE), data = dados_AP, family = binomial)
+summary(tempo_residencia_escolaridade)
 
 
 
