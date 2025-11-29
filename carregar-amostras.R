@@ -327,7 +327,7 @@ dados_S0 <- dados2 %>%
                            `0` = "0")) %>% 
          droplevels()
 levels(dados_S0$MORFEMA.PLURAL)
-
+unique(levels(dados_S0$ITEM_LEXICAL))
 
 ### ASPIRAÇÃO ####
 dados_HAP <- dados2 %>% 
