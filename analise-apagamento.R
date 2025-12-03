@@ -484,6 +484,88 @@ check_outliers(modS04)
 r.squaredGLMM(modS04)
 
 
+# JUNTAR GRAFICOS ####
+
+## sem correlação ####
+S0.cfp <- ggplot(S0.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Fechada", "Meio fechada", "Meio aberta", "Aberta"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamento"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    legend.position = "none")
+
+SO.classemorfo <- ggplot(S0.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Gramatical", "Lexical"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamento"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+
+## com correlacao ####
+
+S0.tonicidade <- ggplot(S0.prop_TONICIDADE, aes(x = TONICIDADE, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Tonicidade", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Átona", "Tônica"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamanto"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),  legend.position = "none")
+
+
+
+S0.posicao <- ggplot(S0.prop_POSICAO, aes(x = POSICAO_S, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Posição na palavra", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Final", "Medial"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamento"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), legend.position = "none")
+  
+  
+
+S0.cfs <- ggplot(S0.prop_CFS_sonoridade, aes(x = CFS_sonoridade, y = prop * 100, fill = VD, label = label)) +
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Pausa", "Sonoro", "Surdo"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Realização", "Apagamento"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+
+
+S0.comcorrelacao <- (S0.tonicidade | S0.posicao | S0.cfs) + 
+  plot_layout(guides = "collect")
+S0.comcorrelacao
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/S0_comcorrelacao.png",
+       plot = S0.comcorrelacao,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300
+)
+
+
+
+
+
 
 
 # INDICE SOCIOECONOMICO ####
