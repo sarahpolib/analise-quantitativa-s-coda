@@ -224,9 +224,7 @@ ggplot(AP.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD, 
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    
-  )
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
 dev.off()
 
 (AP.tab_CFP_abertura2 <- with(dados_AP, table(CFP_abertura2, VD)))
@@ -560,6 +558,55 @@ tempo_residencia_escolaridade <- glmer(VD ~ TEMPO_RESIDENCIA * ESCOLARIDADE2 +
 summary(tempo_residencia_escolaridade)
 
 
+
+# GRAFICOS JUNTOS ####
+
+AP.tonicidade <- ggplot(AP.prop_TONICIDADE, aes(x = TONICIDADE, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Tonicidade", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Átona", "Tônica"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar", "Palatal"))+
+  theme_minimal()+
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+        legend.position = "none"
+        )
+
+AP.cfp <- ggplot(AP.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Fechada", "Meio fechada", "Meio aberta", "Aberta"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar", "Palatal"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    legend.position = "none")
+
+AP.classemofo <- ggplot(AP.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100, fill = VD, label = label)) + 
+  geom_bar(stat = "identity", color = "white") + 
+  labs(x = "Classe Morfológica", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("Gramatical", "Lexical"))+
+  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar", "Palatal"))+
+  theme_minimal()+
+  theme(
+    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+
+AP.semcorrelacao <- (AP.tonicidade | AP.cfp | AP.classemofo) + 
+  plot_layout(guides = "collect")
+AP.semcorrelacao
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/AP_semcorrelacao.png",
+  plot = AP.semcorrelacao,
+  width = 13,
+  height = 4.5,
+  units = "in",
+  dpi = 300
+)
 
 
 
