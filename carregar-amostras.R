@@ -340,6 +340,10 @@ dados_HAP <- dados2 %>%
 
 levels(dados_HAP$VD) 
 levels(dados_HAP$CFS_sonoridade) 
+unique(dados_HAP$PARTICIPANTE) 
+
+
+
 
 dados_HAP.cfs <- dados2 %>% 
   filter(VD %in% c("A", "H", "P")) %>%
