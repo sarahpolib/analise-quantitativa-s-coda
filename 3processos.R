@@ -525,3 +525,35 @@ grafico.infancia
 png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/lazeres.png", width = 9, height = 4.5, units = "in", res = 300)
 (grafico.lazer | grafico.lazer_campinas | grafico.infancia) + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 dev.off()
+
+
+###################################
+
+
+# 1) Adicionar nome do grupo a cada data frame
+AP  <- AP.prop_INDICE_SOCIO_POLI[44:86,]  %>% mutate(grupo = "AP")
+S0  <- S0.prop_INDICE_SOCIO_POLI[44:83,]  %>% mutate(grupo = "S0")
+HAP <- HAP.prop_INDICE_SOCIO_POLI[44:74,] %>% mutate(grupo = "HAP")
+
+# 2) Empilhar os três
+df_all <- bind_rows(AP, S0, HAP)
+
+df_all$grupo <- factor(
+  df_all$grupo,
+  levels = c("AP", "S0", "HAP")
+)
+
+# 3) Plotar as três linhas
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/3processos_indicesocio.png", width = 6, height = 4.5, units = "in", res = 300)
+ggplot(df_all, aes(x = INDICE_SOCIO_POLI, y = prop * 100, color = grupo)) +
+  #geom_point(alpha = 0.7) +
+  stat_smooth(method = "lm", se = FALSE, linewidth = 1.1) +
+  labs(
+    x = "Índice Socioeconômico",
+    y = "Proporção (%)",
+    color = "Processo"
+  ) +
+  scale_color_brewer(palette = "Reds", name = "Processo de\n/s/ em coda", labels = c("Palatalização", "Apagamento", "Aspiração"))+
+  theme_minimal(base_size = 13)
+dev.off()
