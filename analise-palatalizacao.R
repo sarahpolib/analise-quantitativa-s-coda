@@ -467,7 +467,7 @@ addmargins(table(dados_AP$CLASSE_MORFOLOGICA3, dados_AP$VD))
 addmargins(table(dados_AP$GENERO, dados_AP$VD))
 
 
-compare_performance(modAP2, modAP3)
+AP.comparacao <- plot(compare_performance(modAP2, modAP3))
 
 
 
