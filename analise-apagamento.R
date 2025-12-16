@@ -577,19 +577,18 @@ S0.prop_ESCOLARIDADE2 <- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(S0.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
+(g.S0.prop_ESCOLARIDADE2 <- ggplot(S0.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
+  labs(title = "Apagamento", x = "Escolaridade", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
   theme_minimal()+
   theme(
+    plot.title = element_text(hjust = 0.5),
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
-
+    legend.position = "top"))
 
 (S0.tab_ESCOLARIDADE2 <- with(dados_S0, table(ESCOLARIDADE2, VD)))
 chisq.test(S0.tab_ESCOLARIDADE2)
@@ -620,18 +619,18 @@ S0.prop_ESCOLA_PAI2 <- dados_S0 %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(S0.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Realização", "Apagamento", "Zero Fonético", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+(g.S0.prop_ESCOLA_PAI2 <- ggplot(S0.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
+    geom_bar(stat = "identity", color = "white") + 
+    labs(title = "Apagamento", x = "Escolaridade - Pai", y = "Proporção de Ocorrência") + 
+    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior", "Não Informado"))+
+    geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+    scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
+    theme_minimal()+
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+      panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+      legend.position = "top"))
 
 
 (S0.tab_ESCOLA_PAI2<- with(dados_S0, table(ESCOLA_PAI2, VD)))

@@ -543,19 +543,18 @@ HAP.prop_ESCOLARIDADE2 <- dados_HAP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
-
+(g.HAP.prop_ESCOLARIDADE2 <- ggplot(HAP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
+    geom_bar(stat = "identity", color = "white") + 
+    labs(title = "Aspiração", x = "Escolaridade", y = "Proporção de Ocorrência") + 
+    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior"))+
+    geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+    scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
+    theme_minimal()+
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+      panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+      legend.position = "top"))
 
 (HAP.tab_ESCOLARIDADE2 <- with(dados_HAP, table(ESCOLARIDADE2, VD)))
 chisq.test(HAP.tab_ESCOLARIDADE2)
@@ -585,18 +584,18 @@ HAP.prop_ESCOLA_PAI2 <- dados_HAP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+(g.HAP.prop_ESCOLA_PAI2 <- ggplot(HAP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
+    geom_bar(stat = "identity", color = "white") + 
+    labs(title = "Aspiração", x = "Escolaridade - Pai", y = "Proporção de Ocorrência") + 
+    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior", "Não Informado"))+
+    geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+    scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal", "Aspirada"))+
+    theme_minimal()+
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+      panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+      legend.position = "top"))
 
 
 (HAP.tab_ESCOLA_PAI2<- with(dados_HAP, table(ESCOLA_PAI2, VD)))
