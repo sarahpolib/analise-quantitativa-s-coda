@@ -104,11 +104,17 @@ infs$RENDA_IND <- factor(infs$RENDA_IND, levels = c("1SM", "1a2SM", "2a4SM", "4a
 levels(infs$RENDA_IND)
 
 #juntar 2 ultimas faizas salariais
-infs$RENDA_IND <- fct_collapse(infs$RENDA_IND, "4a9/10a19SM" = c("4a9SM", "10a19SM"))
+infs$RENDA_IND <- fct_collapse(infs$RENDA_IND, "4+SM" = c("4a9SM", "10a19SM"))
 levels(infs$RENDA_IND)
+
 
 infs$RENDA_FAM <- factor(infs$RENDA_FAM, levels = c("1SM", "1a2SM", "2a4SM", "4a9SM", "10a19SM", "20+SM"))
 levels(infs$RENDA_FAM)
+
+#juntar 2 ultimas faizas salariais
+infs$RENDA_FAM <- fct_collapse(infs$RENDA_FAM, "4+SM" = c("4a9SM", "10a19SM", "20+SM"))
+levels(infs$RENDA_FAM)
+
 
 #tipo de viagem, juntou-se os níveis considerando viagem pra conhecer novos lugares vs viagem pra locais mais pertos ou pro estado pra visitar a familia
 infs$VIAGEM_LUGAR <- fct_collapse(as.factor(infs$VIAGEM_LUGAR), "nacional.internacional" = c("nacional", "nacional-internacional"), "SP-estado" = c("estado", "SP", "SP-estado"))

@@ -619,18 +619,20 @@ AP.prop_ESCOLARIDADE2 <- dados_AP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(AP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
+(g.AP.prop_ESCOLARIDADE2 <- ggplot(AP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Escolaridade", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal"))+
+  labs(title = "Palatalização", x = "Escolaridade", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior"))+
   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
   theme_minimal()+
   theme(
+    plot.title = element_text(hjust = 0.5),
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
     panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-   
-    )
+    legend.position = "top"))
+
+
 
 
 (AP.tab_ESCOLARIDADE2 <- with(dados_AP, table(ESCOLARIDADE2, VD)))
@@ -658,18 +660,19 @@ AP.prop_ESCOLA_PAI2 <- dados_AP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(AP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-   
-    )
+(g.AP.prop_ESCOLA_PAI2 <- ggplot(AP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
+    geom_bar(stat = "identity", color = "white") + 
+    labs(title = "Palatalização", x = "Escolaridade - Pai", y = "Proporção de Ocorrência") + 
+    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior", "Não Informado"))+
+    geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+    scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
+    theme_minimal()+
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
+      panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+      legend.position = "top"))
+
 
 
 (AP.tab_ESCOLA_PAI2<- with(dados_AP, table(ESCOLA_PAI2, VD)))
@@ -1649,57 +1652,6 @@ lrm(VD ~ INFANCIA_MEMORIA, data = dados_AP)
 plot(allEffects(AP.mod_INFANCIA_MEMORIA), type = "response")
 
 
-
-# PCA ####
-escalas_AP <- dados_AP %>%
-  select(INDICE_ESCOL3_norm, 
-         INDICE_ESCOL_PAI_norm,
-         INDICE_ESCOL_MAE_norm, 
-         INDICE_OCUPACAO_norm, 
-         INDICE_OCUPACAO_PAI_norm, 
-         INDICE_OCUPACAO_MAE_norm,
-         #INDICE_OUTRO_CARGO2_norm, 
-         INDICE_OCUPACAO_SONHOS2_norm,
-         #INDICE_LOCOMOCAO_norm, 
-         INDICE_MEGA_norm,
-         INDICE_RENDA_IND_norm, 
-         #INDICE_RENDA_FAM_norm,
-         #INDICE_BAIRRO_norm,
-         #DENSIDADE_HABITACAO_norm,
-         INDICE_IMOVEL_norm,
-         INDICE_LAZER_norm, 
-         INDICE_LAZER_CAMPINAS_norm,
-         INDICE_VIAGEM_norm, 
-         INDICE_VIAGEM_LUGAR_norm, 
-         INDICE_VIAGEM_VONTADE_norm, 
-         INDICE_INFANCIA_norm
-  ) %>%
-  mutate(across(everything(), as.numeric)) %>%
-  na.omit()
-
-pca_AP <- prcomp(escalas_AP, center = TRUE, scale. = TRUE)
-summary(pca_AP)          # variância explicada por cada componente
-pca_AP$rotation # cargas (contribuição das variáveis)
-pca_AP$x                  # coordenadas dos indivíduos
-
-
-
-# Scree plot
-fviz_eig(pca_AP, 
-         addlabels = TRUE,    # mostra valores no gráfico
-         ylim = c(0, 40))     # ajusta o eixo Y para ver melhor
-
-fviz_contrib(pca_AP, choice = "var", axes = 1, top = 10)
-fviz_contrib(pca_AP, choice = "var", axes = 2, top = 10)
-fviz_contrib(pca_AP, choice = "var", axes = 3, top = 10)
-fviz_contrib(pca_AP, choice = "var", axes = 4, top = 10)
-
-write.csv(pca_AP$rotation[,1:4], "pca_AP_scores.csv", row.names = TRUE)
-
-
-principal(dados_AP, nfactors= 6, rotate="none") 
-
-
 # FEATURE SELECTION - LASSO ####
 escalas_lasso_AP <- dados_AP %>%
   select(VD,
@@ -1726,9 +1678,10 @@ escalas_lasso_AP <- dados_AP %>%
     #INDICE_VIAGEM_LUGAR_norm, 
     #INDICE_VIAGEM_VONTADE_norm, 
     VIAGEM,
-    INDICE_INFANCIA_norm
+    INDICE_INFANCIA_norm,
+    PARTICIPANTE,
+    ITEM_LEXICAL
   ) %>%
-  mutate(across(everything(), as.numeric)) %>%
   na.omit()
 
 
@@ -1745,11 +1698,7 @@ modelo_lasso_misto <- glmmLasso(
   rnd = list(PARTICIPANTE = ~1, ITEM_LEXICAL = ~1),
   lambda = 10, # ajustar via validação
   family = gaussian(link = "identity"),
-  data = dados_AP
-) %>% 
-  mutate(across(everything(), as.numeric)) %>%
-  na.omit()
-  
+  data = escalas_lasso_AP)
 
 x_AP <- model.matrix(VD ~ ., escalas_lasso_AP)[, -1]
 y_AP <- escalas_lasso_AP$VD

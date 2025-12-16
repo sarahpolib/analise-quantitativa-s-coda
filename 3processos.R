@@ -527,7 +527,7 @@ png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/lazer
 dev.off()
 
 
-###################################
+#INDICE SOCIO 3 PROCESSOS #######################
 
 
 # 1) Adicionar nome do grupo a cada data frame
@@ -557,3 +557,42 @@ ggplot(df_all, aes(x = INDICE_SOCIO_POLI, y = prop * 100, color = grupo)) +
   scale_color_brewer(palette = "Reds", name = "Processo de\n/s/ em coda", labels = c("Palatalização", "Apagamento", "Aspiração"))+
   theme_minimal(base_size = 13)
 dev.off()
+
+
+## VARIÁVEIS PARA O ÍNDICE ####
+#Variáveis que demonstraram correlações com pelo menos 1 dos três processos 
+
+### Escolaridade ####
+g.escolaridade3processos <- (g.AP.prop_ESCOLARIDADE2 | g.S0.prop_ESCOLARIDADE2 | g.HAP.prop_ESCOLARIDADE2)
+g.escolaridade3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/1escolaridade3processos.png",
+       plot = g.escolaridade3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
+### Escolaridade do pais ####
+g.escolaridadepai3processos <- (g.AP.prop_ESCOLA_PAI2 | g.S0.prop_ESCOLA_PAI2 | g.HAP.prop_ESCOLA_PAI2)
+g.escolaridadepai3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/2escolaridadepai3processos.png",
+       plot = g.escolaridadepai3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
+### Ocupação ####
+### Ocupação dos pais ####
+### Renda individual ####
+### Ocupação dos sonhos ####
+### Mega-Sena ####
+### Lazer ####
+### Lazer em Campinas ####
+### Viagem ####
+### Tipo de viagem ####
+### Viagem vontade ####
+### Infância ####
+
