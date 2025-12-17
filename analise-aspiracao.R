@@ -18,7 +18,7 @@
 #   geom_bar(stat = "identity", color = "white") + 
 #   labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
 #   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-#   geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+#   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
 #   scale_fill_brewer(palette = "Reds")+
 #   theme_minimal()+
 #   theme(
@@ -41,7 +41,7 @@ ggplot(HAP.prop_CFS_sonoridade, aes(x = CFS_sonoridade, y = prop * 100, fill = V
   geom_bar(stat = "identity", color = "white") +
   labs(x = "Contexto Fonológico Seguinte", y = "Proporção de Ocorrência") +
   scale_x_discrete(labels = c("Pausa", "Sonoro", "Surdo"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -119,8 +119,8 @@ ggplot(HAP.prop_TONICIDADE, aes(x = TONICIDADE, y = prop * 100, fill = VD, label
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Tonicidade", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Átona", "Tônica"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspiração"))+
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspiração N = 2.244"))+
   theme_minimal()+
   theme(
     panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
@@ -129,7 +129,7 @@ dev.off()
 
 
 (HAP.tab_TONICIDADE <- with(dados_HAP, table(TONICIDADE, VD)))
-chisq.test(HAP.tab_TONICIDADE)
+#chisq.test(HAP.tab_TONICIDADE)
 
 
 # POSICAO ####
@@ -146,7 +146,7 @@ ggplot(HAP.prop_POSICAO, aes(x = POSICAO_S, y = prop * 100, fill = VD, label = l
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Posição na Palavra", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Final", "Medial"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels= c("Alverolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -155,7 +155,7 @@ ggplot(HAP.prop_POSICAO, aes(x = POSICAO_S, y = prop * 100, fill = VD, label = l
 dev.off()
 
 (HAP.tab_POSICAO <- with(dados_HAP, table(POSICAO_S, VD)))
-chisq.test(HAP.tab_POSICAO)
+#chisq.test(HAP.tab_POSICAO)
 
 
 # CONT.FON.PREC ####
@@ -170,7 +170,7 @@ ggplot(HAP.prop_CONT_FON_PREC, aes(x = CONT_FON_PREC, y = prop * 100, fill = VD,
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
   theme(
@@ -194,7 +194,7 @@ ggplot(HAP.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD,
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Fechada", "Meio fechada", "Meio aberda", "Aberta"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -203,7 +203,7 @@ ggplot(HAP.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100, fill = VD,
 dev.off()
 
 (HAP.tab_CFP_abertura2 <- with(dados_HAP, table(CFP_abertura2, VD)))
-chisq.test(HAP.tab_CFP_abertura2)
+#chisq.test(HAP.tab_CFP_abertura2)
 
 
 # CLASSE MORFOLOGICA ####
@@ -220,7 +220,7 @@ ggplot(HAP.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGICA3, y = prop * 100
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Classe Morfológica", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Gramatical", "Lexical"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -230,7 +230,7 @@ dev.off()
 
 
 (HAP.tab_CLASSE_MORFOLOGICA3 <- with(dados_HAP, table(CLASSE_MORFOLOGICA3, VD)))
-chisq.test(HAP.tab_CLASSE_MORFOLOGICA3)
+#chisq.test(HAP.tab_CLASSE_MORFOLOGICA3)
 
 # ESTILO ####
 HAP.prop_ESTILO <- dados_HAP %>%
@@ -244,7 +244,7 @@ ggplot(HAP.prop_ESTILO, aes(x = ESTILO, y = prop * 100, fill = VD, label = label
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
   theme(
@@ -255,7 +255,7 @@ ggplot(HAP.prop_ESTILO, aes(x = ESTILO, y = prop * 100, fill = VD, label = label
 
 
 (HAP.tab_ESTILO <- with(dados_HAP, table(ESTILO, VD)))
-chisq.test(HAP.tab_ESTILO)
+#chisq.test(HAP.tab_ESTILO)
 
 
 # GENERO ####
@@ -272,7 +272,7 @@ ggplot(HAP.prop_GENERO, aes(x = GENERO, y = prop * 100, fill = VD, label = label
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Gênero", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Feminino", "Masculino"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -282,7 +282,7 @@ dev.off()
 
 
 (HAP.tab_GENERO <- with(dados_HAP, table(GENERO, VD)))
-chisq.test(HAP.tab_GENERO)
+#chisq.test(HAP.tab_GENERO)
 
 
 
@@ -487,7 +487,7 @@ HAP.posicao <- ggplot(HAP.prop_POSICAO, aes(x = POSICAO_S, y = prop * 100, fill 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Posição na Palavra", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Final", "Medial"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels= c("Alverolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -500,7 +500,7 @@ HAP.cfp <- ggplot(HAP.prop_CFP_abertura2, aes(x = CFP_abertura2, y = prop * 100,
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Contexto Fonológico Precedente", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Fechada", "Meio fechada", "Meio aberda", "Aberta"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -513,7 +513,7 @@ HAP.classemorfo <- ggplot(HAP.prop_CLASSE_MORFOLOGICA3, aes(x = CLASSE_MORFOLOGI
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Classe Morfológica", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Gramatical", "Lexical"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -537,28 +537,28 @@ ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/H
 # INDICE SOCIOECONOMICO ####
 ### Escolaridade ####
 HAP.prop_ESCOLARIDADE2 <- dados_HAP %>%
+  filter(!is.na(ESCOLARIDADE2), ESCOLARIDADE2 != "NA") %>% 
   count(VD, ESCOLARIDADE2) %>%
   group_by(ESCOLARIDADE2) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-(g.HAP.prop_ESCOLARIDADE2 <- ggplot(HAP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, fill = VD, label = label)) + 
-    geom_bar(stat = "identity", color = "white") + 
-    labs(title = "Aspiração", x = "Escolaridade", y = "Proporção de Ocorrência") + 
+(g.HAP.prop_ESCOLARIDADE2 <- ggplot(HAP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    scale_y_continuous(limits = c(0, 100)) +
+    labs(title = "Aspiração N = 2.244", x = "Escolaridade", y = "Proporção de Ocorrência") +
     scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior"))+
-    geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-    scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
     theme_minimal()+
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-      panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    theme(plot.title = element_text(hjust = 0.5),
       legend.position = "top"))
 
 (HAP.tab_ESCOLARIDADE2 <- with(dados_HAP, table(ESCOLARIDADE2, VD)))
-chisq.test(HAP.tab_ESCOLARIDADE2)
-chisq.test(HAP.tab_ESCOLARIDADE2[c(1,3),])
+#chisq.test(HAP.tab_ESCOLARIDADE2)
+#chisq.test(HAP.tab_ESCOLARIDADE2[c(1,3),])
 
 
 #teste efeitos mistos
@@ -573,34 +573,34 @@ plot(allEffects(HAP.mod_ESCOLARIDADE2), type = "response")
 
 
 #escolaridade1
-#chisq.test(HAP.tab_ESCOLARIDADE[c(1,2),]) #sem diferença pra fund1 e 2
-#chisq.test(HAP.tab_ESCOLARIDADE[c(4,5),]) #sem diferença pra superior e pósgrad 
+##chisq.test(HAP.tab_ESCOLARIDADE[c(1,2),]) #sem diferença pra fund1 e 2
+##chisq.test(HAP.tab_ESCOLARIDADE[c(4,5),]) #sem diferença pra superior e pósgrad 
 ### Escolaridade dos Pais ####
 #### Pai ####
 HAP.prop_ESCOLA_PAI2 <- dados_HAP %>%
+  filter(!is.na(ESCOLA_PAI2), ESCOLA_PAI2 != "NA") %>% 
   count(VD, ESCOLA_PAI2) %>%
   group_by(ESCOLA_PAI2) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-(g.HAP.prop_ESCOLA_PAI2 <- ggplot(HAP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, fill = VD, label = label)) + 
-    geom_bar(stat = "identity", color = "white") + 
-    labs(title = "Aspiração", x = "Escolaridade - Pai", y = "Proporção de Ocorrência") + 
-    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior", "Não Informado"))+
-    geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-    scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal", "Aspirada"))+
+(g.HAP.prop_ESCOLA_PAI2 <- ggplot(HAP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    scale_y_continuous(limits = c(0, 100)) +
+    labs(title = "Aspiração N = 2.244", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
     theme_minimal()+
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-      panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
+    theme(plot.title = element_text(hjust = 0.5),
       legend.position = "top"))
 
 
 (HAP.tab_ESCOLA_PAI2<- with(dados_HAP, table(ESCOLA_PAI2, VD)))
-chisq.test(HAP.tab_ESCOLA_PAI2) #sim mas pode estar incorreto
-chisq.test(HAP.tab_ESCOLA_PAI2[c(1,4),]) 
+#chisq.test(HAP.tab_ESCOLA_PAI2) #sim mas pode estar incorreto
+#chisq.test(HAP.tab_ESCOLA_PAI2[c(1,4),]) 
 
 #teste efeitos mistos
 HAP.mod_ESCOLA_PAI2  <- glmer(VD ~ ESCOLA_PAI2 +
@@ -615,24 +615,25 @@ plot(allEffects(HAP.mod_ESCOLA_PAI2), type = "response")
 
 #### Mãe ####
 HAP.prop_ESCOLA_MAE2 <- dados_HAP %>%
+  filter(!is.na(ESCOLA_MAE2), ESCOLA_MAE2 != "NA") %>% 
   count(VD, ESCOLA_MAE2) %>%
   group_by(ESCOLA_MAE2) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+(g.HAP.prop_ESCOLA_MAE2 <- ggplot(HAP.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop * 100, color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    scale_y_continuous(limits = c(0, 100)) +
+    labs(title = "Aspiração N = 2.244", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
+    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior", "Não Informado"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
+    theme_minimal()+
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "top"))
 
 
 HAP.grafico_escolaridade_mae <- HAP.prop_ESCOLA_MAE2 %>% 
@@ -642,14 +643,14 @@ HAP.grafico_escolaridade_mae <- HAP.prop_ESCOLA_MAE2 %>%
   geom_point(size = 3) +
   #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, vjust = -0.5) +
+  geom_text(size = 3.5, vjust = -0.5) +
   scale_y_continuous(labels = function(x) paste0(x, "%")) +
   theme_minimal()
 HAP.grafico_escolaridade_mae
 
 (HAP.tab_ESCOLA_MAE2<- with(dados_HAP, table(ESCOLA_MAE2, VD)))
-chisq.test(HAP.tab_ESCOLA_MAE2) #sim
-chisq.test(HAP.tab_ESCOLA_MAE2[c(1,2),])
+#chisq.test(HAP.tab_ESCOLA_MAE2) #sim
+#chisq.test(HAP.tab_ESCOLA_MAE2[c(1,2),])
 
 
 #teste efeitos mistos
@@ -669,11 +670,15 @@ HAP.prop_INDICE_OCUPACAO <- dados_HAP %>%
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_INDICE_OCUPACAO[9:16,], aes(x = INDICE_OCUPACAO, y = prop * 100)) + 
-  geom_point(stat = "identity", color = "black") + 
-  stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Índice de Ocupação", y = "Proporção de Aspiradaização") +
-  theme_minimal()
+(g.HAP.prop_INDICE_OCUPACAO <- ggplot(HAP.prop_INDICE_OCUPACAO,aes(x = INDICE_OCUPACAO,y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Índice de Ocupação", y = "Proporção (%)", color = "Variável \nResposta") +
+    scale_y_continuous(limits = c(0, 100)) +
+    scale_color_brewer(palette = "Reds", label = c("Alveolar/Palatal", "Aspirada"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 #teste efeitos mistos
 HAP.mod_INDICE_OCUPACAO <- glmer(VD ~ INDICE_OCUPACAO+
@@ -705,11 +710,23 @@ plot(allEffects(HAP.mod_INDICE_OUTRO_CARGO), type = "response")
 
 ### Ocupação SONHOS ####
 HAP.prop_INDICE_OCUPACAO_SONHOS <- dados_HAP %>%
+  filter(!is.na(INDICE_OCUPACAO_SONHOS), INDICE_OCUPACAO_SONHOS != "NA") %>% 
   count(VD, INDICE_OCUPACAO_SONHOS) %>%
   group_by(INDICE_OCUPACAO_SONHOS) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
+
+(g.HAP.prop_INDICE_OCUPACAO_SONHOS <- ggplot(HAP.prop_INDICE_OCUPACAO_SONHOS, aes(x = INDICE_OCUPACAO_SONHOS, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Nenhuma", "Ocupações \nintermediárias", "Ocupações \ncom especialização"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 
 HAP.mod_INDICE_OCUPACAO_SONHOS <- glmer(VD ~ INDICE_OCUPACAO_SONHOS+
@@ -734,7 +751,7 @@ ggplot(HAP.prop_OCUPACAO_DIST, aes(x = OCUPACAO_DIST, y = prop * 100, fill = VD,
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal/Aspirada", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -747,8 +764,8 @@ ggplot(HAP.prop_OCUPACAO_DIST, aes(x = OCUPACAO_DIST, y = prop * 100, fill = VD,
 
 
 (HAP.tab_OCUPACAO_DIST<- with(dados_HAP, table(OCUPACAO_DIST, VD)))
-chisq.test(HAP.tab_OCUPACAO_DIST) #sim
-chisq.test(HAP.tab_OCUPACAO_DIST[c(2,3),])
+#chisq.test(HAP.tab_OCUPACAO_DIST) #sim
+#chisq.test(HAP.tab_OCUPACAO_DIST[c(2,3),])
 
 
 
@@ -777,7 +794,7 @@ ggplot(HAP.prop_OCUPACAO_LOCOMOCAO2, aes(x = OCUPACAO_LOCOMOCAO2, y = prop * 100
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -790,8 +807,8 @@ ggplot(HAP.prop_OCUPACAO_LOCOMOCAO2, aes(x = OCUPACAO_LOCOMOCAO2, y = prop * 100
 
 
 (HAP.tab_OCUPACAO_LOCOMOCAO2<- with(dados_HAP, table(OCUPACAO_LOCOMOCAO2, VD)))
-chisq.test(HAP.tab_OCUPACAO_LOCOMOCAO2) #sim
-chisq.test(HAP.tab_OCUPACAO_LOCOMOCAO2[c(1,2),])
+#chisq.test(HAP.tab_OCUPACAO_LOCOMOCAO2) #sim
+#chisq.test(HAP.tab_OCUPACAO_LOCOMOCAO2[c(1,2),])
 
 
 
@@ -852,33 +869,29 @@ plot(allEffects(HAP.mod_INDICE_OCUPACAO_MAE), type = "response")
 
 ### Mega sena ####
 HAP.prop_MEGA_SENA2 <- dados_HAP %>%
+  filter(!is.na(MEGA_SENA2), MEGA_SENA2 != "NA") %>% 
   count(VD, MEGA_SENA2) %>%
   group_by(MEGA_SENA2) %>% 
   mutate(prop = prop.table(n),
+         MEGA_SENA2 = fct_relevel(MEGA_SENA2, "gastar", "voltar.estado", "ajudar.outros", "investir"),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-
-
-ggplot(HAP.prop_MEGA_SENA2, aes(x = MEGA_SENA2, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(
-      color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(
-      color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+(g.HAP.prop_MEGA_SENA2 <- ggplot(HAP.prop_MEGA_SENA2, aes(x = MEGA_SENA2, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Gastar", "Voltar para o \nestado de origem", "Ajudar outras \npessoas", "Investir"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal","Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 
 (HAP.tab_MEGA_SENA2<- with(dados_HAP, table(MEGA_SENA2, VD)))
-chisq.test(HAP.tab_MEGA_SENA2) #sim
-chisq.test(HAP.tab_MEGA_SENA2[c(1,2),])
+#chisq.test(HAP.tab_MEGA_SENA2) #sim
+#chisq.test(HAP.tab_MEGA_SENA2[c(1,2),])
 
 #teste efeitos mistos
 HAP.mod_MEGA_SENA2 <- glmer(VD ~ MEGA_SENA2+
@@ -887,7 +900,7 @@ HAP.mod_MEGA_SENA2 <- glmer(VD ~ MEGA_SENA2+
                                    data = dados_HAP, family = binomial)
 summary(HAP.mod_MEGA_SENA2)
 lrm(VD ~ MEGA_SENA2, data = dados_HAP)
-plot(allEffects(HAP.mod_MEGA_SENA2), type = "response")(1|PARTICIPANTE)
+plot(allEffects(HAP.mod_MEGA_SENA2), type = "response")
 
 
 ### Mega sena Trabalhar ####
@@ -904,7 +917,7 @@ ggplot(HAP.prop_MEGASENA_TRABALHAR2, aes(x = MEGASENA_TRABALHAR2, y = prop * 100
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar", "Palatal"))+
   theme_minimal()+
   theme(
@@ -917,7 +930,7 @@ ggplot(HAP.prop_MEGASENA_TRABALHAR2, aes(x = MEGASENA_TRABALHAR2, y = prop * 100
 
 
 (HAP.tab_MEGASENA_TRABALHAR2 <- with(dados_HAP, table(MEGASENA_TRABALHAR2, VD)))
-chisq.test(HAP.tab_MEGASENA_TRABALHAR2) #nao
+#chisq.test(HAP.tab_MEGASENA_TRABALHAR2) #nao
 
 
 #teste efeitos mistos
@@ -933,30 +946,28 @@ plot(allEffects(HAP.mod_MEGASENA_TRABALHAR2), type = "response")
 
 ### Renda Individual ####
 HAP.prop_RENDA_IND <- dados_HAP %>%
-  filter(CFS_sonoridade == "sonora", !is.na(RENDA_IND)) %>% 
+  filter(!is.na(RENDA_IND), RENDA_IND != "NA") %>% 
   count(VD, RENDA_IND) %>%
   group_by(RENDA_IND) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_RENDA_IND, aes(x = RENDA_IND, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+(g.HAP.prop_RENDA_IND <- ggplot(HAP.prop_RENDA_IND, aes(x = RENDA_IND, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Até 1 SM", "1 a 2 SM", "2 a 4 SM", "Mais de 4 SM"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal", "Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 
 (HAP.tab_RENDA_IND <- with(dados_HAP, table(RENDA_IND, VD)))
-chisq.test(HAP.tab_RENDA_IND) #tem correlação
-chisq.test(HAP.tab_RENDA_IND[c(1,2),])
+#chisq.test(HAP.tab_RENDA_IND) #tem correlação
+#chisq.test(HAP.tab_RENDA_IND[c(1,2),])
 
 
 #teste efeitos mistos
@@ -982,7 +993,7 @@ ggplot(HAP.prop_RENDA_FAM, aes(x = RENDA_FAM, y = prop * 100, fill = VD, label =
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -993,8 +1004,8 @@ ggplot(HAP.prop_RENDA_FAM, aes(x = RENDA_FAM, y = prop * 100, fill = VD, label =
 
 
 (HAP.tab_RENDA_FAM <- with(dados_HAP, table(RENDA_FAM, VD)))
-chisq.test(HAP.tab_RENDA_FAM) #tem correlação
-chisq.test(HAP.tab_RENDA_FAM[c(1,2),]) #nao
+#chisq.test(HAP.tab_RENDA_FAM) #tem correlação
+#chisq.test(HAP.tab_RENDA_FAM[c(1,2),]) #nao
 
 
 #teste efeitos mistos
@@ -1050,7 +1061,7 @@ HAP.prop_BAIRRO %>%
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
   coord_flip() +  # Barras horizontais
   theme_minimal()+
@@ -1062,7 +1073,7 @@ HAP.prop_BAIRRO %>%
 
 
 (HAP.prop_BAIRRO <- with(dados_HAP, table(BAIRRO, VD)))
-chisq.test(HAP.prop_BAIRRO)
+#chisq.test(HAP.prop_BAIRRO)
 
 
 #### Região ####
@@ -1077,7 +1088,7 @@ ggplot(HAP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop * 100, fill = VD
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Região", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Centro", "Periferia Norte", "Periferia Sul"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar", "Palatal"))+
   theme_minimal()+
   theme(
@@ -1088,8 +1099,8 @@ ggplot(HAP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop * 100, fill = VD
 
 
 (HAP.tab_BAIRRO_REGIAO <- with(dados_HAP, table(BAIRRO_REGIAO, VD)))
-chisq.test(HAP.tab_BAIRRO_REGIAO) #tem correlação
-chisq.test(HAP.tab_BAIRRO_REGIAO[c(1,3),])
+#chisq.test(HAP.tab_BAIRRO_REGIAO) #tem correlação
+#chisq.test(HAP.tab_BAIRRO_REGIAO[c(1,3),])
 
 
 #teste efeitos mistos
@@ -1116,7 +1127,7 @@ HAP.prop_NBANHEIROS %>%
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Número de Banheiros", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -1127,8 +1138,8 @@ HAP.prop_NBANHEIROS %>%
 
 
 (HAP.prop_NBANHEIROS <- with(dados_HAP, table(NBANHEIROS, VD)))
-chisq.test(HAP.prop_NBANHEIROS)
-chisq.test(HAP.prop_NBANHEIROS[c(1,2)])
+#chisq.test(HAP.prop_NBANHEIROS)
+#chisq.test(HAP.prop_NBANHEIROS[c(1,2)])
 
 #teste efeitos mistos
 HAP.mod_NBANHEIROS <- glmer(VD ~ NBANHEIROS+
@@ -1154,7 +1165,7 @@ HAP.prop_NQUARTOS %>%
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Número de Quartos", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -1165,8 +1176,8 @@ HAP.prop_NQUARTOS %>%
 
 
 (HAP.prop_NQUARTOS <- with(dados_HAP, table(NQUARTOS, VD)))
-chisq.test(HAP.prop_NQUARTOS)
-chisq.test(HAP.prop_NQUARTOS[c(1,2)])
+#chisq.test(HAP.prop_NQUARTOS)
+#chisq.test(HAP.prop_NQUARTOS[c(1,2)])
 
 
 #teste efeitos mistos
@@ -1203,7 +1214,7 @@ HAP.prop_IMOVEL %>%
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Tipo de Imóvel", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -1214,8 +1225,8 @@ HAP.prop_IMOVEL %>%
 
 
 (HAP.prop_IMOVEL <- with(dados_HAP, table(IMOVEL, VD)))
-chisq.test(HAP.prop_IMOVEL)
-chisq.test(HAP.prop_IMOVEL[c(1,2)])
+#chisq.test(HAP.prop_IMOVEL)
+#chisq.test(HAP.prop_IMOVEL[c(1,2)])
 
 #teste efeitos mistos
 HAP.mod_IMOVEL <- glmer(VD ~ IMOVEL+
@@ -1240,7 +1251,7 @@ HAP.prop_PROPRIEDADE %>%
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -1251,7 +1262,7 @@ HAP.prop_PROPRIEDADE %>%
 
 
 (HAP.prop_PROPRIEDADE <- with(dados_HAP, table(PROPRIEDADE, VD)))
-chisq.test(HAP.prop_PROPRIEDADE)
+#chisq.test(HAP.prop_PROPRIEDADE)
 
 #teste efeitos mistos
 HAP.mod_PROPRIEDADE <- glmer(VD ~ PROPRIEDADE+
@@ -1276,7 +1287,7 @@ HAP.prop_NPESSOAS %>%
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
+  geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
   theme_minimal()+
   theme(
@@ -1287,8 +1298,8 @@ HAP.prop_NPESSOAS %>%
 
 
 (HAP.prop_NPESSOAS <- with(dados_HAP, table(NPESSOAS, VD)))
-chisq.test(HAP.prop_NPESSOAS)
-chisq.test(HAP.prop_NPESSOAS[c(1,2)])
+#chisq.test(HAP.prop_NPESSOAS)
+#chisq.test(HAP.prop_NPESSOAS[c(1,2)])
 
 #teste efeitos mistos
 HAP.mod_NPESSOAS <- glmer(VD ~ NPESSOAS+
@@ -1303,29 +1314,29 @@ plot(allEffects(HAP.mod_NPESSOAS), type = "response")
 
 ### Lazer ####
 HAP.prop_LAZER_CARACTERISTICA <- dados_HAP %>%
+  filter(!is.na(LAZER_CARACTERISTICA), LAZER_CARACTERISTICA != "NA") %>% 
   count(VD, LAZER_CARACTERISTICA) %>%
   group_by(LAZER_CARACTERISTICA) %>% 
   mutate(prop = prop.table(n),
+         LAZER_CARACTERISTICA = fct_relevel(LAZER_CARACTERISTICA, "nao.sai", "sem.custo", "custo"),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+(g.HAP.prop_LAZER_CARACTERISTICA <- ggplot(HAP.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Lazer", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Não sai", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal", "Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 
 (HAP.tab_LAZER_CARACTERISTICA <- with(dados_HAP, table(LAZER_CARACTERISTICA, VD)))
-chisq.test(HAP.tab_LAZER_CARACTERISTICA) #tem correlação
-chisq.test(HAP.tab_LAZER_CARACTERISTICA[c(1,2),])
+#chisq.test(HAP.tab_LAZER_CARACTERISTICA) #tem correlação
+#chisq.test(HAP.tab_LAZER_CARACTERISTICA[c(1,2),])
 
 
 #teste efeitos mistos
@@ -1340,29 +1351,29 @@ plot(allEffects(HAP.mod_LAZER_CARACTERISTICA), type = "response")
 
 ### Lazer Campinas####
 HAP.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_HAP %>%
+  filter(!is.na(LAZER_CAMPINAS_CARACTERISTICA), LAZER_CAMPINAS_CARACTERISTICA != "NA") %>% 
   count(VD, LAZER_CAMPINAS_CARACTERISTICA) %>%
   group_by(LAZER_CAMPINAS_CARACTERISTICA) %>% 
   mutate(prop = prop.table(n),
+         LAZER_CAMPINAS_CARACTERISTICA = fct_relevel(LAZER_CAMPINAS_CARACTERISTICA, "nsai.ntem", "sem.custo", "custo"),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
 
+(g.HAP.prop_LAZER_CAMPINAS_CARACTERISTICA <- ggplot(HAP.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Lazer em Campinas", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Não sai/ \nNão tem", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal","Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 (HAP.tab_LAZER_CAMPINAS_CARACTERISTICA <- with(dados_HAP, table(LAZER_CAMPINAS_CARACTERISTICA, VD)))
-chisq.test(HAP.tab_LAZER_CAMPINAS_CARACTERISTICA) #tem correlação
-chisq.test(HAP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(1,2),])
+#chisq.test(HAP.tab_LAZER_CAMPINAS_CARACTERISTICA) #tem correlação
+#chisq.test(HAP.tab_LAZER_CAMPINAS_CARACTERISTICA[c(1,2),])
 
 #teste efeitos mistos
 HAP.mod_LAZER_CAMPINAS_CARACTERISTICA <- glmer(VD ~ LAZER_CAMPINAS_CARACTERISTICA+
@@ -1377,28 +1388,32 @@ plot(allEffects(HAP.mod_LAZER_CAMPINAS_CARACTERISTICA), type = "response")
 ### Viagem ####
 #costuma viajar?
 HAP.prop_VIAGEM <- dados_HAP %>%
+  filter(!is.na(VIAGEM), VIAGEM != "NA") %>% 
   count(VD, VIAGEM) %>%
   group_by(VIAGEM) %>% 
   mutate(prop = prop.table(n),
+         VIAGEM = fct_relevel(VIAGEM, "nao", "sim"),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_VIAGEM, aes(x = VIAGEM, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+
+
+(g.HAP.prop_VIAGEM <- ggplot(HAP.prop_VIAGEM, aes(x = VIAGEM, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Hábitos de Viagem", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Não tem costume de viajar", "Tem costume de viajar"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal", "Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+
+
 
 
 (HAP.tab_VIAGEM <- with(dados_HAP, table(VIAGEM, VD)))
-chisq.test(HAP.tab_VIAGEM) #tem correlação
+#chisq.test(HAP.tab_VIAGEM) #tem correlação
 
 #teste efeitos mistos
 HAP.mod_VIAGEM <- glmer(VD ~ VIAGEM+
@@ -1412,29 +1427,30 @@ plot(allEffects(HAP.mod_VIAGEM), type = "response")
 
 ### Tipo de Viagem ####
 HAP.prop_VIAGEM_LUGAR <- dados_HAP %>%
+  filter(!is.na(VIAGEM_LUGAR), VIAGEM_LUGAR != "NA") %>% 
   count(VD, VIAGEM_LUGAR) %>%
   group_by(VIAGEM_LUGAR) %>% 
   mutate(prop = prop.table(n),
+         VIAGEM_LUGAR = fct_relevel(VIAGEM_LUGAR, "SP-estado", "nacional.internacional"),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+
+(g.HAP.prop_VIAGEM_LUGAR <- ggplot(HAP.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Estado de São Paulo/\nestado de origem", "Nacional/internacional"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal","Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 
 (HAP.tab_VIAGEM_LUGAR <- with(dados_HAP, table(VIAGEM_LUGAR, VD)))
-chisq.test(HAP.tab_VIAGEM_LUGAR) #tem correlação
-chisq.test(HAP.tab_VIAGEM_LUGAR[c(1,2),])
+#chisq.test(HAP.tab_VIAGEM_LUGAR) #tem correlação
+#chisq.test(HAP.tab_VIAGEM_LUGAR[c(1,2),])
 
 #teste efeitos mistos
 HAP.mod_VIAGEM_LUGAR <- glmer(VD ~ VIAGEM_LUGAR+
@@ -1448,31 +1464,31 @@ plot(allEffects(HAP.mod_VIAGEM_LUGAR), type = "response")
 ### Viagem vontade ####
 
 HAP.prop_LAZER_VIAGEM_VONTADE2 <- dados_HAP %>%
+  filter(!is.na(LAZER_VIAGEM_VONTADE2), LAZER_VIAGEM_VONTADE2 != "NA") %>% 
   count(VD, LAZER_VIAGEM_VONTADE2) %>%
   group_by(LAZER_VIAGEM_VONTADE2) %>% 
   mutate(prop = prop.table(n),
+         LAZER_VIAGEM_VONTADE2 = fct_relevel(LAZER_VIAGEM_VONTADE2, "nenhum", "nacional","nacional.internacional"),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_LAZER_VIAGEM_VONTADE2, aes(x = LAZER_VIAGEM_VONTADE2, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
 
+(g.HAP.prop_LAZER_VIAGEM_VONTADE2 <- ggplot(HAP.prop_LAZER_VIAGEM_VONTADE2, aes(x = LAZER_VIAGEM_VONTADE2, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Gostaria de conhecer", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Nenhum lugar", "Destinos nacionais", "Destinos nacionais \ne internacionais"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal","Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 (HAP.tab_LAZER_VIAGEM_VONTADE2 <- with(dados_HAP, table(LAZER_VIAGEM_VONTADE2, VD)))
-chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2) #tem correlação
-chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2[c(1,2),])
-chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2[c(2,3),])
-chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2[c(3,4),])
+#chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2) #tem correlação
+#chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2[c(1,2),])
+#chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2[c(2,3),])
+#chisq.test(HAP.tab_LAZER_VIAGEM_VONTADE2[c(3,4),])
 
 
 #teste efeitos mistos
@@ -1486,28 +1502,28 @@ plot(allEffects(HAP.mod_LAZER_VIAGEM_VONTADE2), type = "response")
 
 ### Infancia ####
 HAP.prop_INFANCIA_MEMORIA <- dados_HAP %>%
+  filter(!is.na(INFANCIA_MEMORIA), INFANCIA_MEMORIA != "NA") %>% 
   count(VD, INFANCIA_MEMORIA) %>%
   group_by(INFANCIA_MEMORIA) %>% 
   mutate(prop = prop.table(n),
          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop * 100, fill = VD, label = label)) + 
-  geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("Alveolar/Palatal", "Aspirada"))+
-  geom_text(size = 3, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("Alveolar/Palatal", "Aspirada"))+
-  theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
 
+
+(g.HAP.prop_INFANCIA_MEMORIA <- ggplot(HAP.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop * 100,color = VD, group = VD, label = label)) +
+    geom_line(linewidth = 1.1) +
+    geom_point(size = 2.5) +
+    geom_text(size = 3.5, color = "Black") +
+    labs(title = "Aspiração N = 2.244", x = "Memória de Infância", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Negativa", "Neutra", "Positiva"))+
+    scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal","Aspirada"))+
+    scale_y_continuous(limits = c(0, 100)) +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
 
 (HAP.tab_INFANCIA_MEMORIA <- with(dados_HAP, table(INFANCIA_MEMORIA, VD)))
-chisq.test(HAP.tab_INFANCIA_MEMORIA) #tem correlação
+#chisq.test(HAP.tab_INFANCIA_MEMORIA) #tem correlação
 
 #teste efeitos mistos
 HAP.mod_INFANCIA_MEMORIA <- glmer(VD ~ INFANCIA_MEMORIA+
@@ -1519,46 +1535,6 @@ lrm(VD ~ INFANCIA_MEMORIA, data = dados_HAP)
 plot(allEffects(HAP.mod_INFANCIA_MEMORIA), type = "response")
 
 
-# PCA ####
-escalas_HAP <- dados_HAP %>%
-  select(INDICE_ESCOL3_norm, 
-         INDICE_ESCOL_PAI_norm,
-         INDICE_ESCOL_MAE_norm, 
-         INDICE_OCUPACAO_norm, 
-         INDICE_OCUPACAO_PAI_norm, 
-         INDICE_OCUPACAO_MAE_norm,
-         #INDICE_OUTRO_CARGO2_norm, 
-         INDICE_OCUPACAO_SONHOS2_norm,
-         #INDICE_LOCOMOCAO_norm, 
-         INDICE_MEGA_norm,
-         INDICE_RENDA_IND_norm, 
-         #INDICE_RENDA_FAM_norm,
-         #INDICE_BAIRRO_norm,
-         #DENSIDADE_HABITACAO_norm,
-         INDICE_IMOVEL_norm,
-         INDICE_LAZER_norm, 
-         INDICE_LAZER_CAMPINAS_norm,
-         INDICE_VIAGEM_norm, 
-         INDICE_VIAGEM_LUGAR_norm, 
-         INDICE_VIAGEM_VONTADE_norm, 
-         INDICE_INFANCIA_norm
-  ) %>%
-  mutate(across(everything(), as.numeric)) %>%
-  na.omit()
-
-pca_HAP <- prcomp(escalas_HAP, center = TRUE, scale. = TRUE)
-summary(pca_HAP)          # variância explicada por cada componente
-pca_HAP$rotation           # cargas (contribuição das variáveis)
-#pca_S0$x                  # coordenadas dos indivíduos
-
-# Scree plot
-fviz_eig(pca_HAP, 
-         addlabels = TRUE,    # mostra valores no gráfico
-         ylim = c(0, 40))     # ajusta o eixo Y para ver melhor
-
-fviz_contrib(pca_HAP, choice = "var", axes = 1, top = 10)
-
-write.csv(pca_HAP$rotation[,1:4], "pca_HAP_scores.csv", row.names = TRUE)
 
 # FEATURE SELECTION - LASSO ####
 escalas_lasso_HAP <- dados_HAP %>%

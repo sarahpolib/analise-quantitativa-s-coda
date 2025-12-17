@@ -584,15 +584,130 @@ ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_
        units = "in",
        dpi = 300)
 
+
+g.escolaridademae3processos <- (g.AP.prop_ESCOLA_MAE2 | g.S0.prop_ESCOLA_MAE2 | g.HAP.prop_ESCOLA_MAE2)
+g.escolaridademae3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/3escolaridademae3processos.png",
+       plot = g.escolaridademae3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
 ### Ocupação ####
-### Ocupação dos pais ####
+g.ocupacao3processos <- (g.AP.prop_INDICE_OCUPACAO| g.S0.prop_INDICE_OCUPACAO | g.HAP.prop_INDICE_OCUPACAO)
+g.ocupacao3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/4ocupacao3processos.png",
+       plot = g.ocupacao3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
 ### Renda individual ####
+g.renda3processos <- (g.AP.prop_RENDA_IND| g.S0.prop_RENDA_IND | g.HAP.prop_RENDA_IND)
+g.renda3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/5renda3processos.png",
+       plot = g.renda3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
 ### Ocupação dos sonhos ####
+g.ocupacaosonhos3processos <- (g.AP.prop_INDICE_OCUPACAO_SONHOS| g.S0.prop_INDICE_OCUPACAO_SONHOS | g.HAP.prop_INDICE_OCUPACAO_SONHOS)
+g.ocupacaosonhos3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/6ocupacaosonhos3processos.png",
+       plot = g.ocupacaosonhos3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
+
 ### Mega-Sena ####
+g.megasena3processos <- (g.AP.prop_MEGA_SENA2| g.S0.prop_MEGA_SENA2 | g.HAP.prop_MEGA_SENA2)
+g.megasena3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/7megasena3processos.png",
+       plot = g.megasena3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
 ### Lazer ####
+g.lazer3processos <- (g.AP.prop_LAZER_CARACTERISTICA| g.S0.prop_LAZER_CARACTERISTICA | g.HAP.prop_LAZER_CARACTERISTICA)
+g.lazer3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/8lazer3processos.png",
+       plot = g.lazer3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
+
 ### Lazer em Campinas ####
+g.lazercampinas3processos <- (g.AP.prop_LAZER_CAMPINAS_CARACTERISTICA| g.S0.prop_LAZER_CAMPINAS_CARACTERISTICA | g.HAP.prop_LAZER_CAMPINAS_CARACTERISTICA)
+g.lazercampinas3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/9lazercampinas3processos.png",
+       plot = g.lazercampinas3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
 ### Viagem ####
+g.viagem3processos <- (g.AP.prop_VIAGEM| g.S0.prop_VIAGEM | g.HAP.prop_VIAGEM)
+g.viagem3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/10viagem3processos.png",
+       plot = g.viagem3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
 ### Tipo de viagem ####
+g.tipoviagem3processos <- (g.AP.prop_VIAGEM_LUGAR| g.S0.prop_VIAGEM_LUGAR | g.HAP.prop_VIAGEM_LUGAR)
+g.tipoviagem3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/11tipoviagem3processos.png",
+       plot = g.tipoviagem3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
 ### Viagem vontade ####
+
+g.viagemvontade3processos <- (g.AP.prop_LAZER_VIAGEM_VONTADE2| g.S0.prop_LAZER_VIAGEM_VONTADE2 | g.HAP.prop_LAZER_VIAGEM_VONTADE2)
+g.viagemvontade3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/12viagemvontade3processos.png",
+       plot = g.viagemvontade3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
+
 ### Infância ####
+g.infancia3processos <- (g.AP.prop_INFANCIA_MEMORIA| g.S0.prop_INFANCIA_MEMORIA | g.HAP.prop_INFANCIA_MEMORIA)
+g.infancia3processos
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_INDICE/13infancia3processos.png",
+       plot = g.infancia3processos,
+       width = 13,
+       height = 4.5,
+       units = "in",
+       dpi = 300)
+
+
 
