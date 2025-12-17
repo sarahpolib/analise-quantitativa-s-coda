@@ -14,8 +14,7 @@ escolaridade_participante <- infs2 %>%
   count(ESCOLARIDADE2) %>%
   print()
 
-#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/.png", width = 5, height = 4.5, units = "in", res = 300)
-g.escolaridade <- escolaridade_participante %>% 
+(g.escolaridade <- escolaridade_participante %>% 
   ggplot(aes(x = ESCOLARIDADE2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Escolaridade",
@@ -24,8 +23,7 @@ g.escolaridade <- escolaridade_participante %>%
   scale_y_continuous(limits = c(0, 25))+
   scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
   scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), legend.position = "none")
+  theme_minimal())
 
 
 ### Escolaridade dos pais ####
@@ -45,10 +43,7 @@ g.escolaridadepai <- escolaridade_pai %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/Superior", " Não Informado"))+
   scale_y_continuous(limits = c(0, 25))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        legend.position = "none")
+  theme_minimal()
 
 
 escolaridade_mae <- dados2 %>% 
@@ -67,10 +62,7 @@ g.escolaridademae <- escolaridade_mae %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/Superior", " Não Informado"))+
   scale_y_continuous(limits = c(0, 25))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        legend.position = "none")
+  theme_minimal()
 
 
 
@@ -125,14 +117,14 @@ dev.off()
 
 ## INDICE_OCUPACAO_PAI ####
 ocupacaopai_participante <- infs2 %>%
-  distinct(PARTICIPANTE, INDICE_OCUPACAO_PAI) %>% 
+  distinct(PARTICIPANTE, INDICE_OCUPACAO_PAI) %>%
   mutate(
     INDICE_OCUPACAO_PAI = as.factor(INDICE_OCUPACAO_PAI),
     INDICE_OCUPACAO_PAI = fct_explicit_na(INDICE_OCUPACAO_PAI, "Não informado")) %>%
   count(INDICE_OCUPACAO_PAI) %>%
   print()
 
-g.ocupacaopai <- ocupacaopai_participante %>%
+(g.ocupacaopai <- ocupacaopai_participante %>%
   ggplot(aes(x = INDICE_OCUPACAO_PAI, y = n, label = n, fill = INDICE_OCUPACAO_PAI)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
@@ -142,8 +134,7 @@ g.ocupacaopai <- ocupacaopai_participante %>%
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("0. Desempregado/\nsem renda", "1. Trabalhador braçal \ns/ treinamento", "5. Profissionais \nespecializados/liberais", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), legend.position = "none" )
+  theme_minimal())
 
 
 ## INDICE_OCUPACAO_MAE ####
@@ -165,8 +156,7 @@ g.ocupacaomae<-ocupacaomae_participante %>%
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("0. Desempregado/\nsem renda", "1. Trabalhador braçal \ns/ treinamento", "5. Profissionais \nespecializados/liberais", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), legend.position = "none")
+  theme_minimal()
 
 
 #### grafico 2 ocupacao ####
@@ -176,7 +166,7 @@ g.ocupacoes
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/3ocupacoes.png",
        plot = g.ocupacoes,
-       width = 13,
+       width = 12,
        height = 4.5,
        units = "in",
        dpi = 300)
@@ -198,10 +188,8 @@ g.rendaind <- rendaind_participante %>%
   scale_y_continuous(limits = c(0, 24))+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Até 1 \nSalário Mínimo", "1 a 2 \nSalários Mínimos", "2 a 4 \nSalários Mínimos", "Mais de 4 \nSalários Mínimos", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        legend.position = "none")
+  scale_x_discrete(labels=c("Até 1 \nSM", "1 a 2 \nSM", "2 a 4 \nSM", "Mais de 4 \nSM", "Não informado"))+
+  theme_minimal()
 
 
 ## RENDA_FAM ####
@@ -220,10 +208,8 @@ g.rendafam <- rendafam_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(limits = c(0, 24))+
-  scale_x_discrete(labels=c("Até 1 \nSalário Mínimo", "1 a 2 \nSalários Mínimos", "2 a 4 \nSalários Mínimos", "Mais de 4 \nSalários Mínimos", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        legend.position = "none")
+  scale_x_discrete(labels=c("Até 1 \nSM", "1 a 2 \nSM", "2 a 4 \nSM", "Mais de 4 \nSM", "Não informado"))+
+  theme_minimal()
 
 
 
@@ -235,7 +221,7 @@ g.renda
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/4renda.png",
        plot = g.renda,
-       width = 13,
+       width = 10,
        height = 4.5,
        units = "in",
        dpi = 300)
@@ -259,8 +245,7 @@ regiao_participante %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Centro", "Periferia", "Não informado"))+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        legend.position = "none")
+  theme(legend.position = "none")
 dev.off()
 
 
@@ -280,8 +265,7 @@ g.quartos <- quartos_participante %>%
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Um", "Dois", "Três ou mais", "Não Informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), legend.position = "none")
+  theme_minimal()
 
 
 ## NBANHEIROS ####
@@ -300,9 +284,7 @@ g.banheiros <- banheiros_participante %>%
   scale_y_continuous(limits = c(0, 29))+
   scale_x_discrete(labels = c("Um", "Dois", "Três ou mais", "Não Informado"))+
   scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), legend.position = "none")
-
+  theme_minimal()
 
 
 ## NCOMODOS####
@@ -322,8 +304,7 @@ comodos_participante %>%
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(limits = c(0, 29))+
   scale_x_discrete(labels = c("Dois", "Três", "Quatro ou mais", "Não Informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),legend.position = "none")
+  theme_minimal()
 
 ## DENSIDADE_HABITACAO ####
 densidade_participante <- infs2 %>%
@@ -349,8 +330,7 @@ g.densidade <- densidade_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), legend.position = "none")
+  theme_minimal()
 
 
 
@@ -386,10 +366,8 @@ g.locomocao <- locomocao_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels= c("Compartilhado/público", "Privado", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), 
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  scale_x_discrete(labels= c("Compartilhado/\npúblico", "Privado", "Não informado"))+
+  theme_minimal()
 
 
 ## DISTÂNCIA ####
@@ -402,25 +380,23 @@ distancia_participante <- infs2 %>%
 g.distancia <- distancia_participante %>%
   ggplot(aes(x = OCUPACAO_DIST, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
-  labs(x = "Distância",
+  labs(x = "Distância do Trabalho",
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Trabalha em Casa", "Longe", "Perto", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), 
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  scale_x_discrete(labels=c("Trabalha \nem Casa", "Longe", "Perto", "Não informado"))+
+  theme_minimal()
 
 #### grafico 2 locomocao distancia ####
-g.locomocao <- (g.locomocao | g.distancia) + 
+g.locomocaodistancia <- (g.locomocao | g.distancia) + 
   plot_layout(guides = "collect")
-g.locomocao
+g.locomocaodistancia
 
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/7locomocao.png",
-       plot = g.locomocao,
-       width = 13,
+       plot = g.locomocaodistancia,
+       width = 10,
        height = 4.5,
        units = "in",
        dpi = 300)
@@ -442,8 +418,9 @@ g.outrocargo <- outrocargo_participante %>%
   scale_y_continuous(limits = c(0, 25))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Sem perspectiva", "Com perspectiva", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  theme_minimal()
+
+
 
 ## OCUPAÇÃO DOS SONHOS ####
 ocupacaosonhos_participante <- infs2 %>% 
@@ -455,14 +432,13 @@ ocupacaosonhos_participante <- infs2 %>%
 g.ocupacaosonhos <- ocupacaosonhos_participante %>%
   ggplot(aes(x = INDICE_OCUPACAO_SONHOS, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
-  labs(x = "Cargo dos sonhos",
+  labs(x = "Ocupação dos sonhos",
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 25))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Nenhuma", "Ocupações intermediárias", "Ocupações com especialização", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  scale_x_discrete(labels = c("Nenhuma", "Intermediárias", "Com especialização", "Não informado"))+
+  theme_minimal()
 
 
 
@@ -474,7 +450,7 @@ g.ocupacaoascensao
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/8ocupacaoascensao.png",
        plot = g.ocupacaoascensao,
-       width = 13,
+       width = 10,
        height = 4.5,
        units = "in",
        dpi = 300)
@@ -489,7 +465,7 @@ lazer_participante <- infs2 %>%
   mutate(LAZER_CARACTERISTICA = fct_explicit_na(LAZER_CARACTERISTICA, "Não informado")) %>%  #Transforma NA em categoria
   print()
 
-g.lazer <- lazer_participante %>%
+(g.lazer <- lazer_participante %>%
   ggplot(aes(x = LAZER_CARACTERISTICA, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Lazer",
@@ -498,8 +474,7 @@ g.lazer <- lazer_participante %>%
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("Custo", "Não sai", "Sem custo", "Não Informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  theme_minimal())
 
 
 
@@ -519,8 +494,7 @@ g.lazercampinas <- lazercampinas_participante %>%
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds", name = "Lazer em Campinas")+
   scale_x_discrete(labels = c("Custo", "Não sai/ não tem", "Sem custo", "Não informado"))+
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  theme_minimal()
 
 
 #### grafico 2 lazer ####
@@ -531,7 +505,7 @@ g.lazeres
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/9lazer.png",
        plot = g.lazeres,
-       width = 13,
+       width = 10,
        height = 4.5,
        units = "in",
        dpi = 300)
@@ -549,14 +523,13 @@ viagem_participante <- infs2 %>%
 g.viagem <- viagem_participante %>%
   ggplot(aes(x = VIAGEM, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
-  labs(x = "Viagem",
+  labs(x = "Hábito de Viagem",
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Não costuma viajar", "Tem o costume de viajar")) +
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  theme_minimal()
 
 
 ## VIAGEM LUGAR ####
@@ -570,14 +543,13 @@ g.viagemlugar <- viagemlugar_participante %>%
   ggplot(aes(x = VIAGEM_LUGAR, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
-    x = "Viagem Lugar",
+    x = "Tipo de Viagem",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Viagem para São Paulo \ne estado de origem", "Viagens nacionais \ne internacionais", "Não informado")) +
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  theme_minimal()
 
 
 ## VIAGEM VONTADE ####
@@ -596,14 +568,13 @@ g.viagemvontade <- viagemvontade_participante %>%
   ggplot(aes(x = LAZER_VIAGEM_VONTADE2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white",fill = "#FCAE91") +
   labs(
-    x = "Viagem Vontade",
+    x = "Lugares que gostaria de conhecer",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Nenhum lugar","Destinos nacionais", "Destinos nacionais \ne internacionais", "Não informado")) +
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  theme_minimal()
 
 
 
@@ -625,7 +596,7 @@ megasena_participante <- infs2 %>%
   distinct(PARTICIPANTE, MEGA_SENA2) %>%  #garante 1 linha por participante
   count(MEGA_SENA2) %>%
   mutate(MEGA_SENA2 = fct_relevel(
-           MEGA_SENA2, "gastar", "voltar.estado", "ajudar.outros", "invertir"),
+           MEGA_SENA2, "gastar", "voltar.estado", "ajudar.outros", "investir"),
          MEGA_SENA2 = fct_explicit_na(MEGA_SENA2, "Não informado")
          ) %>%  # Transforma NA em categoria
   print()
@@ -634,13 +605,12 @@ g.megasena <- megasena_participante %>%
   ggplot(aes(x = MEGA_SENA2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
-    x = "Mega Sena",
+    x = "Se Ganhasse na Mega-Sena",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
-  scale_x_discrete(labels = c("Gastar", "Voltar pro estado \nde origem", "Ajudar outros", "Investir", "Não Informado")) +
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  scale_x_discrete(labels = c("Gastar", "Voltar p/ \nestado de origem", "Ajudar outros", "Investir", "Não Informado")) +
+  theme_minimal()
 
 
 ## INFANCIA ####
@@ -654,13 +624,12 @@ g.infancia <- infancia_participante %>%
   ggplot(aes(x = INFANCIA_MEMORIA, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
-    x = "Memória afetiva da Infância",
+    x = "Memória da Infância",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_x_discrete(labels = c("Negativa", "Neutra", "Positiva")) +
-  theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25))
+  theme_minimal()
 
 
 
@@ -672,7 +641,7 @@ g.megainfacia
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/11megainfancia.png",
        plot = g.megainfacia,
-       width = 13,
+       width = 10,
        height = 4.5,
        units = "in",
        dpi = 300)
