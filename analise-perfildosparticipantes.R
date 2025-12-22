@@ -86,32 +86,24 @@ ocupacao <- infs2 %>%
   distinct(PARTICIPANTE, INDICE_OCUPACAO) %>%  #garante 1 linha por participante
   count(INDICE_OCUPACAO) %>% 
   arrange(INDICE_OCUPACAO) %>% 
-  # mutate(
-  #   categoria = case_when(
-  #     INDICE_OCUPACAO == 0 ~ "0. Desempregado/sem renda",
-  #     INDICE_OCUPACAO == 1 ~ "1. Trabalhador braçal s/ treinamento",
-  #     INDICE_OCUPACAO == 2 ~ "2. Trabalhador braçal c/ treinamento",
-  #     INDICE_OCUPACAO == 3 ~ "3. Funções admin./atend. ao público",
-  #     INDICE_OCUPACAO == 4 ~ "4. Microempres./ger. baixo escalão",
-  #     INDICE_OCUPACAO == 5 ~ "5. Profissionais especializados/liberais",
-  #     INDICE_OCUPACAO == 6 ~ "6. Peq. Emp./ger. alto escalão",
-  #     TRUE ~ as.character(INDICE_OCUPACAO)
-  #   ),
-  #   categoria = factor(categoria, levels = unique(categoria))) %>% 
   print()
 
 
 png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/2ocupacao.png", width = 5, height = 4.5, units = "in", res = 300)
 ocupacao %>%
-  ggplot(aes(x = INDICE_OCUPACAO, y = n)) +
+  ggplot(aes(x = INDICE_OCUPACAO, y = n, label = n)) +
   geom_line(linewidth = 1.2, color = "#FCAE91") +
   geom_point(size = 3, color = "#FCAE91") +
+  geom_text(aes(label = n),
+            vjust = -0.8,
+            size = 3.5) +
   scale_x_continuous(breaks = ocupacao$INDICE_OCUPACAO) +
   labs(
     x = "Índice de ocupação",
     y = "Número de participantes") +
   theme_minimal()
 dev.off()
+
 
 
 
