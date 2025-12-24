@@ -23,7 +23,8 @@ escolaridade_participante <- infs2 %>%
   scale_y_continuous(limits = c(0, 25))+
   scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
   scale_fill_brewer(palette = "Reds")+
-  theme_minimal())
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 ### Escolaridade dos pais ####
@@ -34,7 +35,7 @@ escolaridade_pai <- dados2 %>%
   arrange(ESCOLA_PAI2) %>% 
   print()
 
-g.escolaridadepai <- escolaridade_pai %>% 
+(g.escolaridadepai <- escolaridade_pai %>% 
   ggplot(aes(x = factor(ESCOLA_PAI2), y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Escolaridade - Pai",
@@ -43,7 +44,8 @@ g.escolaridadepai <- escolaridade_pai %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/Superior", " Não Informado"))+
   scale_y_continuous(limits = c(0, 25))+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 escolaridade_mae <- dados2 %>% 
@@ -53,7 +55,7 @@ escolaridade_mae <- dados2 %>%
   arrange(ESCOLA_MAE2) %>% 
   print()
 
-g.escolaridademae <- escolaridade_mae %>% 
+(g.escolaridademae <- escolaridade_mae %>% 
   ggplot(aes(x = factor(ESCOLA_MAE2), y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Escolaridade - Mãe",
@@ -62,7 +64,8 @@ g.escolaridademae <- escolaridade_mae %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/Superior", " Não Informado"))+
   scale_y_continuous(limits = c(0, 25))+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 
@@ -99,9 +102,10 @@ ocupacao %>%
             size = 3.5) +
   scale_x_continuous(breaks = ocupacao$INDICE_OCUPACAO) +
   labs(
-    x = "Índice de ocupação",
+    x = "Ocupação",
     y = "Número de participantes") +
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 10))
 dev.off()
 
 
@@ -125,8 +129,10 @@ ocupacaopai_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("0. Desempregado/\nsem renda", "1. Trabalhador braçal \ns/ treinamento", "5. Profissionais \nespecializados/liberais", "Não informado"))+
-  theme_minimal())
+  scale_x_discrete(labels=c("0. Desempregado/\nsem renda", "1. Trabalhador braçal \ns/ treinamento", "5. Profissionais \nespecializados/\nliberais", "Não informado"))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 10)
+))
 
 
 ## INDICE_OCUPACAO_MAE ####
@@ -138,7 +144,7 @@ ocupacaomae_participante <- infs2 %>%
   count(INDICE_OCUPACAO_MAE)%>%
   print()
 
-g.ocupacaomae<-ocupacaomae_participante %>%
+(g.ocupacaomae <-ocupacaomae_participante %>%
   ggplot(aes(x = INDICE_OCUPACAO_MAE, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
@@ -147,8 +153,9 @@ g.ocupacaomae<-ocupacaomae_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("0. Desempregado/\nsem renda", "1. Trabalhador braçal \ns/ treinamento", "5. Profissionais \nespecializados/liberais", "Não informado"))+
-  theme_minimal()
+  scale_x_discrete(labels=c("0. Desempregado/\nsem renda", "1. Trabalhador braçal \ns/ treinamento", "5. Profissionais \nespecializados/\nliberais", "Não informado"))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 10)))
 
 
 #### grafico 2 ocupacao ####
@@ -172,7 +179,7 @@ rendaind_participante <- infs2 %>%
   mutate(RENDA_IND = fct_explicit_na(RENDA_IND, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.rendaind <- rendaind_participante %>%
+(g.rendaind <- rendaind_participante %>%
   ggplot(aes(x = RENDA_IND, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Renda Individual",
@@ -181,7 +188,8 @@ g.rendaind <- rendaind_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("Até 1 \nSM", "1 a 2 \nSM", "2 a 4 \nSM", "Mais de 4 \nSM", "Não informado"))+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 ## RENDA_FAM ####
@@ -191,7 +199,7 @@ rendafam_participante <- infs2 %>%
   mutate(RENDA_FAM = fct_explicit_na(RENDA_FAM, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.rendafam <- rendafam_participante %>%
+(g.rendafam <- rendafam_participante %>%
   ggplot(aes(x = RENDA_FAM, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Renda Familiar",
@@ -201,7 +209,8 @@ g.rendafam <- rendafam_participante %>%
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(limits = c(0, 24))+
   scale_x_discrete(labels=c("Até 1 \nSM", "1 a 2 \nSM", "2 a 4 \nSM", "Mais de 4 \nSM", "Não informado"))+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 
@@ -237,7 +246,7 @@ regiao_participante %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Centro", "Periferia", "Não informado"))+
   theme_minimal()+
-  theme(legend.position = "none")
+  theme(legend.position = "none",axis.text.x = element_text(size = 10))
 dev.off()
 
 
@@ -248,7 +257,7 @@ quartos_participante <- infs2 %>%
   mutate(NQUARTOS = fct_explicit_na(NQUARTOS, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.quartos <- quartos_participante %>%
+(g.quartos <- quartos_participante %>%
   ggplot(aes(x = NQUARTOS, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Número de Quartos",
@@ -257,7 +266,8 @@ g.quartos <- quartos_participante %>%
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Um", "Dois", "Três ou mais", "Não Informado"))+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 ## NBANHEIROS ####
@@ -267,7 +277,7 @@ g.quartos <- quartos_participante %>%
   mutate(NBANHEIROS = fct_explicit_na(NBANHEIROS, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.banheiros <- banheiros_participante %>%
+(g.banheiros <- banheiros_participante %>%
   ggplot(aes(x = NBANHEIROS, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Número de Banheiros",
@@ -276,7 +286,8 @@ g.banheiros <- banheiros_participante %>%
   scale_y_continuous(limits = c(0, 29))+
   scale_x_discrete(labels = c("Um", "Dois", "Três ou mais", "Não Informado"))+
   scale_fill_brewer(palette = "Reds")+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 ## NCOMODOS####
@@ -286,7 +297,7 @@ comodos_participante <- infs2 %>%
   mutate(NCOMODOS = fct_explicit_na(NCOMODOS, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-comodos_participante %>%
+(comodos_participante %>%
   ggplot(aes(x = NCOMODOS, y = n, label = n )) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
@@ -296,7 +307,8 @@ comodos_participante %>%
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(limits = c(0, 29))+
   scale_x_discrete(labels = c("Dois", "Três", "Quatro ou mais", "Não Informado"))+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 ## DENSIDADE_HABITACAO ####
 densidade_participante <- infs2 %>%
@@ -314,7 +326,7 @@ densidade_participante <- infs2 %>%
   print()
 
 
-g.densidade <- densidade_participante %>%
+(g.densidade <- densidade_participante %>%
   ggplot(aes(x = DENSIDADE_HABITACAO_CAT, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Densidade Habitacional \n(Pessoa/cômodo)",
@@ -322,7 +334,8 @@ g.densidade <- densidade_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 
@@ -350,7 +363,7 @@ locomocao_participante <- infs2 %>%
   mutate(OCUPACAO_LOCOMOCAO2 = fct_explicit_na(OCUPACAO_LOCOMOCAO2, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.locomocao <- locomocao_participante %>%
+(g.locomocao <- locomocao_participante %>%
   ggplot(aes(x = OCUPACAO_LOCOMOCAO2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white",fill = "#FCAE91") +
   labs(x = "Tipo de Transporte",
@@ -359,17 +372,18 @@ g.locomocao <- locomocao_participante %>%
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels= c("Compartilhado/\npúblico", "Privado", "Não informado"))+
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 10)))
 
 
 ## DISTÂNCIA ####
 distancia_participante <- infs2 %>% 
   distinct(PARTICIPANTE, OCUPACAO_DIST) %>%  #garante 1 linha por participante
   count(OCUPACAO_DIST) %>%
-  mutate(OCUPACAO_DIST = fct_explicit_na(OCUPACAO_DIST, "Não informado")) %>%  # Transforma NA em categoria
+  mutate(OCUPACAO_DIST = fct_relevel(OCUPACAO_DIST, "longe", "perto", "casa")) %>%
   print()
 
-g.distancia <- distancia_participante %>%
+(g.distancia <- distancia_participante %>%
   ggplot(aes(x = OCUPACAO_DIST, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Distância do Trabalho",
@@ -377,8 +391,9 @@ g.distancia <- distancia_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Trabalha \nem Casa", "Longe", "Perto", "Não informado"))+
-  theme_minimal()
+  scale_x_discrete(labels=c("Longe", "Perto", "Em Casa", "Não informado"))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 10)))
 
 #### grafico 2 locomocao distancia ####
 g.locomocaodistancia <- (g.locomocao | g.distancia) + 
@@ -401,16 +416,17 @@ outrocargo_participante <- infs2 %>%
   mutate(INDICE_OUTRO_CARGO = fct_explicit_na(INDICE_OUTRO_CARGO, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.outrocargo <- outrocargo_participante %>%
+(g.outrocargo <- outrocargo_participante %>%
   ggplot(aes(x = INDICE_OUTRO_CARGO, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
-  labs(x = "Outro Cargo",
+  labs(x = "Ascensão de Cargo",
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 25))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Sem perspectiva", "Com perspectiva", "Não informado"))+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 
@@ -421,7 +437,7 @@ ocupacaosonhos_participante <- infs2 %>%
   mutate(INDICE_OCUPACAO_SONHOS = fct_explicit_na(INDICE_OCUPACAO_SONHOS, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.ocupacaosonhos <- ocupacaosonhos_participante %>%
+(g.ocupacaosonhos <- ocupacaosonhos_participante %>%
   ggplot(aes(x = INDICE_OCUPACAO_SONHOS, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Ocupação dos sonhos",
@@ -430,7 +446,8 @@ g.ocupacaosonhos <- ocupacaosonhos_participante %>%
   scale_y_continuous(limits = c(0, 25))+
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels = c("Nenhuma", "Intermediárias", "Com especialização", "Não informado"))+
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 
@@ -453,8 +470,8 @@ ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_
 ## LAZER ####
 lazer_participante <- infs2 %>% 
   distinct(PARTICIPANTE, LAZER_CARACTERISTICA) %>%  #garante 1 linha por participante
+  mutate(LAZER_CARACTERISTICA = fct_relevel(LAZER_CARACTERISTICA, "nao.sai", "sem.custo", "custo")) %>%
   count(LAZER_CARACTERISTICA) %>%
-  mutate(LAZER_CARACTERISTICA = fct_explicit_na(LAZER_CARACTERISTICA, "Não informado")) %>%  #Transforma NA em categoria
   print()
 
 (g.lazer <- lazer_participante %>%
@@ -465,19 +482,21 @@ lazer_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Custo", "Não sai", "Sem custo", "Não Informado"))+
-  theme_minimal())
+  scale_x_discrete(labels=c("Não sai", "Sem custo", "Com custo", "Não Informado"))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 10)))
+
 
 
 
 ## LAZER CAMPINAS ####
 lazercampinas_participante <- infs2 %>% 
   distinct(PARTICIPANTE, LAZER_CAMPINAS_CARACTERISTICA) %>%  #garante 1 linha por participante
+  mutate(LAZER_CAMPINAS_CARACTERISTICA = fct_relevel(LAZER_CAMPINAS_CARACTERISTICA, "nsai.ntem", "sem.custo", "custo")) %>%
   count(LAZER_CAMPINAS_CARACTERISTICA) %>%
-  mutate(LAZER_CAMPINAS_CARACTERISTICA = fct_explicit_na(LAZER_CAMPINAS_CARACTERISTICA, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.lazercampinas <- lazercampinas_participante %>%
+(g.lazercampinas <- lazercampinas_participante %>%
   ggplot(aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Lazer em Campinas",
@@ -485,8 +504,9 @@ g.lazercampinas <- lazercampinas_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds", name = "Lazer em Campinas")+
-  scale_x_discrete(labels = c("Custo", "Não sai/ não tem", "Sem custo", "Não informado"))+
-  theme_minimal()
+  scale_x_discrete(labels = c("Não sai/ não tem", "Sem custo", "Com custo", "Não informado"))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 10)))
 
 
 #### grafico 2 lazer ####
@@ -512,7 +532,7 @@ viagem_participante <- infs2 %>%
   mutate(VIAGEM = fct_explicit_na(VIAGEM, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.viagem <- viagem_participante %>%
+(g.viagem <- viagem_participante %>%
   ggplot(aes(x = VIAGEM, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Hábito de Viagem",
@@ -520,8 +540,9 @@ g.viagem <- viagem_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Não costuma viajar", "Tem o costume de viajar")) +
-  theme_minimal()
+  scale_x_discrete(labels = c("Não costuma viajar", "Costuma de viajar")) +
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 10)))
 
 
 ## VIAGEM LUGAR ####
@@ -531,7 +552,7 @@ viagemlugar_participante <- infs2 %>%
   mutate(VIAGEM_LUGAR = fct_explicit_na(VIAGEM_LUGAR, "Não informado")) %>%  # Transforma NA em categoria
   print()
 
-g.viagemlugar <- viagemlugar_participante %>%
+(g.viagemlugar <- viagemlugar_participante %>%
   ggplot(aes(x = VIAGEM_LUGAR, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
@@ -540,33 +561,35 @@ g.viagemlugar <- viagemlugar_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Viagem para São Paulo \ne estado de origem", "Viagens nacionais \ne internacionais", "Não informado")) +
-  theme_minimal()
+  scale_x_discrete(labels = c("São Paulo e\nestado de origem", "Nacional e\ninternacional", "Não informado")) +
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 ## VIAGEM VONTADE ####
 viagemvontade_participante <- infs2 %>% 
   distinct(PARTICIPANTE, LAZER_VIAGEM_VONTADE2) %>%  #garante 1 linha por participante
-  count(LAZER_VIAGEM_VONTADE2) %>%
   mutate(LAZER_VIAGEM_VONTADE2 = fct_explicit_na(LAZER_VIAGEM_VONTADE2, "Não informado"),
          LAZER_VIAGEM_VONTADE2 = fct_relevel(
            LAZER_VIAGEM_VONTADE2,
            "nenhum",
            "nacional",
            "nacional.internacional")) %>%  # Transforma NA em categoria
+  count(LAZER_VIAGEM_VONTADE2) %>%
   print()
 
-g.viagemvontade <- viagemvontade_participante %>%
+(g.viagemvontade <- viagemvontade_participante %>%
   ggplot(aes(x = LAZER_VIAGEM_VONTADE2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white",fill = "#FCAE91") +
   labs(
-    x = "Lugares que gostaria de conhecer",
+    x = "Gostaria de conhecer",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Nenhum lugar","Destinos nacionais", "Destinos nacionais \ne internacionais", "Não informado")) +
-  theme_minimal()
+  scale_x_discrete(labels = c("Nenhum","Nacional", "Nacional e\ninternacional", "Não informado")) +
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 
@@ -593,7 +616,7 @@ megasena_participante <- infs2 %>%
          ) %>%  # Transforma NA em categoria
   print()
 
-g.megasena <- megasena_participante %>%
+(g.megasena <- megasena_participante %>%
   ggplot(aes(x = MEGA_SENA2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
@@ -601,8 +624,9 @@ g.megasena <- megasena_participante %>%
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
-  scale_x_discrete(labels = c("Gastar", "Voltar p/ \nestado de origem", "Ajudar outros", "Investir", "Não Informado")) +
-  theme_minimal()
+  scale_x_discrete(labels = c("Gastar", "Voltar p/\nestado de \norigem", "Ajudar outros", "Investir", "Não Informado")) +
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 ## INFANCIA ####
@@ -612,7 +636,7 @@ infancia_participante <- infs2 %>%
   print()
   
 
-g.infancia <- infancia_participante %>% 
+(g.infancia <- infancia_participante %>% 
   ggplot(aes(x = INFANCIA_MEMORIA, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(
@@ -621,7 +645,8 @@ g.infancia <- infancia_participante %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_x_discrete(labels = c("Negativa", "Neutra", "Positiva")) +
-  theme_minimal()
+  theme_minimal()+
+    theme(axis.text.x = element_text(size = 10)))
 
 
 
@@ -704,10 +729,7 @@ imovel_participante %>%
   #scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25) 
-        
-        legend.position = "none"
-        )
+  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5), panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),legend.position = "none")
 
 
 
@@ -848,9 +870,7 @@ ggplot(tab.BAIRO.REGIAO, aes(x = BAIRRO_REGIAO2, y = n)) +
   geom_text(aes(label = paste0("(", n, ")")), vjust = -0.2, size = 3.5) +
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25)
-        
-        
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
         legend.position = "none")
 
 
@@ -1031,9 +1051,7 @@ ocupacao_outro_cargo %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25)
-        
-        
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
         legend.position = "none")
 
 
@@ -1053,8 +1071,7 @@ ocupacao_sonhos %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25)
-        
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
         
         legend.position = "none")
 
@@ -1101,10 +1118,7 @@ locomocao %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25)
-        
-        
-        legend.position = "none")
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25), legend.position = "none")
 
 distancia <- infs2%>% 
   distinct(PARTICIPANTE, OCUPACAO_DIST) %>%  #garante 1 linha por participante
@@ -1120,9 +1134,7 @@ distancia %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25)
-        
-        
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
         legend.position = "none")
 
 
@@ -1149,9 +1161,7 @@ escolaridade %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25)
-        
-        
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
         legend.position = "none")
 
 
@@ -1242,9 +1252,7 @@ renda_individual %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25)
-        
-        
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
         legend.position = "none")
 
 # RENDA ####
@@ -1264,9 +1272,7 @@ renda_familiar %>%
   scale_y_continuous(expand = expansion(mult = c(0, 0.15)))+
   theme_minimal()+
   theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25)
-        
-        
+        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
         legend.position = "none")
 
 ### Renda X Escolaridade ####
