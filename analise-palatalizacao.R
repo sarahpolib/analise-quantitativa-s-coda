@@ -645,6 +645,9 @@ AP.mod_escolaridade <-  glmer(VD ~ ESCOLARIDADE2 +
                               (1|ITEM_LEXICAL) +
                               (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_escolaridade)
+addmargins(table(dados_AP$ESCOLARIDADE2, dados_AP$VD))
+
+
 lrm(VD ~ ESCOLARIDADE2, data = dados_AP)
 plot(allEffects(AP.mod_escolaridade), type = "response")
 
@@ -687,6 +690,8 @@ AP.mod_escolaridade_pai <-  glmer(VD ~ ESCOLA_PAI2 +
                                 (1|ITEM_LEXICAL) +
                                 (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_escolaridade_pai)
+addmargins(table(dados_AP$ESCOLA_PAI2, dados_AP$VD))
+
 lrm(VD ~ ESCOLA_PAI2, data = dados_AP)
 plot(allEffects(AP.mod_escolaridade_pai), type = "response")
 
@@ -731,6 +736,7 @@ AP.mod_escolaridade_mae <-  glmer(VD ~ ESCOLA_MAE2 +
                                 (1|ITEM_LEXICAL) +
                                 (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_escolaridade_mae)
+addmargins(table(dados_AP$ESCOLA_MAE2, dados_AP$VD))
 lrm(VD ~ ESCOLA_MAE2, data = dados_AP)
 plot(allEffects(AP.mod_escolaridade_mae), type = "response")
 

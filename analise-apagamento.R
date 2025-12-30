@@ -599,6 +599,8 @@ S0.mod_ESCOLARIDADE2 <- glmer(VD ~ ESCOLARIDADE2 +
                                    (1|ITEM_LEXICAL) +
                                    (1|PARTICIPANTE), data = dados_S0, family = binomial)
 summary(S0.mod_ESCOLARIDADE2)
+addmargins(table(dados_S0$ESCOLARIDADE2, dados_S0$VD))
+
 lrm(VD ~ ESCOLARIDADE2, data = dados_S0)
 plot(allEffects(S0.mod_ESCOLARIDADE2), type = "response")
 
@@ -626,7 +628,7 @@ S0.prop_ESCOLA_PAI2 <- dados_S0 %>%
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
     labs(title = "Apagamento N = 5.645", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior"))+
+    scale_x_discrete(labels = c("Analfabeto", "E. Fundamental", "E. Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento N = 5.645"))+
     theme_minimal()+
     theme(
@@ -646,6 +648,8 @@ S0.mod_ESCOLA_PAI2 <- glmer(VD ~ ESCOLA_PAI2 +
                                 (1|ITEM_LEXICAL) +
                                 (1|PARTICIPANTE), data = dados_S0, family = binomial)
 summary(S0.mod_ESCOLA_PAI2)
+addmargins(table(dados_S0$ESCOLARIDADE2, dados_S0$VD))
+
 lrm(VD ~ ESCOLA_PAI2, data = dados_S0)
 plot(allEffects(S0.mod_ESCOLA_PAI2), type = "response")
 
@@ -683,6 +687,8 @@ S0.mod_ESCOLA_MAE2 <- glmer(VD ~ ESCOLA_MAE2 +
                               (1|ITEM_LEXICAL) +
                               (1|PARTICIPANTE), data = dados_S0, family = binomial)
 summary(S0.mod_ESCOLA_MAE2)
+addmargins(table(dados_S0$ESCOLA_MAE2, dados_S0$VD))
+
 lrm(VD ~ ESCOLA_MAE2, data = dados_S0)
 plot(allEffects(S0.mod_ESCOLA_MAE2), type = "response")
 
