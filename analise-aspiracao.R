@@ -567,6 +567,8 @@ HAP.mod_ESCOLARIDADE2 <- glmer(VD ~ ESCOLARIDADE2 +
                                    (1|PARTICIPANTE), 
                                  data = dados_HAP, family = binomial)
 summary(HAP.mod_ESCOLARIDADE2)
+addmargins(table(dados_HAP$ESCOLARIDADE2, dados_HAP$VD))
+
 lrm(VD ~ ESCOLARIDADE2, data = dados_HAP)
 plot(allEffects(HAP.mod_ESCOLARIDADE2), type = "response")
 
@@ -591,7 +593,7 @@ HAP.prop_ESCOLA_PAI2 <- dados_HAP %>%
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
     labs(title = "Aspiração N = 2.244", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior"))+
+    scale_x_discrete(labels = c("Analfabeto", "E. Fundamental", "E. Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust = 0.5),
@@ -608,6 +610,7 @@ HAP.mod_ESCOLA_PAI2  <- glmer(VD ~ ESCOLA_PAI2 +
                                  (1|PARTICIPANTE), 
                                data = dados_HAP, family = binomial)
 summary(HAP.mod_ESCOLA_PAI2)
+addmargins(table(dados_HAP$ESCOLARIDADE2, dados_HAP$VD))
 lrm(VD ~ ESCOLA_PAI2, data = dados_HAP)
 plot(allEffects(HAP.mod_ESCOLA_PAI2), type = "response")
 
@@ -628,7 +631,7 @@ HAP.prop_ESCOLA_MAE2 <- dados_HAP %>%
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
     labs(title = "Aspiração N = 2.244", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
-    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior", "Não Informado"))+
+    scale_x_discrete(labels = c("Analfabeta", "E. Fundamental", "E. Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
     theme_minimal()+
     theme(
@@ -659,6 +662,8 @@ HAP.mod_ESCOLA_MAE2 <- glmer(VD ~ ESCOLA_MAE2 +
                                 (1|PARTICIPANTE), 
                               data = dados_HAP, family = binomial)
 summary(HAP.mod_ESCOLA_MAE2)
+addmargins(table(dados_HAP$ESCOLA_MAE2, dados_HAP$VD))
+
 lrm(VD ~ ESCOLA_MAE2, data = dados_HAP)
 plot(allEffects(HAP.mod_ESCOLA_MAE2), type = "response")
 
