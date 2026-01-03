@@ -11,7 +11,7 @@
 #   count(VD, CONT_FON_SEG) %>%
 #   group_by(CONT_FON_SEG) %>% 
 #   mutate(prop = prop.table(n),
-#          label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+#          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
 #   print()
 # 
 # ggplot(AP.prop_CONT_FON_SEG, aes(x = CONT_FON_SEG, y = prop * 100, fill = VD, label = label)) + 
@@ -32,7 +32,7 @@ AP.prop_CFS_pontoc2<- dados_AP.cfs %>%
   count(VD, CFS_pontoc2) %>%
   group_by(CFS_pontoc2) %>%
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>%
   print()
 
 
@@ -53,7 +53,7 @@ dev.off()
 AP.prop_VD <- dados_AP %>% 
   count(VD) %>%
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/1AP_VD.png", width = 5, height = 4.5, units = "in", res = 300)
@@ -78,7 +78,7 @@ AP.participante <- dados_AP %>%
   count(PARTICIPANTE, VD) %>%
   group_by(PARTICIPANTE) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>%
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>%
   print()
 
 
@@ -108,7 +108,7 @@ AP.prop_TONICIDADE <- dados_AP %>%
   count(VD, TONICIDADE) %>%
   group_by(TONICIDADE) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -136,7 +136,7 @@ AP.prop_POSICAO <- dados_AP %>%
   count(VD, POSICAO_S) %>%
   group_by(POSICAO_S) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/3AP_posicao.png", width = 5, height = 4.5, units = "in", res = 300)
@@ -161,7 +161,7 @@ AP.prop_CLASSE_MORFOLOGICA3 <- dados_AP %>%
   count(VD, CLASSE_MORFOLOGICA3) %>%
   group_by(CLASSE_MORFOLOGICA3) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -190,7 +190,7 @@ AP.prop_CONT_FON_PREC <- dados_AP %>%
   count(VD, CONT_FON_PREC) %>%
   group_by(CONT_FON_PREC) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 ggplot(AP.prop_CONT_FON_PREC, aes(x = CONT_FON_PREC, y = prop * 100, fill = VD, label = label)) + 
@@ -210,7 +210,7 @@ AP.prop_CFP_abertura2 <- dados_AP %>%
   count(VD, CFP_abertura2) %>%
   group_by(CFP_abertura2) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -237,7 +237,7 @@ AP.prop_ESTILO <- dados_AP %>%
   count(VD, ESTILO) %>%
   group_by(ESTILO) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 ggplot(AP.prop_ESTILO, aes(x = ESTILO, y = prop * 100, fill = VD, label = label)) + 
@@ -263,7 +263,7 @@ AP.prop_GENERO <- dados_AP %>%
   count(VD, GENERO) %>%
   group_by(GENERO) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -617,20 +617,23 @@ AP.prop_ESCOLARIDADE2 <- dados_AP %>%
   count(VD, ESCOLARIDADE2) %>%
   group_by(ESCOLARIDADE2) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         #label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")"
+        label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),
+                          "%\n(", n, ")")) %>% 
   print()
 
 (g.AP.prop_ESCOLARIDADE2 <- ggplot(AP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop * 100, color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
-    geom_text(size = 3.5, color = "Black") +
+    geom_text(size = 4.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "Palatalização N = 3.076", x = "Escolaridade", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("E. Fundamental", "E. Médio", "E. Superior"))+
+    labs(title = "Palatalização (N = 3.076)", x = "Escolaridade", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     theme_minimal()+
-    theme(
+    theme(axis.title.x = element_blank(),
       plot.title = element_text(hjust = 0.5),
+      axis.text.x = element_text(size = 12),
       legend.position = "top"))
 
 
@@ -662,7 +665,7 @@ AP.prop_ESCOLA_PAI2 <- dados_AP %>%
   count(VD, ESCOLA_PAI2) %>%
   group_by(ESCOLA_PAI2) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 (g.AP.prop_ESCOLA_PAI2 <- ggplot(AP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop * 100, color = VD, group = VD, label = label)) +
@@ -670,13 +673,12 @@ AP.prop_ESCOLA_PAI2 <- dados_AP %>%
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "Palatalização N = 3.076", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Analfabeto", "E. Fundamental", "E. Médio/Superior"))+
+    labs(title = "Palatalização (N = 3.076)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Analfabeto", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     theme_minimal()+
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
+
 
 
 
@@ -702,19 +704,20 @@ AP.prop_ESCOLA_MAE2 <- dados_AP %>%
   count(VD, ESCOLA_MAE2) %>%
   group_by(ESCOLA_MAE2) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 (g.AP.prop_ESCOLA_MAE2 <- ggplot(AP.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop * 100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Analfabeta", "E. Fundamental", "E. Médio/Superior"))+
+    labs(title = "Palatalização (N = 3.076)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Analfabeta", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
+
 
 
 AP.grafico_escolaridade_mae <- AP.prop_ESCOLA_MAE2 %>% 
@@ -746,7 +749,7 @@ AP.prop_INDICE_OCUPACAO <- dados_AP %>%
   count(VD, INDICE_OCUPACAO) %>%
   group_by(INDICE_OCUPACAO) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 class(dados_AP$INDICE_OCUPACAO)
@@ -756,11 +759,11 @@ class(dados_AP$INDICE_OCUPACAO)
   geom_line(linewidth = 1.1) +
   geom_point(size = 2.5) +
   geom_text(size = 3.5, color = "Black") +
-  labs(title = "Palatalização N = 3.076", x = "Índice de Ocupação", y = "Proporção (%)", color = "Variável \nResposta") +
+  labs(title = "Palatalização (N = 3.076)", x = "Ocupação", y = "Proporção (%)", color = "Variável \nResposta") +
   scale_y_continuous(limits = c(0, 100)) +
   scale_color_brewer(palette = "Reds", label = c("Alveolar", "Palatal"))+
   theme_minimal()+
-  theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+  theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 
@@ -777,7 +780,7 @@ AP.prop_INDICE_OCUPACAO_PAI <- dados_AP %>%
   count(VD, INDICE_OCUPACAO_PAI) %>%
   group_by(INDICE_OCUPACAO_PAI) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 ggplot(AP.prop_INDICE_OCUPACAO_PAI, aes(x = INDICE_OCUPACAO_PAI, y = prop * 100, fill = VD, label = label)) + 
@@ -808,7 +811,7 @@ AP.prop_INDICE_OCUPACAO_MAE <- dados_AP %>%
   count(VD, INDICE_OCUPACAO_MAE) %>%
   group_by(INDICE_OCUPACAO_MAE) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 ggplot(AP.prop_INDICE_OCUPACAO_MAE, aes(x = INDICE_OCUPACAO_MAE, y = prop * 100, fill = VD, label = label)) + 
@@ -839,7 +842,7 @@ AP.prop_INDICE_OUTRO_CARGO <- dados_AP %>%
   count(VD, INDICE_OUTRO_CARGO) %>%
   group_by(INDICE_OUTRO_CARGO) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 ggplot(AP.prop_INDICE_OUTRO_CARGO, aes(x = INDICE_OUTRO_CARGO, y = prop * 100, fill = VD, label = label)) +
@@ -871,19 +874,19 @@ AP.prop_INDICE_OCUPACAO_SONHOS <- dados_AP %>%
   count(VD, INDICE_OCUPACAO_SONHOS) %>%
   group_by(INDICE_OCUPACAO_SONHOS) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 (g.AP.prop_INDICE_OCUPACAO_SONHOS <- ggplot(AP.prop_INDICE_OCUPACAO_SONHOS, aes(x = INDICE_OCUPACAO_SONHOS, y = prop * 100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Nenhuma", "Ocupações \nintermediárias", "Ocupações \ncom especialização"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 
@@ -896,6 +899,8 @@ AP.mod_ocupacao_sonhos <- glmer(VD ~ INDICE_OCUPACAO_SONHOS+
                                   (1|ITEM_LEXICAL) +
                                   (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_ocupacao_sonhos)
+addmargins(table(dados_AP$INDICE_OCUPACAO_SONHOS, dados_AP$VD))
+
 lrm(VD ~ INDICE_OCUPACAO_SONHOS, data = dados_AP)
 plot(allEffects(AP.mod_ocupacao_sonhos), type = "response")
 
@@ -904,7 +909,7 @@ AP.prop_OCUPACAO_DIST <- dados_AP %>%
   count(VD, OCUPACAO_DIST) %>%
   group_by(OCUPACAO_DIST) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -944,7 +949,7 @@ AP.prop_OCUPACAO_LOCOMOCAO2 <- dados_AP %>%
   count(VD, OCUPACAO_LOCOMOCAO2) %>%
   group_by(OCUPACAO_LOCOMOCAO2) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -987,19 +992,19 @@ AP.prop_MEGA_SENA2 <- dados_AP %>%
   group_by(MEGA_SENA2) %>% 
   mutate(prop = prop.table(n),
          MEGA_SENA2 = fct_relevel(MEGA_SENA2, "gastar", "voltar.estado", "ajudar.outros", "investir"),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 (g.AP.prop_MEGA_SENA2 <- ggplot(AP.prop_MEGA_SENA2, aes(x = MEGA_SENA2, y = prop * 100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Gastar", "Voltar para o \nestado de origem", "Ajudar outras \npessoas", "Investir"))+
+    labs(title = "Palatalização (N = 3.076)", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Gastar", "Voltar p/ \nestado de \norigem", "Ajudar outras \npessoas", "Investir"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 10), legend.position = "top"))
 
 
 (AP.tab_MEGA_SENA2 <- with(dados_AP, table(MEGA_SENA2, VD)))
@@ -1011,6 +1016,8 @@ AP.mod_megasena <- glmer(VD ~ MEGA_SENA2 +
                            (1|ITEM_LEXICAL) +
                            (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_megasena)
+addmargins(table(dados_AP$MEGA_SENA2, dados_AP$VD))
+
 lrm(VD ~ MEGA_SENA2, data = dados_AP)
 plot(allEffects(AP.mod_megasena), type = "response")
 
@@ -1020,7 +1027,7 @@ AP.prop_MEGASENA_TRABALHAR2 <- dados_AP %>%
   count(VD, MEGASENA_TRABALHAR2) %>%
   group_by(MEGASENA_TRABALHAR2) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -1062,19 +1069,19 @@ AP.prop_RENDA_IND <- dados_AP %>%
   count(VD, RENDA_IND) %>%
   group_by(RENDA_IND) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 (g.AP.prop_RENDA_IND <- ggplot(AP.prop_RENDA_IND, aes(x = RENDA_IND, y = prop * 100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Até 1 SM", "1 a 2 SM", "2 a 4 SM", "Mais de 4 SM"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 (AP.tab_RENDA_IND <- with(dados_AP, table(RENDA_IND, VD)))
@@ -1086,6 +1093,7 @@ AP.mod_renda_ind <- glmer(VD ~ RENDA_IND +
                            (1|ITEM_LEXICAL) +
                            (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_renda_ind)
+addmargins(table(dados_AP$RENDA_IND, dados_AP$VD))
 lrm(VD ~ RENDA_IND, data = dados_AP)
 plot(allEffects(AP.mod_renda_ind), type = "response")
 
@@ -1095,7 +1103,7 @@ AP.prop_RENDA_FAM <- dados_AP %>%
   count(VD, RENDA_FAM) %>%
   group_by(RENDA_FAM) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 ggplot(AP.prop_RENDA_FAM, aes(x = RENDA_FAM, y = prop * 100, fill = VD, label = label)) + 
@@ -1132,7 +1140,7 @@ AP.prop_media_m2 <- dados_AP %>%
   count(VD, media_m2) %>%
   group_by(media_m2) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print(n = 40)
 
 ggplot(AP.prop_media_m2[21:40,], aes(x = media_m2, y = prop * 100, label = round(prop * 100, 1))) + 
@@ -1161,7 +1169,7 @@ AP.prop_BAIRRO <- dados_AP %>%
   mutate(BAIRRO = factor(BAIRRO, levels = ordem_bairros)) %>%  # Reordena os níveis
   group_by(BAIRRO) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   ungroup()
 
 AP.prop_BAIRRO %>% 
@@ -1186,7 +1194,7 @@ AP.prop_BAIRRO_REGIAO <- dados_AP %>%
   count(VD, BAIRRO_REGIAO2) %>%
   group_by(BAIRRO_REGIAO2) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 ggplot(AP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop * 100, fill = VD, label = label)) + 
@@ -1220,7 +1228,7 @@ AP.prop_NBANHEIROS <- dados_AP %>%
   count(VD, NBANHEIROS) %>%
   group_by(NBANHEIROS) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 AP.prop_NBANHEIROS %>% 
@@ -1259,7 +1267,7 @@ AP.prop_NQUARTOS <- dados_AP %>%
   count(VD, NQUARTOS) %>%
   group_by(NQUARTOS) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 AP.prop_NQUARTOS %>% 
@@ -1305,7 +1313,7 @@ AP.prop_IMOVEL <- dados_AP %>%
   count(VD, IMOVEL) %>%
   group_by(IMOVEL) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 AP.prop_IMOVEL %>% 
@@ -1343,7 +1351,7 @@ AP.prop_PROPRIEDADE <- dados_AP %>%
   count(VD, PROPRIEDADE) %>%
   group_by(PROPRIEDADE) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 AP.prop_PROPRIEDADE %>% 
@@ -1382,7 +1390,7 @@ AP.prop_NPESSOAS <- dados_AP %>%
   count(VD, NPESSOAS) %>%
   group_by(NPESSOAS) %>% 
   mutate(prop = prop.table(n),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 AP.prop_NPESSOAS %>% 
@@ -1424,19 +1432,19 @@ AP.prop_LAZER_CARACTERISTICA <- dados_AP %>%
   group_by(LAZER_CARACTERISTICA) %>% 
   mutate(prop = prop.table(n),
          LAZER_CARACTERISTICA = fct_relevel(LAZER_CARACTERISTICA, "nao.sai", "sem.custo", "custo"),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 (g.AP.prop_LAZER_CARACTERISTICA <- ggplot(AP.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop * 100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Lazer", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Lazer", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não sai", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 (AP.tab_LAZER_CARACTERISTICA <- with(dados_AP, table(LAZER_CARACTERISTICA, VD)))
@@ -1448,6 +1456,8 @@ AP.mod_LAZER_CARACTERISTICA <- glmer(VD ~ LAZER_CARACTERISTICA +
                               (1|ITEM_LEXICAL) +
                               (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_LAZER_CARACTERISTICA)
+addmargins(table(dados_AP$LAZER_CARACTERISTICA, dados_AP$VD))
+
 lrm(VD ~ LAZER_CARACTERISTICA, data = dados_AP)
 plot(allEffects(AP.mod_LAZER_CARACTERISTICA), type = "response")
 
@@ -1460,7 +1470,7 @@ AP.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_AP %>%
   group_by(LAZER_CAMPINAS_CARACTERISTICA) %>% 
   mutate(prop = prop.table(n),
         LAZER_CAMPINAS_CARACTERISTICA = fct_relevel(LAZER_CAMPINAS_CARACTERISTICA, "nsai.ntem", "sem.custo", "custo"),
-       label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+       label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -1469,12 +1479,12 @@ AP.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_AP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Lazer em Campinas", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Lazer em Campinas", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não sai/ \nNão tem", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 
@@ -1488,6 +1498,8 @@ AP.mod_LAZER_CAMPINAS_CARACTERISTICA <- glmer(VD ~ LAZER_CAMPINAS_CARACTERISTICA
                                        (1|ITEM_LEXICAL) +
                                        (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_LAZER_CAMPINAS_CARACTERISTICA)
+addmargins(table(dados_AP$LAZER_CAMPINAS_CARACTERISTICA, dados_AP$VD))
+
 lrm(VD ~ LAZER_CAMPINAS_CARACTERISTICA, data = dados_AP)
 plot(allEffects(AP.mod_LAZER_CAMPINAS_CARACTERISTICA), type = "response")
 
@@ -1502,7 +1514,7 @@ AP.prop_VIAGEM <- dados_AP %>%
   group_by(VIAGEM) %>% 
   mutate(prop = prop.table(n),
          VIAGEM = fct_relevel(VIAGEM, "nao", "sim"),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -1511,12 +1523,12 @@ AP.prop_VIAGEM <- dados_AP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Hábitos de Viagem", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Hábitos de Viagem", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não tem costume de viajar", "Tem costume de viajar"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 
@@ -1530,6 +1542,8 @@ AP.mod_VIAGEM <- glmer(VD ~ VIAGEM +
                          (1|ITEM_LEXICAL) +
                          (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_VIAGEM)
+addmargins(table(dados_AP$VIAGEM, dados_AP$VD))
+
 lrm(VD ~ VIAGEM, data = dados_AP)
 plot(allEffects(AP.mod_VIAGEM), type = "response")
 
@@ -1542,7 +1556,7 @@ AP.prop_VIAGEM_LUGAR <- dados_AP %>%
   group_by(VIAGEM_LUGAR) %>% 
   mutate(prop = prop.table(n),
          VIAGEM_LUGAR = fct_relevel(VIAGEM_LUGAR, "SP-estado", "nacional.internacional"),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -1551,12 +1565,12 @@ AP.prop_VIAGEM_LUGAR <- dados_AP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Estado de São Paulo/\n estado de origem", "Nacional/internacional"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 (AP.tab_VIAGEM_LUGAR <- with(dados_AP, table(VIAGEM_LUGAR, VD)))
@@ -1567,6 +1581,8 @@ AP.mod_VIAGEM_LUGAR <- glmer(VD ~ VIAGEM_LUGAR +
                          (1|ITEM_LEXICAL) +
                          (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_VIAGEM_LUGAR)
+addmargins(table(dados_AP$VIAGEM_LUGAR, dados_AP$VD))
+
 lrm(VD ~ VIAGEM_LUGAR, data = dados_AP)
 plot(allEffects(AP.mod_VIAGEM_LUGAR), type = "response")
 
@@ -1579,7 +1595,7 @@ AP.prop_LAZER_VIAGEM_VONTADE2 <- dados_AP %>%
   group_by(LAZER_VIAGEM_VONTADE2) %>% 
   mutate(prop = prop.table(n),
          LAZER_VIAGEM_VONTADE2 = fct_relevel(LAZER_VIAGEM_VONTADE2, "nenhum", "nacional","nacional.internacional"),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -1588,12 +1604,12 @@ AP.prop_LAZER_VIAGEM_VONTADE2 <- dados_AP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Gostaria de conhecer", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Nenhum lugar", "Destinos nacionais", "Destinos nacionais \ne internacionais"))+
+    labs(title = "Palatalização (N = 3.076)", x = "Lugares que Gostaria de conhecer", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("Nenhum lugar", "Destinos \nnacionais", "Destinos nacionais \ne internacionais"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 (AP.tab_LAZER_VIAGEM_VONTADE2 <- with(dados_AP, table(LAZER_VIAGEM_VONTADE2, VD)))
@@ -1604,6 +1620,8 @@ AP.mod_LAZER_VIAGEM_VONTADE2 <- glmer(VD ~ LAZER_VIAGEM_VONTADE2 +
                          (1|ITEM_LEXICAL) +
                          (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_LAZER_VIAGEM_VONTADE2)
+addmargins(table(dados_AP$LAZER_VIAGEM_VONTADE2, dados_AP$VD))
+
 lrm(VD ~ LAZER_VIAGEM_VONTADE2, data = dados_AP)
 plot(allEffects(AP.mod_LAZER_VIAGEM_VONTADE2), type = "response")
 
@@ -1616,7 +1634,7 @@ AP.prop_INFANCIA_MEMORIA <- dados_AP %>%
   group_by(INFANCIA_MEMORIA) %>% 
    mutate(prop = prop.table(n),
   #        LAZER_VIAGEM_VONTADE2 = fct_relevel(LAZER_VIAGEM_VONTADE2, "nenhum", "nacional","nacional.internacional"),
-         label = paste0(round(prop * 100, 1), "%\n(", n, ")")) %>% 
+         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
 
@@ -1625,12 +1643,12 @@ AP.prop_INFANCIA_MEMORIA <- dados_AP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização N = 3.076", x = "Memória de Infância", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Memória de Infância", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Negativa", "Neutra", "Positiva"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "top"))
+    theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
 (AP.prop_INFANCIA_MEMORIA <- with(dados_AP, table(INFANCIA_MEMORIA, VD)))
@@ -1642,6 +1660,8 @@ AP.mod_INFANCIA_MEMORIA <- glmer(VD ~ INFANCIA_MEMORIA +
                                         (1|ITEM_LEXICAL) +
                                         (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_INFANCIA_MEMORIA)
+addmargins(table(dados_AP$INFANCIA_MEMORIA, dados_AP$VD))
+
 lrm(VD ~ INFANCIA_MEMORIA, data = dados_AP)
 plot(allEffects(AP.mod_INFANCIA_MEMORIA), type = "response")
 

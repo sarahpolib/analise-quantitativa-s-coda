@@ -24,7 +24,8 @@ escolaridade_participante <- infs2 %>%
   scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
+
 
 
 ### Escolaridade dos pais ####
@@ -42,11 +43,10 @@ escolaridade_pai <- dados2 %>%
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.2, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/Superior", " Não Informado"))+
+  scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/\nSuperior", " não informado"))+
   scale_y_continuous(limits = c(0, 25))+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
-
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 escolaridade_mae <- dados2 %>% 
   distinct(PARTICIPANTE, ESCOLA_MAE2) %>%  #garante 1 linha por participante
@@ -62,11 +62,10 @@ escolaridade_mae <- dados2 %>%
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.2, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/Superior", " Não Informado"))+
+  scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/\nSuperior", " não informado"))+
   scale_y_continuous(limits = c(0, 25))+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
-
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 #### grafico 3 escolaridades ####
@@ -76,8 +75,8 @@ g.escolaridades
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/1escolaridade.png",
        plot = g.escolaridades,
-       width = 13,
-       height = 4.5,
+       width = 15,
+       height = 5,
        units = "in",
        dpi = 300)
 
@@ -92,7 +91,7 @@ ocupacao <- infs2 %>%
   print()
 
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/2ocupacao.png", width = 5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/2ocupacao.png", width = 5, height = 5, units = "in", res = 300)
 ocupacao %>%
   ggplot(aes(x = INDICE_OCUPACAO, y = n, label = n)) +
   geom_line(linewidth = 1.2, color = "#FCAE91") +
@@ -131,8 +130,7 @@ ocupacaopai_participante <- infs2 %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("0. Desempregado/\nsem renda", "1. Trabalhador braçal \ns/ treinamento", "5. Profissionais \nespecializados/\nliberais", "Não informado"))+
   theme_minimal()+
-  theme(axis.text.x = element_text(size = 10)
-))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 ## INDICE_OCUPACAO_MAE ####
@@ -155,7 +153,7 @@ ocupacaomae_participante <- infs2 %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("0. Desempregado/\nsem renda", "1. Trabalhador braçal \ns/ treinamento", "5. Profissionais \nespecializados/\nliberais", "Não informado"))+
   theme_minimal()+
-  theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 #### grafico 2 ocupacao ####
@@ -165,8 +163,8 @@ g.ocupacoes
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/3ocupacoes.png",
        plot = g.ocupacoes,
-       width = 12,
-       height = 4.5,
+       width = 13,
+       height = 5,
        units = "in",
        dpi = 300)
 
@@ -189,7 +187,7 @@ rendaind_participante <- infs2 %>%
   scale_fill_brewer(palette = "Reds")+
   scale_x_discrete(labels=c("Até 1 \nSM", "1 a 2 \nSM", "2 a 4 \nSM", "Mais de 4 \nSM", "Não informado"))+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 ## RENDA_FAM ####
@@ -210,7 +208,7 @@ rendafam_participante <- infs2 %>%
   scale_y_continuous(limits = c(0, 24))+
   scale_x_discrete(labels=c("Até 1 \nSM", "1 a 2 \nSM", "2 a 4 \nSM", "Mais de 4 \nSM", "Não informado"))+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 
@@ -222,8 +220,8 @@ g.renda
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/4renda.png",
        plot = g.renda,
-       width = 10,
-       height = 4.5,
+       width = 13,
+       height = 5,
        units = "in",
        dpi = 300)
 
@@ -236,7 +234,7 @@ regiao_participante <- infs2 %>%
   print()
 
 
-png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/5regiao.png", width = 5, height = 4.5, units = "in", res = 300)
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/5regiao.png", width = 5, height = 5, units = "in", res = 300)
 regiao_participante %>%
   ggplot(aes(x = BAIRRO_REGIAO2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
@@ -244,9 +242,9 @@ regiao_participante %>%
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Centro", "Periferia", "Não informado"))+
+  scale_x_discrete(labels = c("centro", "periferia", "não informado"))+
   theme_minimal()+
-  theme(legend.position = "none",axis.text.x = element_text(size = 10))
+  theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11))
 dev.off()
 
 
@@ -265,9 +263,9 @@ quartos_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Um", "Dois", "Três ou mais", "Não Informado"))+
+  scale_x_discrete(labels = c("um", "dois", "três ou mais", "não informado"))+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 ## NBANHEIROS ####
@@ -284,10 +282,10 @@ quartos_participante <- infs2 %>%
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
-  scale_x_discrete(labels = c("Um", "Dois", "Três ou mais", "Não Informado"))+
+  scale_x_discrete(labels = c("um", "dois", "três ou mais", "não informado"))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 ## NCOMODOS####
@@ -306,7 +304,7 @@ comodos_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(limits = c(0, 29))+
-  scale_x_discrete(labels = c("Dois", "Três", "Quatro ou mais", "Não Informado"))+
+  scale_x_discrete(labels = c("dois", "três", "quatro ou mais", "não informado"))+
   theme_minimal()+
     theme(axis.text.x = element_text(size = 10)))
 
@@ -316,11 +314,11 @@ densidade_participante <- infs2 %>%
   mutate(
     DENSIDADE_HABITACAO = as.character(DENSIDADE_HABITACAO),
     DENSIDADE_HABITACAO_CAT = case_when(
-      DENSIDADE_HABITACAO %in% c("0.25", "0.5", "0.7", "0.75") ~ "Menos de uma",
-      DENSIDADE_HABITACAO == "1" ~ "Uma",
-      TRUE ~ "Mais de uma"),
+      DENSIDADE_HABITACAO %in% c("0.25", "0.5", "0.7", "0.75") ~ "menos de uma",
+      DENSIDADE_HABITACAO == "1" ~ "uma",
+      TRUE ~ "mais de uma"),
     DENSIDADE_HABITACAO_CAT = fct_relevel(DENSIDADE_HABITACAO_CAT, 
-                                          "Mais de uma", "Uma", "Menos de uma")
+                                          "mais de uma", "uma", "menos de uma")
   ) %>%
   count(DENSIDADE_HABITACAO_CAT) %>% 
   print()
@@ -329,13 +327,13 @@ densidade_participante <- infs2 %>%
 (g.densidade <- densidade_participante %>%
   ggplot(aes(x = DENSIDADE_HABITACAO_CAT, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
-  labs(x = "Densidade Habitacional \n(Pessoa/cômodo)",
+  labs(x = "Densidade Habitacional (Pessoa/cômodo)",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 
@@ -347,8 +345,8 @@ g.habitacao
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/6habitacao.png",
        plot = g.habitacao,
-       width = 13,
-       height = 4.5,
+       width = 15,
+       height = 5,
        units = "in",
        dpi = 300)
 
@@ -371,9 +369,9 @@ locomocao_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels= c("Compartilhado/\npúblico", "Privado", "Não informado"))+
+  scale_x_discrete(labels= c("compartilhado/\npúblico", "privado", "não informado"))+
   theme_minimal()+
-  theme(axis.text.x = element_text(size = 10)))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 ## DISTÂNCIA ####
@@ -391,9 +389,9 @@ distancia_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Longe", "Perto", "Em Casa", "Não informado"))+
+  scale_x_discrete(labels=c("longe", "perto", "em casa", "não informado"))+
   theme_minimal()+
-  theme(axis.text.x = element_text(size = 10)))
+  theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 #### grafico 2 locomocao distancia ####
 g.locomocaodistancia <- (g.locomocao | g.distancia) + 
@@ -403,8 +401,8 @@ g.locomocaodistancia
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/7locomocao.png",
        plot = g.locomocaodistancia,
-       width = 10,
-       height = 4.5,
+       width = 13,
+       height = 5,
        units = "in",
        dpi = 300)
 
@@ -424,9 +422,9 @@ outrocargo_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 25))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Sem perspectiva", "Com perspectiva", "Não informado"))+
+  scale_x_discrete(labels = c("sem perspectiva", "com perspectiva", "não informado"))+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 
@@ -445,9 +443,9 @@ ocupacaosonhos_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 25))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Nenhuma", "Intermediárias", "Com especialização", "Não informado"))+
+  scale_x_discrete(labels = c("nenhuma", "intermediárias", "com especialização", "não informado"))+
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 
@@ -459,8 +457,8 @@ g.ocupacaoascensao
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/8ocupacaoascensao.png",
        plot = g.ocupacaoascensao,
-       width = 10,
-       height = 4.5,
+       width = 13,
+       height = 5,
        units = "in",
        dpi = 300)
 
@@ -482,9 +480,9 @@ lazer_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Não sai", "Sem custo", "Com custo", "Não Informado"))+
+  scale_x_discrete(labels=c("não sai", "sem custo", "com custo", "não informado"))+
   theme_minimal()+
-  theme(axis.text.x = element_text(size = 10)))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 
@@ -504,9 +502,9 @@ lazercampinas_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds", name = "Lazer em Campinas")+
-  scale_x_discrete(labels = c("Não sai/ não tem", "Sem custo", "Com custo", "Não informado"))+
+  scale_x_discrete(labels = c("não sai/ não tem", "sem custo", "com custo", "não informado"))+
   theme_minimal()+
-  theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 #### grafico 2 lazer ####
@@ -517,8 +515,8 @@ g.lazeres
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/9lazer.png",
        plot = g.lazeres,
-       width = 10,
-       height = 4.5,
+       width = 13,
+       height = 5,
        units = "in",
        dpi = 300)
 
@@ -540,9 +538,9 @@ viagem_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Não costuma viajar", "Costuma de viajar")) +
+  scale_x_discrete(labels = c("não costuma viajar", "costuma de viajar")) +
   theme_minimal()+
-  theme(axis.text.x = element_text(size = 10)))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 ## VIAGEM LUGAR ####
@@ -561,9 +559,9 @@ viagemlugar_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("São Paulo e\nestado de origem", "Nacional e\ninternacional", "Não informado")) +
+  scale_x_discrete(labels = c("São Paulo e\nestado de origem", "nacional e\ninternacional", "não informado")) +
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 ## VIAGEM VONTADE ####
@@ -582,14 +580,14 @@ viagemvontade_participante <- infs2 %>%
   ggplot(aes(x = LAZER_VIAGEM_VONTADE2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white",fill = "#FCAE91") +
   labs(
-    x = "Gostaria de conhecer",
+    x = "Lugares que Gostaria de conhecer",
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("Nenhum","Nacional", "Nacional e\ninternacional", "Não informado")) +
+  scale_x_discrete(labels = c("nenhum","nacional", "nacional e\ninternacional", "não informado")) +
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 
@@ -601,8 +599,8 @@ g.viagens
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/10viagem.png",
        plot = g.viagens,
-       width = 13,
-       height = 4.5,
+       width = 15,
+       height = 5,
        units = "in",
        dpi = 300)
 
@@ -624,9 +622,9 @@ megasena_participante <- infs2 %>%
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
-  scale_x_discrete(labels = c("Gastar", "Voltar p/\nestado de \norigem", "Ajudar outros", "Investir", "Não Informado")) +
+  scale_x_discrete(labels = c("gastar", "voltar p/ estado \nde origem", "ajudar outros", "investir", "não informado")) +
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 ## INFANCIA ####
@@ -644,9 +642,9 @@ infancia_participante <- infs2 %>%
     y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
-  scale_x_discrete(labels = c("Negativa", "Neutra", "Positiva")) +
+  scale_x_discrete(labels = c("negativa", "neutra", "positiva")) +
   theme_minimal()+
-    theme(axis.text.x = element_text(size = 10)))
+    theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 
 
@@ -658,8 +656,8 @@ g.megainfacia
 
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/11megainfancia.png",
        plot = g.megainfacia,
-       width = 10,
-       height = 4.5,
+       width = 13,
+       height = 5,
        units = "in",
        dpi = 300)
 
