@@ -673,7 +673,7 @@ AP.prop_ESCOLA_PAI2 <- dados_AP %>%
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "Palatalização (N = 3.076)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Palatalização (N = 3.076)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Analfabeto", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     theme_minimal()+
@@ -1555,7 +1555,7 @@ AP.prop_VIAGEM_LUGAR <- dados_AP %>%
   count(VD, VIAGEM_LUGAR) %>%
   group_by(VIAGEM_LUGAR) %>% 
   mutate(prop = prop.table(n),
-         VIAGEM_LUGAR = fct_relevel(VIAGEM_LUGAR, "SP-estado", "nacional.internacional"),
+         VIAGEM_LUGAR = fct_relevel(VIAGEM_LUGAR, "SP-estado", "nacional","nacional.internacional"),
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
@@ -1565,8 +1565,8 @@ AP.prop_VIAGEM_LUGAR <- dados_AP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Palatalização (N = 3.076)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Estado de São Paulo/\n estado de origem", "Nacional/internacional"))+
+    labs(title = "✱ Palatalização (N = 3.076)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("estado de São Paulo/\n estado de origem", "nacional","nacional/\ninternacional"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
@@ -1605,7 +1605,7 @@ AP.prop_LAZER_VIAGEM_VONTADE2 <- dados_AP %>%
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     labs(title = "Palatalização (N = 3.076)", x = "Lugares que Gostaria de conhecer", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Nenhum lugar", "Destinos \nnacionais", "Destinos nacionais \ne internacionais"))+
+    scale_x_discrete(labels = c("nenhum lugar", "destinos \nnacionais", "destinos nacionais \ne internacionais"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar","Palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+

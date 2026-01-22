@@ -117,7 +117,7 @@ levels(infs$RENDA_FAM)
 
 
 #tipo de viagem, juntou-se os níveis considerando viagem pra conhecer novos lugares vs viagem pra locais mais pertos ou pro estado pra visitar a familia
-infs$VIAGEM_LUGAR <- fct_collapse(as.factor(infs$VIAGEM_LUGAR), "nacional.internacional" = c("nacional", "nacional-internacional"), "SP-estado" = c("estado", "SP", "SP-estado"))
+infs$VIAGEM_LUGAR <- fct_collapse(as.factor(infs$VIAGEM_LUGAR), "nacional.internacional" = "nacional-internacional", "nacional" = "nacional", "SP-estado" = c("estado", "SP", "SP-estado"))
 levels(infs$VIAGEM_LUGAR)
 
 #juntando individuos que citaram viagem internacional

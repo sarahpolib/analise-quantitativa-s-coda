@@ -583,7 +583,7 @@ S0.prop_ESCOLARIDADE2 <- dados_S0 %>%
     geom_point(size = 2.5) +
     geom_text(size = 4.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-  labs(title = "Apagamento (N = 5.645)", x = "Escolaridade", y = "Proporção de Ocorrência") + 
+  labs(title = "✱ Apagamento (N = 5.645)", x = "Escolaridade", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
   scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
   theme_minimal()+
@@ -592,7 +592,7 @@ S0.prop_ESCOLARIDADE2 <- dados_S0 %>%
     axis.ticks.y = element_blank(),
     plot.title = element_text(hjust = 0.5),
     axis.text.x = element_text(size = 12), #fatores eixo x
-    axis.title.x = element_text(size = 12),  #nome eixo x
+    axis.title.x = element_text(size = 14),  #nome eixo x
     legend.position = "top"))
 
 (S0.tab_ESCOLARIDADE2 <- with(dados_S0, table(ESCOLARIDADE2, VD)))
@@ -632,7 +632,7 @@ S0.prop_ESCOLA_PAI2 <- dados_S0 %>%
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "Apagamento (N = 5.645)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Analfabeto", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     theme_minimal()+
@@ -641,7 +641,7 @@ S0.prop_ESCOLA_PAI2 <- dados_S0 %>%
           axis.ticks.y = element_blank(),
           plot.title = element_text(hjust = 0.5),
           axis.text.x = element_text(size = 12), #fatores eixo x
-          axis.title.x = element_text(size = 11),  #nome eixo x
+          axis.title.x = element_text(size = 14),  #nome eixo x
           legend.position = "top"))
 
 
@@ -676,11 +676,11 @@ S0.prop_ESCOLA_MAE2 <- dados_S0 %>%
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "Apagamento (N = 5.645)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
     scale_x_discrete(labels = c("Analfabeta", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 
 
@@ -712,11 +712,11 @@ S0.prop_INDICE_OCUPACAO <- dados_S0 %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-  labs(title = "Apagamento (N = 5.645)", x = "Ocupação", y = "Proporção (%)", color = "Variável \nResposta") +
+  labs(title = "✱ Apagamento (N = 5.645)", x = "Ocupação", y = "Proporção (%)", color = "Variável \nResposta") +
   scale_y_continuous(limits = c(0, 100)) +
   scale_color_brewer(palette = "Reds", label = c("Realização", "Apagamento"))+
   theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 
 S0.mod_INDICE_OCUPACAO <- glmer(VD ~ INDICE_OCUPACAO +
@@ -765,7 +765,7 @@ S0.prop_INDICE_OCUPACAO_SONHOS <- dados_S0 %>%
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 
 
@@ -1004,12 +1004,12 @@ S0.prop_RENDA_IND <- dados_S0 %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Apagamento (N = 5.645)", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Até 1 SM", "1 a 2 SM", "2 a 4 SM", "Mais de 4 SM"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 (S0.tab_RENDA_IND <- with(dados_S0, table(RENDA_IND, VD)))
 #chisq.test(S0.tab_RENDA_IND) #tem correlação
@@ -1393,7 +1393,7 @@ S0.prop_LAZER_CARACTERISTICA <- dados_S0 %>%
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 (S0.tab_LAZER_CARACTERISTICA <- with(dados_S0, table(LAZER_CARACTERISTICA, VD)))
 
@@ -1426,12 +1426,12 @@ S0.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_S0 %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Apagamento (N = 5.645)", x = "Lazer em Campinas", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Lazer em Campinas", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não sai/ \nNão tem", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 
 (S0.tab_LAZER_CAMPINAS_CARACTERISTICA <- with(dados_S0, table(LAZER_CAMPINAS_CARACTERISTICA, VD)))
@@ -1469,12 +1469,12 @@ S0.prop_VIAGEM <- dados_S0 %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Apagamento (N = 5.645)", x = "Hábitos de Viagem", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Hábitos de Viagem", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não tem costume de viajar", "Tem costume de viajar"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 (S0.tab_VIAGEM <- with(dados_S0, table(VIAGEM, VD)))
 #chisq.test(S0.tab_VIAGEM) #tem correlação
@@ -1499,7 +1499,7 @@ S0.prop_VIAGEM_LUGAR <- dados_S0 %>%
   count(VD, VIAGEM_LUGAR) %>%
   group_by(VIAGEM_LUGAR) %>% 
   mutate(prop = prop.table(n),
-         VIAGEM_LUGAR = fct_relevel(VIAGEM_LUGAR, "SP-estado", "nacional.internacional"),
+         VIAGEM_LUGAR = fct_relevel(VIAGEM_LUGAR, "SP-estado", "nacional", "nacional.internacional"),
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
@@ -1509,12 +1509,12 @@ S0.prop_VIAGEM_LUGAR <- dados_S0 %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Apagamento (N = 5.645)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Estado de São Paulo/\n estado de origem", "Nacional/internacional"))+
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("estado de São Paulo/\n estado de origem", "nacional","nacional/\ninternacional"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 (S0.tab_VIAGEM_LUGAR <- with(dados_S0, table(VIAGEM_LUGAR, VD)))
 #chisq.test(S0.tab_VIAGEM_LUGAR) #tem correlação
@@ -1550,12 +1550,12 @@ S0.prop_LAZER_VIAGEM_VONTADE2 <- dados_S0 %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Apagamento (N = 5.645)", x = "Lugares que Gostaria de Conhecer", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Nenhum lugar", "Destinos \nnacionais", "Destinos nacionais \ne internacionais"))+
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Lugares que Gostaria de Conhecer", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("nenhum lugar", "destinos \nnacionais", "destinos nacionais \ne internacionais"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 
 (S0.tab_LAZER_VIAGEM_VONTADE2 <- with(dados_S0, table(LAZER_VIAGEM_VONTADE2, VD)))
@@ -1590,12 +1590,12 @@ S0.prop_INFANCIA_MEMORIA <- dados_S0 %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Apagamento (N = 5.645)", x = "Memória de Infância", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Memória de Infância", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Negativa", "Neutra", "Positiva"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Realização","Apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
-    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11), legend.position = "top"))
+    theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 (S0.tab_INFANCIA_MEMORIA <- with(dados_S0, table(INFANCIA_MEMORIA, VD)))
 #chisq.test(S0.tab_INFANCIA_MEMORIA) #tem correlação

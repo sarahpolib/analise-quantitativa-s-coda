@@ -549,7 +549,7 @@ HAP.prop_ESCOLARIDADE2 <- dados_HAP %>%
     geom_point(size = 2.5) +
     geom_text(size = 4.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "Aspiração (N = 2.244)", x = "Escolaridade", y = "Proporção de Ocorrência") +
+    labs(title = "✱ Aspiração (N = 2.244)", x = "Escolaridade", y = "Proporção de Ocorrência") +
     scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
     theme_minimal()+
@@ -597,7 +597,7 @@ HAP.prop_ESCOLA_PAI2 <- dados_HAP %>%
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "Aspiração (N = 2.244)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Aspiração (N = 2.244)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Analfabeto", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
     theme_minimal()+
@@ -635,7 +635,7 @@ HAP.prop_ESCOLA_MAE2 <- dados_HAP %>%
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "Aspiração (N = 2.244)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
+    labs(title = "✱ Aspiração (N = 2.244)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
     scale_x_discrete(labels = c("Analfabeta", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
     theme_minimal()+
@@ -731,7 +731,7 @@ HAP.prop_INDICE_OCUPACAO_SONHOS <- dados_HAP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Aspiração (N = 2.244)", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Aspiração (N = 2.244)", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Nenhuma", "Ocupações \nintermediárias", "Ocupações \ncom especialização"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal","Aspirada"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -893,7 +893,7 @@ HAP.prop_MEGA_SENA2 <- dados_HAP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Aspiração (N = 2.244)", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Aspiração (N = 2.244)", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Gastar", "Voltar p/ \nestado de \norigem", "Ajudar outras \npessoas", "Investir"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal","Aspirada"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -971,7 +971,7 @@ HAP.prop_RENDA_IND <- dados_HAP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Aspiração (N = 2.244)", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Aspiração (N = 2.244)", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Até 1 SM", "1 a 2 SM", "2 a 4 SM", "Mais de 4 SM"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal", "Aspirada"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1342,7 +1342,7 @@ HAP.prop_LAZER_CARACTERISTICA <- dados_HAP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Aspiração (N = 2.244)", x = "Lazer", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Aspiração (N = 2.244)", x = "Lazer", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não sai", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/Palatal", "Aspirada"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1453,7 +1453,7 @@ HAP.prop_VIAGEM_LUGAR <- dados_HAP %>%
   count(VD, VIAGEM_LUGAR) %>%
   group_by(VIAGEM_LUGAR) %>% 
   mutate(prop = prop.table(n),
-         VIAGEM_LUGAR = fct_relevel(VIAGEM_LUGAR, "SP-estado", "nacional.internacional"),
+         VIAGEM_LUGAR = fct_relevel(VIAGEM_LUGAR, "SP-estado", "nacional", "nacional.internacional"),
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
@@ -1463,7 +1463,7 @@ HAP.prop_VIAGEM_LUGAR <- dados_HAP %>%
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     labs(title = "Aspiração (N = 2.244)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Estado de São Paulo/\nestado de origem", "Nacional/internacional"))+
+    scale_x_discrete(labels = c("estado de São Paulo/\nestado de origem", "nacional", "nacional/\ninternacional"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal","Aspirada"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
@@ -1501,8 +1501,8 @@ HAP.prop_LAZER_VIAGEM_VONTADE2 <- dados_HAP %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Aspiração (N = 2.244)", x = "Lugares que Gostaria de Conhecer", y = "Proporção de Ocorrência (%)") + 
-    scale_x_discrete(labels = c("Nenhum lugar", "Destinos \nnacionais", "Destinos nacionais \ne internacionais"))+
+    labs(title = "✱ Aspiração (N = 2.244)", x = "Lugares que Gostaria de Conhecer", y = "Proporção de Ocorrência (%)") + 
+    scale_x_discrete(labels = c("nenhum lugar", "destinos \nnacionais", "destinos nacionais \ne internacionais"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("Alveolar/palatal","Aspirada"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
