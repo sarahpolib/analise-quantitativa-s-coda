@@ -11,7 +11,9 @@ View(infs2)
 ## ESCOLARIDADE ####
 escolaridade_participante <- infs2 %>% 
   distinct(PARTICIPANTE, ESCOLARIDADE2) %>%  #garante 1 linha por participante
-  count(ESCOLARIDADE2) %>%
+  mutate(ESCOLARIDADE2 = factor(ESCOLARIDADE2, 
+                                levels = c("fund", "medio", "superior", "Não Informado"))) %>%
+  count(ESCOLARIDADE2, .drop = FALSE) %>%  # .drop = FALSE mantém os níveis sem observações
   print()
 
 (g.escolaridade <- escolaridade_participante %>% 
@@ -21,7 +23,7 @@ escolaridade_participante <- infs2 %>%
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 25))+
-  scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
+  scale_x_discrete(labels = c("Fundamental", "Médio", "Superior", " Não Informado"))+
   scale_fill_brewer(palette = "Reds")+
   theme_minimal()+
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
@@ -30,39 +32,55 @@ escolaridade_participante <- infs2 %>%
 
 ### Escolaridade dos pais ####
 escolaridade_pai <- dados2 %>% 
-  distinct(PARTICIPANTE, ESCOLA_PAI2) %>%  #garante 1 linha por participante
-  count(ESCOLA_PAI2) %>% 
-  mutate(ESCOLA_PAI2 = fct_explicit_na(ESCOLA_PAI2, "Não informado")) %>% 
-  arrange(ESCOLA_PAI2) %>% 
+  distinct(PARTICIPANTE, ESCOLA_PAI) %>%  #garante 1 linha por participante
+  count(ESCOLA_PAI) %>% 
+  mutate(ESCOLA_PAI = fct_explicit_na(ESCOLA_PAI, "Não informado"),
+         ESCOLA_PAI = case_when(
+           ESCOLA_PAI %in% c("fund1", "fund2") ~ "fundamental",
+           ESCOLA_PAI %in% c("posgrad", "superior") ~ "superior",
+           TRUE ~ as.character(ESCOLA_PAI)),
+         ESCOLA_PAI = factor(ESCOLA_PAI,
+                             levels = c("analfabeto", "fundamental", "medio", 
+                                        "superior", "não informado"),
+                             ordered = TRUE)) %>% 
+  group_by(ESCOLA_PAI) %>% 
+  summarise(n = sum(n)) %>%  # Soma as contagens das categorias fund1 e fund2
+  arrange(ESCOLA_PAI) %>% 
   print()
 
 (g.escolaridadepai <- escolaridade_pai %>% 
-  ggplot(aes(x = factor(ESCOLA_PAI2), y = n, label = n)) +
+  ggplot(aes(x = factor(ESCOLA_PAI), y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Escolaridade - Pai",
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.2, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/\nSuperior", " não informado"))+
+  scale_x_discrete(labels=c("analfabeto", "Fundamental", "Médio", "Superior", " não informado"))+
   scale_y_continuous(limits = c(0, 25))+
   theme_minimal()+
     theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
 escolaridade_mae <- dados2 %>% 
-  distinct(PARTICIPANTE, ESCOLA_MAE2) %>%  #garante 1 linha por participante
-  count(ESCOLA_MAE2) %>% 
-  mutate(ESCOLA_MAE2 = fct_explicit_na(ESCOLA_MAE2, "Não informado")) %>% 
-  arrange(ESCOLA_MAE2) %>% 
+  distinct(PARTICIPANTE, ESCOLA_MAE) %>%  #garante 1 linha por participante
+  mutate(ESCOLA_MAE = fct_explicit_na(ESCOLA_MAE, "nao informado"),
+         ESCOLA_MAE = case_when(
+           ESCOLA_MAE %in% "posgrad" ~ "superior",
+           TRUE ~ as.character(ESCOLA_MAE)),
+           ESCOLA_MAE = factor(ESCOLA_MAE,
+                               levels = c("analfabeto", "fund1", "medio", "superior", "não informado"), ordered = TRUE 
+         )) %>% 
+  arrange(ESCOLA_MAE) %>% 
+  count(ESCOLA_MAE) %>% 
   print()
 
 (g.escolaridademae <- escolaridade_mae %>% 
-  ggplot(aes(x = factor(ESCOLA_MAE2), y = n, label = n)) +
+  ggplot(aes(x = factor(ESCOLA_MAE), y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
   labs(x = "Escolaridade - Mãe",
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.2, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels=c("Analfabeto", "Fundamental", "Médio/\nSuperior", " não informado"))+
+  scale_x_discrete(labels=c("analfabeto", "Fundamental", "Médio", "Superior", " não informado"))+
   scale_y_continuous(limits = c(0, 25))+
   theme_minimal()+
     theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
@@ -87,8 +105,23 @@ ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_
 ocupacao <- infs2 %>% 
   distinct(PARTICIPANTE, INDICE_OCUPACAO) %>%  #garante 1 linha por participante
   count(INDICE_OCUPACAO) %>% 
+  mutate(INDICE_OCUPACAO = as.factor(INDICE_OCUPACAO),
+         categoria = case_when(
+           INDICE_OCUPACAO == 0 ~ "0. Desempregado/sem renda",
+           INDICE_OCUPACAO == 1 ~ "1. Trabalhador braçal s/ treinamento",
+           INDICE_OCUPACAO == 2 ~ "2. Trabalhador braçal c/ treinamento",
+           INDICE_OCUPACAO == 3 ~ "3. Funções admin./atend. ao público",
+           INDICE_OCUPACAO == 4 ~ "4. Microempres./ger. baixo escalão",
+           INDICE_OCUPACAO == 5 ~ "5. Profissionais especializados/liberais",
+           INDICE_OCUPACAO == 6 ~ "6. Peq. Emp./ger. alto escalão",
+           TRUE ~ as.character(INDICE_OCUPACAO)
+         ),
+         categoria = factor(categoria, levels = unique(categoria))) %>% 
   arrange(INDICE_OCUPACAO) %>% 
   print()
+
+
+class(infs2$INDICE_OCUPACAO)
 
 
 png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/2ocupacao.png", width = 5, height = 5, units = "in", res = 300)
@@ -108,6 +141,17 @@ ocupacao %>%
 dev.off()
 
 
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/2ocupacao.png", width = 7, height = 5, units = "in", res = 300)
+ocupacao %>%
+  ggplot(aes(x = INDICE_OCUPACAO, y = n, label = n, fill = categoria)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(x = "Ocupação", y = "Número de Participantes")+
+  geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
+  #scale_y_continuous(limits = c(0, 24))+
+  scale_fill_brewer(palette = "Reds", name = "Escala")+
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11))
+dev.off()
 
 
 ## INDICE_OCUPACAO_PAI ####
@@ -229,20 +273,21 @@ ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_
 ## REGIÃO ####
 regiao_participante <- infs2 %>% 
   distinct(PARTICIPANTE, BAIRRO_REGIAO2) %>%  #garante 1 linha por participante
+  mutate(BAIRRO_REGIAO2 = fct_explicit_na(BAIRRO_REGIAO2, "Não informado"),
+         BAIRRO_REGIAO2 = factor(BAIRRO_REGIAO2,
+                                 levels = c("periferia", "centro", "Não informado"), ordered = TRUE)) %>% 
   count(BAIRRO_REGIAO2) %>%
-  mutate(BAIRRO_REGIAO2 = fct_explicit_na(BAIRRO_REGIAO2, "Não informado")) %>%  # Transforma NA em categoria
   print()
-
 
 png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/5regiao.png", width = 5, height = 5, units = "in", res = 300)
 regiao_participante %>%
   ggplot(aes(x = BAIRRO_REGIAO2, y = n, label = n)) +
   geom_bar(stat = "identity", color = "white", fill = "#FCAE91") +
-  labs(x = "Região",
+  labs(x = "Região de Residência",
        y = "Número de Participantes")+
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("centro", "periferia", "não informado"))+
+ scale_x_discrete(labels = c("periferia", "centro", "não informado"))+
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11))
 dev.off()
@@ -357,9 +402,12 @@ ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_
 ## LOCOMOÇÃO ####
 locomocao_participante <- infs2 %>% 
   distinct(PARTICIPANTE, OCUPACAO_LOCOMOCAO2) %>%  #garante 1 linha por participante
+  mutate(OCUPACAO_LOCOMOCAO2 = fct_explicit_na(OCUPACAO_LOCOMOCAO2, "Não informado"),
+         OCUPACAO_LOCOMOCAO2 = factor(OCUPACAO_LOCOMOCAO2,
+                                      levels = c("publico", "compartilhado", "próprio", "Não informado"))) %>%  
   count(OCUPACAO_LOCOMOCAO2) %>%
-  mutate(OCUPACAO_LOCOMOCAO2 = fct_explicit_na(OCUPACAO_LOCOMOCAO2, "Não informado")) %>%  # Transforma NA em categoria
   print()
+
 
 (g.locomocao <- locomocao_participante %>%
   ggplot(aes(x = OCUPACAO_LOCOMOCAO2, y = n, label = n)) +
@@ -369,7 +417,7 @@ locomocao_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 24))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels= c("compartilhado/\npúblico", "privado", "não informado"))+
+  scale_x_discrete(labels= c("público","compartilhado", "privado", "não informado"))+
   theme_minimal()+
     theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
@@ -559,7 +607,7 @@ viagemlugar_participante <- infs2 %>%
   geom_text(aes(label = n), vjust = -0.3, size = 3.5) +
   scale_y_continuous(limits = c(0, 29))+
   scale_fill_brewer(palette = "Reds")+
-  scale_x_discrete(labels = c("São Paulo e\nestado de origem", "nacional e\ninternacional", "não informado")) +
+  scale_x_discrete(labels = c("São Paulo e\nestado de origem", "nacional", "nacional e\ninternacional", "não informado")) +
   theme_minimal()+
     theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 11)))
 
