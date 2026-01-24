@@ -208,7 +208,7 @@ g.ocupacoes
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/3ocupacoes.png",
        plot = g.ocupacoes,
        width = 13,
-       height = 5,
+       height = 7,
        units = "in",
        dpi = 300)
 
@@ -265,7 +265,7 @@ g.renda
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/4renda.png",
        plot = g.renda,
        width = 13,
-       height = 5,
+       height = 7,
        units = "in",
        dpi = 300)
 
@@ -450,7 +450,7 @@ g.locomocaodistancia
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/7locomocao.png",
        plot = g.locomocaodistancia,
        width = 13,
-       height = 5,
+       height = 7,
        units = "in",
        dpi = 300)
 
@@ -506,7 +506,7 @@ g.ocupacaoascensao
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/8ocupacaoascensao.png",
        plot = g.ocupacaoascensao,
        width = 13,
-       height = 5,
+       height = 7,
        units = "in",
        dpi = 300)
 
@@ -564,7 +564,7 @@ g.lazeres
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/9lazer.png",
        plot = g.lazeres,
        width = 13,
-       height = 5,
+       height = 7,
        units = "in",
        dpi = 300)
 
@@ -705,7 +705,7 @@ g.megainfacia
 ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_N/11megainfancia.png",
        plot = g.megainfacia,
        width = 13,
-       height = 5,
+       height = 7,
        units = "in",
        dpi = 300)
 
