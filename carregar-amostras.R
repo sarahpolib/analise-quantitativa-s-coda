@@ -377,15 +377,13 @@ distribuicao.geral %>%
 ggplot(aes(x = VD, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Variável Resposta", y = "Proporção de Ocorrência", fill = "VD") + 
-  scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
+  scale_x_discrete(labels = c("alveolar", "palatal", "zero fonético", "aspirada"))+
   geom_text(aes(label = label), vjust = -0.2, size = 3.5) +
   scale_fill_brewer(palette = "Reds")+
   scale_y_continuous(labels = percent_format(accuracy = 1), 
                      expand = expansion(mult = c(0, 0.15))) +  #aumenta espaço no topo para texto
   theme_minimal()+
-  theme(panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-        panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-        legend.position = "none")
+  theme(legend.position = "none")
 dev.off()
 
 
@@ -458,6 +456,7 @@ indices_OP <- infs2 %>%
   print()
 
 
-#view(indices_OP)
-#hist(indices_OP$dif)
+view(indices_OP)
+hist(indices_OP$dif)
+write.csv(indices_OP, "indices_OP.csv", row.names = FALSE)
 
