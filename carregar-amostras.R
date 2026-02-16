@@ -358,6 +358,8 @@ dados_HAP.cfs <- dados2 %>%
                            AP = c("A", "P"))) %>%
   droplevels()
 
+
+
 # EXPORTAR dados2 ####
 
 write.csv(dados2, "dados2.csv", row.names = TRUE)

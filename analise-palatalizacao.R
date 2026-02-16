@@ -1,11 +1,11 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
-#%%%%%%%%%%%%%%%%%%%%%# PROCESSO DE palatalIZAÇÃO #%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
+#%%%%%%%%%%%%%%%%%%%%%# PROCESSO DE Palatalização #%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 15/07/2025 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% V1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#
 
 # CONT.FON.SEG ####
-# filtragem foi feita no arquivo carregar-amostras. Dados mostram envelope de variação semelhante ao de Barbosa 2023, ou seja, ocorrência de palatalização se dá só quando seguida por consoante coronal
+# filtragem foi feita no arquivo carregar-amostras. Dados mostram envelope de variação semelhante ao de Barbosa 2023, ou seja, ocorrência de Palatalização se dá só quando seguida por consoante coronal
 
 # AP.prop_CONT_FON_SEG <- dados_AP %>% 
 #   count(VD, CONT_FON_SEG) %>%
@@ -286,7 +286,7 @@ png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/7AP_tempo_re
   geom_point(stat = "identity", color = "black") + 
   scale_y_continuous(labels = percent_format(accuracy = 1))+
   stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Tempo de Residência", y = "Proporção de palatalização") +
+  labs(x = "Tempo de Residência", y = "Proporção de Palatalização") +
   #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
   theme_minimal())
 dev.off()
@@ -308,7 +308,7 @@ png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/8AP_idade_mi
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   scale_y_continuous(labels = percent_format(accuracy = 1))+
-  labs(x = "Idade de Migração", y = "Proporção de palatalização") +
+  labs(x = "Idade de Migração", y = "Proporção de Palatalização") +
   theme_minimal()+
   theme(axis.title.y = element_blank()))
 dev.off()
@@ -332,7 +332,7 @@ ggplot(AP.prop_INDICE_SOCIO_OUSHIRO[32:62,], aes(x = INDICE_SOCIO_OUSHIRO, y = p
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   scale_y_continuous(labels = percent_format(accuracy = 1))+
-  labs(x = "Índice Socioeconomico (Oushiro, 2015)", y = "Proporção de palatalização") +
+  labs(x = "Índice Socioeconomico (Oushiro, 2015)", y = "Proporção de Palatalização") +
   #geom_text(size = 4, position = position_stack(vjust = 0.5)) +
   theme_minimal()
 #dev.off()
@@ -354,7 +354,7 @@ ggplot(AP.prop_INDICE_SOCIO_POLI[44:86,], aes(x = INDICE_SOCIO_POLI, y = prop)) 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
   scale_y_continuous(labels = percent_format(accuracy = 1))+
-  labs(x = "Índice Socioeconômico", y = "Proporção de palatalização") +
+  labs(x = "Índice Socioeconômico", y = "Proporção de Palatalização") +
   theme_minimal()
 dev.off()
 
@@ -491,7 +491,7 @@ summary(tempo_residencia_indicesocioAP)
 png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/10AP_interacao.png", width = 9, height = 13, units = "in", res = 300)
 plot(allEffects(tempo_residencia_indicesocioAP),      
      xlab = "Tempo de Residência",
-     ylab = "Proporção de palatalização",
+     ylab = "Proporção de Palatalização",
      main = "")
 dev.off()
 
@@ -503,7 +503,7 @@ idade_migracao_indicesocio_oushiro <- glmer(VD ~ IDADE_MIGRACAO * INDICE_SOCIO_O
 summary(idade_migracao_indicesocio_oushiro)
 plot(allEffects(idade_migracao_indicesocio_oushiro),
      xlab = "Idade de Migração",
-     ylab = "Proporção de palatalização",
+     ylab = "Proporção de Palatalização",
      main = "Efeito da Idade de Migração por Índice Socioeconômico",
 )
 
@@ -599,12 +599,12 @@ AP.prop_ESCOLARIDADE2 <- dados_AP %>%
                           "%\n(", n, ")")) %>% 
   print()
 
-(g.AP.prop_ESCOLARIDADE2 <- ggplot(AP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop, color = VD, group = VD, label = label)) +
+(g.AP.prop_ESCOLARIDADE2 <- ggplot(AP.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop*100, color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 4.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "palatalização (N = 3.076)", x = "Escolaridade", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Escolaridade", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     theme_minimal()+
@@ -612,7 +612,6 @@ AP.prop_ESCOLARIDADE2 <- dados_AP %>%
       plot.title = element_text(hjust = 0.5),
       axis.text.x = element_text(size = 12),
       legend.position = "top"))
-
 
 
 
@@ -645,24 +644,22 @@ AP.prop_ESCOLA_PAI2 <- dados_AP %>%
          label = paste0(formatC(prop*100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.AP.prop_ESCOLA_PAI2 <- ggplot(AP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop, color = VD, group = VD, label = label)) +
+(g.AP.prop_ESCOLA_PAI2 <- ggplot(AP.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop*100, color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "✱ palatalização (N = 3.076)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência") + 
+    labs(title = "✱ Palatalização (N = 3.076)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Analfabeto", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     theme_minimal()+
     theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
 
 
-
-
 (AP.tab_ESCOLA_PAI2<- with(dados_AP, table(ESCOLA_PAI2, VD)))
-chisq.test(AP.tab_ESCOLA_PAI2) #sim
-chisq.test(AP.tab_ESCOLA_PAI2[c(1,2),]) 
-chisq.test(AP.tab_ESCOLA_PAI2[c(2,3),]) 
+#chisq.test(AP.tab_ESCOLA_PAI2) #sim
+#chisq.test(AP.tab_ESCOLA_PAI2[c(1,2),]) 
+#chisq.test(AP.tab_ESCOLA_PAI2[c(2,3),]) 
 
 #analise com efeitos mistos
 AP.mod_escolaridade_pai <-  glmer(VD ~ ESCOLA_PAI2 +
@@ -684,11 +681,11 @@ AP.prop_ESCOLA_MAE2 <- dados_AP %>%
          label = paste0(formatC(prop*100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.AP.prop_ESCOLA_MAE2 <- ggplot(AP.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_ESCOLA_MAE2 <- ggplot(AP.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Analfabeta", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -697,15 +694,15 @@ AP.prop_ESCOLA_MAE2 <- dados_AP %>%
 
 
 
-AP.grafico_escolaridade_mae <- AP.prop_ESCOLA_MAE2 %>% 
-  filter(VD == "P") %>% 
-  ggplot(aes(x = ESCOLA_MAE2, y = prop, group = VD, color = VD, label = label)) + 
-  geom_line(size = 1.2) +
-  geom_point(size = 3) +
-  geom_text(size = 3.5, vjust = -0.5) +
-  scale_y_continuous(labels = function(x) paste0(x, "%")) +
-  theme_minimal()
-AP.grafico_escolaridade_mae
+# AP.grafico_escolaridade_mae <- AP.prop_ESCOLA_MAE2 %>% 
+#   filter(VD == "P") %>% 
+#   ggplot(aes(x = ESCOLA_MAE2, y = prop, group = VD, color = VD, label = label)) + 
+#   geom_line(size = 1.2) +
+#   geom_point(size = 3) +
+#   geom_text(size = 3.5, vjust = -0.5) +
+#   scale_y_continuous(labels = function(x) paste0(x, "%")) +
+#   theme_minimal()
+# AP.grafico_escolaridade_mae
 
 
 (AP.tab_ESCOLA_MAE2<- with(dados_AP, table(ESCOLA_MAE2, VD)))
@@ -732,11 +729,11 @@ AP.prop_INDICE_OCUPACAO <- dados_AP %>%
 class(dados_AP$INDICE_OCUPACAO)
 
 
-(g.AP.prop_INDICE_OCUPACAO <- ggplot(AP.prop_INDICE_OCUPACAO,aes(x = INDICE_OCUPACAO,y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_INDICE_OCUPACAO <- ggplot(AP.prop_INDICE_OCUPACAO,aes(x = INDICE_OCUPACAO,y = prop*100,color = VD, group = VD, label = label)) +
   geom_line(linewidth = 1.1) +
   geom_point(size = 2.5) +
   geom_text(size = 3.5, color = "Black") +
-  labs(title = "palatalização (N = 3.076)", x = "Ocupação", y = "Proporção (%)", color = "Variável \nResposta") +
+  labs(title = "Palatalização (N = 3.076)", x = "Ocupação", y = "Proporção de Ocorrência (%)", color = "Variável \nResposta") +
   scale_y_continuous(limits = c(0, 100)) +
   scale_color_brewer(palette = "Reds", label = c("alveolar", "palatal"))+
   theme_minimal()+
@@ -748,8 +745,8 @@ AP.mod_INDICE_OCUPACAO <- glmer(VD ~ INDICE_OCUPACAO+
                                 (1|ITEM_LEXICAL) +
                                 (1|PARTICIPANTE), data = dados_AP, family = binomial)
 summary(AP.mod_INDICE_OCUPACAO)
-lrm(VD ~ INDICE_OCUPACAO, data = dados_AP)
-plot(allEffects(AP.mod_INDICE_OCUPACAO), type = "response")
+#lrm(VD ~ INDICE_OCUPACAO, data = dados_AP)
+#plot(allEffects(AP.mod_INDICE_OCUPACAO), type = "response")
 
 ### Ocupação dos Pais ####
 #### Pai ###
@@ -762,7 +759,7 @@ AP.prop_INDICE_OCUPACAO_PAI <- dados_AP %>%
 
 ggplot(AP.prop_INDICE_OCUPACAO_PAI, aes(x = INDICE_OCUPACAO_PAI, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Índice Ocupação do Pai", y = "Proporção de Ocorrência") + 
+  labs(x = "Índice Ocupação do Pai", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -793,7 +790,7 @@ AP.prop_INDICE_OCUPACAO_MAE <- dados_AP %>%
 
 ggplot(AP.prop_INDICE_OCUPACAO_MAE, aes(x = INDICE_OCUPACAO_MAE, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Índice de Ocupação da Mãe", y = "Proporção de Ocorrência") + 
+  labs(x = "Índice de Ocupação da Mãe", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -824,7 +821,7 @@ AP.prop_INDICE_OUTRO_CARGO <- dados_AP %>%
 
 ggplot(AP.prop_INDICE_OUTRO_CARGO, aes(x = INDICE_OUTRO_CARGO, y = prop, fill = VD, label = label)) +
   geom_bar(stat = "identity", color = "white") + 
- # labs(x = "Outro Cargo", y = "Proporção de Ocorrência") + 
+ # labs(x = "Outro Cargo", y = "Proporção de Ocorrência (%)") + 
 #  scale_x_discrete(labels = c("Não tem", "Tem", "Não se aplica"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds")+
@@ -854,11 +851,11 @@ AP.prop_INDICE_OCUPACAO_SONHOS <- dados_AP %>%
          label = paste0(formatC(prop*100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.AP.prop_INDICE_OCUPACAO_SONHOS <- ggplot(AP.prop_INDICE_OCUPACAO_SONHOS, aes(x = INDICE_OCUPACAO_SONHOS, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_INDICE_OCUPACAO_SONHOS <- ggplot(AP.prop_INDICE_OCUPACAO_SONHOS, aes(x = INDICE_OCUPACAO_SONHOS, y = prop*100, color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Nenhuma", "Ocupações \nintermediárias", "Ocupações \ncom especialização"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -893,7 +890,7 @@ AP.prop_OCUPACAO_DIST <- dados_AP %>%
 
 ggplot(AP.prop_OCUPACAO_DIST, aes(x = OCUPACAO_DIST, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
+  #labs(x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -933,7 +930,7 @@ AP.prop_OCUPACAO_LOCOMOCAO2 <- dados_AP %>%
 
 ggplot(AP.prop_OCUPACAO_LOCOMOCAO2, aes(x = OCUPACAO_LOCOMOCAO2, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
+  #labs(x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -972,11 +969,11 @@ AP.prop_MEGA_SENA2 <- dados_AP %>%
          label = paste0(formatC(prop*100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.AP.prop_MEGA_SENA2 <- ggplot(AP.prop_MEGA_SENA2, aes(x = MEGA_SENA2, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_MEGA_SENA2 <- ggplot(AP.prop_MEGA_SENA2, aes(x = MEGA_SENA2, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Mega-Sena", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Gastar", "Voltar p/ \nestado de \norigem", "Ajudar outras \npessoas", "Investir"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1011,7 +1008,7 @@ AP.prop_MEGASENA_TRABALHAR2 <- dados_AP %>%
 
 ggplot(AP.prop_MEGASENA_TRABALHAR2, aes(x = MEGASENA_TRABALHAR2, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
+  #labs(x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1049,11 +1046,11 @@ AP.prop_RENDA_IND <- dados_AP %>%
          label = paste0(formatC(prop*100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.AP.prop_RENDA_IND <- ggplot(AP.prop_RENDA_IND, aes(x = RENDA_IND, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_RENDA_IND <- ggplot(AP.prop_RENDA_IND, aes(x = RENDA_IND, y = prop*100, color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Renda Individual", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Até 1 SM", "1 a 2 SM", "2 a 4 SM", "Mais de 4 SM"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1085,7 +1082,7 @@ AP.prop_RENDA_FAM <- dados_AP %>%
 
 ggplot(AP.prop_RENDA_FAM, aes(x = RENDA_FAM, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  labs(x = "Renda Familiar", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1123,7 +1120,7 @@ AP.prop_media_m2 <- dados_AP %>%
 ggplot(AP.prop_media_m2[21:40,], aes(x = media_m2, y = prop, label = round(prop, 1))) + 
   geom_point(stat = "identity", color = "black") + 
   stat_smooth(method=lm, se=TRUE, color="red")+
-  labs(x = "Índice de Ocupação", y = "Proporção de palatalização") +
+  labs(x = "Índice de Ocupação", y = "Proporção de Palatalização") +
   theme_minimal()
 
 
@@ -1152,7 +1149,7 @@ AP.prop_BAIRRO <- dados_AP %>%
 AP.prop_BAIRRO %>% 
 ggplot(aes(x = BAIRRO, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  labs(x = "Renda Familiar", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1176,7 +1173,7 @@ AP.prop_BAIRRO_REGIAO <- dados_AP %>%
 
 ggplot(AP.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Região", y = "Proporção de Ocorrência") + 
+  labs(x = "Região", y = "Proporção de Ocorrência (%)") + 
   scale_x_discrete(labels = c("Centro", "Periferia Norte", "Periferia Sul"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1211,7 +1208,7 @@ AP.prop_NBANHEIROS <- dados_AP %>%
 AP.prop_NBANHEIROS %>% 
   ggplot(aes(x = NBANHEIROS, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  labs(x = "Renda Familiar", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1250,7 +1247,7 @@ AP.prop_NQUARTOS <- dados_AP %>%
 AP.prop_NQUARTOS %>% 
   ggplot(aes(x = NQUARTOS, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  labs(x = "Renda Familiar", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1296,7 +1293,7 @@ AP.prop_IMOVEL <- dados_AP %>%
 AP.prop_IMOVEL %>% 
   ggplot(aes(x = IMOVEL, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  labs(x = "Renda Familiar", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1334,7 +1331,7 @@ AP.prop_PROPRIEDADE <- dados_AP %>%
 AP.prop_PROPRIEDADE %>% 
   ggplot(aes(x = PROPRIEDADE, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  labs(x = "Renda Familiar", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1373,7 +1370,7 @@ AP.prop_NPESSOAS <- dados_AP %>%
 AP.prop_NPESSOAS %>% 
   ggplot(aes(x = NPESSOAS, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
+  #labs(x = "Renda Familiar", y = "Proporção de Ocorrência (%)") + 
   #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "variantes", labels = c("alveolar", "palatal"))+
@@ -1412,11 +1409,11 @@ AP.prop_LAZER_CARACTERISTICA <- dados_AP %>%
          label = paste0(formatC(prop*100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.AP.prop_LAZER_CARACTERISTICA <- ggplot(AP.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_LAZER_CARACTERISTICA <- ggplot(AP.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Lazer", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Lazer", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não sai", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1452,18 +1449,16 @@ AP.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_AP %>%
 
 
 
-(g.AP.prop_LAZER_CAMPINAS_CARACTERISTICA <- ggplot(AP.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_LAZER_CAMPINAS_CARACTERISTICA <- ggplot(AP.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Lazer em Campinas", y = "Proporção de Ocorrência") + 
+    labs(title = "✱ Palatalização (N = 3.076)", x = "Lazer em Campinas", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não sai/ \nNão tem", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
     theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
-
-
 
 
 
@@ -1496,11 +1491,11 @@ AP.prop_VIAGEM <- dados_AP %>%
 
 
 
-(g.AP.prop_VIAGEM <- ggplot(AP.prop_VIAGEM, aes(x = VIAGEM, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_VIAGEM <- ggplot(AP.prop_VIAGEM, aes(x = VIAGEM, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Hábitos de Viagem", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Hábitos de Viagem", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não tem costume de viajar", "Tem costume de viajar"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1538,11 +1533,11 @@ AP.prop_VIAGEM_LUGAR <- dados_AP %>%
 
 
 
-(g.AP.prop_VIAGEM_LUGAR <- ggplot(AP.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_VIAGEM_LUGAR <- ggplot(AP.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "✱ palatalização (N = 3.076)", x = "Tipo de Viagem", y = "Proporção de Ocorrência") + 
+    labs(title = "✱ Palatalização (N = 3.076)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("estado de São Paulo/\n estado de origem", "nacional","nacional/\ninternacional"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1577,11 +1572,11 @@ AP.prop_LAZER_VIAGEM_VONTADE2 <- dados_AP %>%
 
 
 
-(g.AP.prop_LAZER_VIAGEM_VONTADE2 <- ggplot(AP.prop_LAZER_VIAGEM_VONTADE2, aes(x = LAZER_VIAGEM_VONTADE2, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_LAZER_VIAGEM_VONTADE2 <- ggplot(AP.prop_LAZER_VIAGEM_VONTADE2, aes(x = LAZER_VIAGEM_VONTADE2, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Lugares que Gostaria de conhecer", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Lugares que Gostaria de conhecer", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("nenhum lugar", "destinos \nnacionais", "destinos nacionais \ne internacionais"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1599,9 +1594,6 @@ AP.mod_LAZER_VIAGEM_VONTADE2 <- glmer(VD ~ LAZER_VIAGEM_VONTADE2 +
 summary(AP.mod_LAZER_VIAGEM_VONTADE2)
 addmargins(table(dados_AP$LAZER_VIAGEM_VONTADE2, dados_AP$VD))
 
-lrm(VD ~ LAZER_VIAGEM_VONTADE2, data = dados_AP)
-plot(allEffects(AP.mod_LAZER_VIAGEM_VONTADE2), type = "response")
-
 
 
 ### Infancia ####
@@ -1616,11 +1608,11 @@ AP.prop_INFANCIA_MEMORIA <- dados_AP %>%
 
 
 
-(g.AP.prop_INFANCIA_MEMORIA <- ggplot(AP.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop,color = VD, group = VD, label = label)) +
+(g.AP.prop_INFANCIA_MEMORIA <- ggplot(AP.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "palatalização (N = 3.076)", x = "Memória de Infância", y = "Proporção de Ocorrência") + 
+    labs(title = "Palatalização (N = 3.076)", x = "Memória de Infância", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Negativa", "Neutra", "Positiva"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar","palatal"))+
     scale_y_continuous(limits = c(0, 100)) +
