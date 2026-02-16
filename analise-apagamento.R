@@ -575,12 +575,12 @@ S0.prop_ESCOLARIDADE2 <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.S0.prop_ESCOLARIDADE2 <- ggplot(S0.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop, color = VD, group = VD, label = label)) +
+(g.S0.prop_ESCOLARIDADE2 <- ggplot(S0.prop_ESCOLARIDADE2, aes(x = ESCOLARIDADE2, y = prop*100, color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 4.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-  labs(title = "✱ apagamento (N = 5.645)", x = "Escolaridade", y = "Proporção de Ocorrência") + 
+  labs(title = "✱ Apagamento (N = 5.645)", x = "Escolaridade", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Fundamental", "Médio", "Superior"))+
   scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
   theme_minimal()+
@@ -603,10 +603,8 @@ S0.mod_ESCOLARIDADE2 <- glmer(VD ~ ESCOLARIDADE2 +
 summary(S0.mod_ESCOLARIDADE2)
 addmargins(table(dados_S0$ESCOLARIDADE2, dados_S0$VD))
 
-lrm(VD ~ ESCOLARIDADE2, data = dados_S0)
-plot(allEffects(S0.mod_ESCOLARIDADE2), type = "response")
-
-
+# lrm(VD ~ ESCOLARIDADE2, data = dados_S0)
+# plot(allEffects(S0.mod_ESCOLARIDADE2), type = "response")
 
 #escolaridade1
 ##chisq.test(S0.tab_ESCOLARIDADE[c(1,2),]) #sem diferença pra fund1 e 2
@@ -624,12 +622,12 @@ S0.prop_ESCOLA_PAI2 <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.S0.prop_ESCOLA_PAI2 <- ggplot(S0.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop, color = VD, group = VD, label = label)) +
+(g.S0.prop_ESCOLA_PAI2 <- ggplot(S0.prop_ESCOLA_PAI2, aes(x = ESCOLA_PAI2, y = prop*100, color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "✱ apagamento (N = 5.645)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Escolaridade - Pai", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Analfabeto", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     theme_minimal()+
@@ -668,12 +666,12 @@ S0.prop_ESCOLA_MAE2 <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.S0.prop_ESCOLA_MAE2 <- ggplot(S0.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_ESCOLA_MAE2 <- ggplot(S0.prop_ESCOLA_MAE2, aes(x = ESCOLA_MAE2, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
     scale_y_continuous(limits = c(0, 100)) +
-    labs(title = "✱ apagamento (N = 5.645)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Escolaridade - Mãe", y = "Proporção de Ocorrência") + 
     scale_x_discrete(labels = c("Analfabeta", "Fundamental", "Médio/Superior"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     theme_minimal()+
@@ -694,8 +692,8 @@ S0.mod_ESCOLA_MAE2 <- glmer(VD ~ ESCOLA_MAE2 +
 summary(S0.mod_ESCOLA_MAE2)
 addmargins(table(dados_S0$ESCOLA_MAE2, dados_S0$VD))
 
-lrm(VD ~ ESCOLA_MAE2, data = dados_S0)
-plot(allEffects(S0.mod_ESCOLA_MAE2), type = "response")
+# lrm(VD ~ ESCOLA_MAE2, data = dados_S0)
+# plot(allEffects(S0.mod_ESCOLA_MAE2), type = "response")
 
 ### Ocupação ####
 S0.prop_INDICE_OCUPACAO <- dados_S0 %>%
@@ -705,11 +703,11 @@ S0.prop_INDICE_OCUPACAO <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.S0.prop_INDICE_OCUPACAO <- ggplot(S0.prop_INDICE_OCUPACAO,aes(x = INDICE_OCUPACAO,y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_INDICE_OCUPACAO <- ggplot(S0.prop_INDICE_OCUPACAO,aes(x = INDICE_OCUPACAO,y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-  labs(title = "✱ apagamento (N = 5.645)", x = "Ocupação", y = "Proporção (%)", color = "Variável \nResposta") +
+  labs(title = "✱ Apagamento (N = 5.645)", x = "Ocupação", y = "Proporção (%)", color = "Variável \nResposta") +
   scale_y_continuous(limits = c(0, 100)) +
   scale_color_brewer(palette = "Reds", label = c("realização", "apagamento"))+
   theme_minimal()+
@@ -720,8 +718,8 @@ S0.mod_INDICE_OCUPACAO <- glmer(VD ~ INDICE_OCUPACAO +
                                 (1|ITEM_LEXICAL) +
                                 (1|PARTICIPANTE), data = dados_S0, family = binomial)
 summary(S0.mod_INDICE_OCUPACAO)
-lrm(VD ~ INDICE_OCUPACAO, data = dados_S0)
-plot(allEffects(S0.mod_INDICE_OCUPACAO), type = "response")
+# lrm(VD ~ INDICE_OCUPACAO, data = dados_S0)
+# plot(allEffects(S0.mod_INDICE_OCUPACAO), type = "response")
 
 
 
@@ -753,11 +751,11 @@ S0.prop_INDICE_OCUPACAO_SONHOS <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.S0.prop_INDICE_OCUPACAO_SONHOS <- ggplot(S0.prop_INDICE_OCUPACAO_SONHOS, aes(x = INDICE_OCUPACAO_SONHOS, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_INDICE_OCUPACAO_SONHOS <- ggplot(S0.prop_INDICE_OCUPACAO_SONHOS, aes(x = INDICE_OCUPACAO_SONHOS, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "apagamento (N = 5.645)", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Apagamento (N = 5.645)", x = "Ocupação dos Sonhos", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Nenhuma", "Ocupações \nintermediárias", "Ocupações \ncom especialização"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -773,8 +771,8 @@ S0.mod_INDICE_OCUPACAO_SONHOS <- glmer(VD ~ INDICE_OCUPACAO_SONHOS+
 summary(S0.mod_INDICE_OCUPACAO_SONHOS)
 addmargins(table(dados_S0$INDICE_OCUPACAO_SONHOS, dados_S0$VD))
 
-lrm(VD ~ INDICE_OCUPACAO_SONHOS, data = dados_S0)
-plot(allEffects(S0.mod_INDICE_OCUPACAO_SONHOS), type = "response")
+# lrm(VD ~ INDICE_OCUPACAO_SONHOS, data = dados_S0)
+# plot(allEffects(S0.mod_INDICE_OCUPACAO_SONHOS), type = "response")
 
 ### Ocupação distancia ####
 S0.prop_OCUPACAO_DIST <- dados_S0 %>%
@@ -785,7 +783,7 @@ S0.prop_OCUPACAO_DIST <- dados_S0 %>%
   print()
 
 
-ggplot(S0.prop_OCUPACAO_DIST, aes(x = OCUPACAO_DIST, y = prop, fill = VD, label = label)) + 
+ggplot(S0.prop_OCUPACAO_DIST, aes(x = OCUPACAO_DIST, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -827,7 +825,7 @@ S0.prop_OCUPACAO_LOCOMOCAO2 <- dados_S0 %>%
   print()
 
 
-ggplot(S0.prop_OCUPACAO_LOCOMOCAO2, aes(x = OCUPACAO_LOCOMOCAO2, y = prop, fill = VD, label = label)) + 
+ggplot(S0.prop_OCUPACAO_LOCOMOCAO2, aes(x = OCUPACAO_LOCOMOCAO2, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -918,22 +916,17 @@ S0.prop_MEGA_SENA2 <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.S0.prop_MEGA_SENA2 <- ggplot(S0.prop_MEGA_SENA2, aes(x = MEGA_SENA2, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_MEGA_SENA2 <- ggplot(S0.prop_MEGA_SENA2, aes(x = MEGA_SENA2, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "apagamento (N = 5.645)", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Apagamento (N = 5.645)", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Gastar", "Voltar p/ \nestado de \norigem", "Ajudar outras \npessoas", "Investir"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
     theme_minimal()+
     theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 10), legend.position = "top"))
 
-
-(S0.tab_MEGA_SENA2<- with(dados_S0, table(MEGA_SENA2, VD)))
-#chisq.test(S0.tab_MEGA_SENA2) #sim
-#chisq.test(S0.tab_MEGA_SENA2[c(1,2),])
-#chisq.test(S0.tab_MEGA_SENA2[c(3,4),])
 
 #teste efeitos mistos
 S0.mod_MEGA_SENA2 <- glmer(VD ~ MEGA_SENA2 +
@@ -943,8 +936,8 @@ S0.mod_MEGA_SENA2 <- glmer(VD ~ MEGA_SENA2 +
 summary(S0.mod_MEGA_SENA2)
 addmargins(table(dados_S0$MEGA_SENA2, dados_S0$VD))
 
-lrm(VD ~ MEGA_SENA2, data = dados_S0)
-plot(allEffects(S0.mod_MEGA_SENA2), type = "response")
+# lrm(VD ~ MEGA_SENA2, data = dados_S0)
+# plot(allEffects(S0.mod_MEGA_SENA2), type = "response")
 
 
 
@@ -958,7 +951,7 @@ S0.prop_MEGASENA_TRABALHAR2 <- dados_S0 %>%
 
 
 
-ggplot(S0.prop_MEGASENA_TRABALHAR2, aes(x = MEGASENA_TRABALHAR2, y = prop, fill = VD, label = label)) + 
+ggplot(S0.prop_MEGASENA_TRABALHAR2, aes(x = MEGASENA_TRABALHAR2, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Individual", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("Alveolar", "Palatal", "Zero Fonético", "Aspirada"))+
@@ -997,11 +990,11 @@ S0.prop_RENDA_IND <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.S0.prop_RENDA_IND <- ggplot(S0.prop_RENDA_IND, aes(x = RENDA_IND, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_RENDA_IND <- ggplot(S0.prop_RENDA_IND, aes(x = RENDA_IND, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "✱ apagamento (N = 5.645)", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Renda Individual", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Até 1 SM", "1 a 2 SM", "2 a 4 SM", "Mais de 4 SM"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1009,11 +1002,6 @@ S0.prop_RENDA_IND <- dados_S0 %>%
     theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 (S0.tab_RENDA_IND <- with(dados_S0, table(RENDA_IND, VD)))
-#chisq.test(S0.tab_RENDA_IND) #tem correlação
-#chisq.test(S0.tab_RENDA_IND[c(1,2),]) #sim
-#chisq.test(S0.tab_RENDA_IND[c(4,5),]) #sim
-#chisq.test(S0.tab_RENDA_IND[c(2,3),]) #sim
-#chisq.test(S0.tab_RENDA_IND[c(1,4),])
 
 #teste efeitos mistos
 S0.mod_RENDA_IND <- glmer(VD ~ RENDA_IND +
@@ -1024,8 +1012,8 @@ summary(S0.mod_RENDA_IND)
 addmargins(table(dados_S0$RENDA_IND, dados_S0$VD))
 
 
-lrm(VD ~ RENDA_IND, data = dados_S0)
-plot(allEffects(S0.mod_RENDA_IND), type = "response")
+# lrm(VD ~ RENDA_IND, data = dados_S0)
+# plot(allEffects(S0.mod_RENDA_IND), type = "response")
 
 
 
@@ -1039,7 +1027,7 @@ S0.prop_RENDA_FAM <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-ggplot(S0.prop_RENDA_FAM, aes(x = RENDA_FAM, y = prop, fill = VD, label = label)) + 
+ggplot(S0.prop_RENDA_FAM, aes(x = RENDA_FAM, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -1054,11 +1042,6 @@ ggplot(S0.prop_RENDA_FAM, aes(x = RENDA_FAM, y = prop, fill = VD, label = label)
 
 
 (S0.tab_RENDA_FAM <- with(dados_S0, table(RENDA_FAM, VD)))
-#chisq.test(S0.tab_RENDA_FAM) #tem correlação
-#chisq.test(S0.tab_RENDA_FAM[c(1,2),]) #nao
-#chisq.test(S0.tab_RENDA_FAM[c(2,3),]) #nao
-#chisq.test(S0.tab_RENDA_FAM[c(3,4),]) #sim
-#chisq.test(S0.tab_RENDA_FAM[c(4,5),]) #sim
 
 
 #teste efeitos mistos
@@ -1112,7 +1095,7 @@ S0.prop_BAIRRO <- dados_S0 %>%
   ungroup()
 
 S0.prop_BAIRRO %>% 
-  ggplot(aes(x = BAIRRO, y = prop, fill = VD, label = label)) + 
+  ggplot(aes(x = BAIRRO, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -1138,7 +1121,7 @@ S0.prop_BAIRRO_REGIAO <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-ggplot(S0.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop, fill = VD, label = label)) + 
+ggplot(S0.prop_BAIRRO_REGIAO, aes(x = BAIRRO_REGIAO2, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Região", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("Centro", "Periferia Norte", "Periferia Sul"))+
@@ -1175,7 +1158,7 @@ S0.prop_NBANHEIROS <- dados_S0 %>%
   print()
 
 S0.prop_NBANHEIROS %>% 
-  ggplot(aes(x = NBANHEIROS, y = prop, fill = VD, label = label)) + 
+  ggplot(aes(x = NBANHEIROS, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Numero de Banheiros", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -1213,7 +1196,7 @@ S0.prop_NQUARTOS <- dados_S0 %>%
   print()
 
 S0.prop_NQUARTOS %>% 
-  ggplot(aes(x = NQUARTOS, y = prop, fill = VD, label = label)) + 
+  ggplot(aes(x = NQUARTOS, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Numero de Quartos", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -1262,7 +1245,7 @@ S0.prop_IMOVEL <- dados_S0 %>%
   print()
 
 S0.prop_IMOVEL %>% 
-  ggplot(aes(x = IMOVEL, y = prop, fill = VD, label = label)) + 
+  ggplot(aes(x = IMOVEL, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Tipo de Imóvel", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -1302,7 +1285,7 @@ S0.prop_PROPRIEDADE <- dados_S0 %>%
   print()
 
 S0.prop_PROPRIEDADE %>% 
-  ggplot(aes(x = PROPRIEDADE, y = prop, fill = VD, label = label)) + 
+  ggplot(aes(x = PROPRIEDADE, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Característica do Imóvel", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -1340,7 +1323,7 @@ S0.prop_NPESSOAS <- dados_S0 %>%
   print()
 
 S0.prop_NPESSOAS %>% 
-  ggplot(aes(x = NPESSOAS, y = prop, fill = VD, label = label)) + 
+  ggplot(aes(x = NPESSOAS, y = prop*100, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   #labs(x = "Renda Familiar", y = "Proporção de Ocorrência") + 
   #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
@@ -1381,11 +1364,11 @@ S0.prop_LAZER_CARACTERISTICA <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-(g.S0.prop_LAZER_CARACTERISTICA <- ggplot(S0.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_LAZER_CARACTERISTICA <- ggplot(S0.prop_LAZER_CARACTERISTICA, aes(x = LAZER_CARACTERISTICA, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "apagamento (N = 5.645)", x = "Lazer", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Apagamento (N = 5.645)", x = "Lazer", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não sai", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1419,11 +1402,11 @@ S0.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_S0 %>%
 
 
 
-(g.S0.prop_LAZER_CAMPINAS_CARACTERISTICA <- ggplot(S0.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_LAZER_CAMPINAS_CARACTERISTICA <- ggplot(S0.prop_LAZER_CAMPINAS_CARACTERISTICA, aes(x = LAZER_CAMPINAS_CARACTERISTICA, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "✱ apagamento (N = 5.645)", x = "Lazer em Campinas", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Apagamento (N = 5.645)", x = "Lazer em Campinas", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não sai/ \nNão tem", "Sem custo \nfinanceiro", "Com custo \nfinanceiro"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1432,8 +1415,6 @@ S0.prop_LAZER_CAMPINAS_CARACTERISTICA <- dados_S0 %>%
 
 
 (S0.tab_LAZER_CAMPINAS_CARACTERISTICA <- with(dados_S0, table(LAZER_CAMPINAS_CARACTERISTICA, VD)))
-#chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA) #tem correlação
-#chisq.test(S0.tab_LAZER_CAMPINAS_CARACTERISTICA[c(1,2),])
 
 
 #teste efeitos mistos
@@ -1462,11 +1443,11 @@ S0.prop_VIAGEM <- dados_S0 %>%
 
 
 
-(g.S0.prop_VIAGEM <- ggplot(S0.prop_VIAGEM, aes(x = VIAGEM, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_VIAGEM <- ggplot(S0.prop_VIAGEM, aes(x = VIAGEM, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "✱ apagamento (N = 5.645)", x = "Hábitos de Viagem", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Hábitos de Viagem", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Não tem costume de viajar", "Tem costume de viajar"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1502,11 +1483,11 @@ S0.prop_VIAGEM_LUGAR <- dados_S0 %>%
 
 
 
-(g.S0.prop_VIAGEM_LUGAR <- ggplot(S0.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_VIAGEM_LUGAR <- ggplot(S0.prop_VIAGEM_LUGAR, aes(x = VIAGEM_LUGAR, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "✱ apagamento (N = 5.645)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Tipo de Viagem", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("estado de São Paulo/\n estado de origem", "nacional","nacional/\ninternacional"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1514,10 +1495,6 @@ S0.prop_VIAGEM_LUGAR <- dados_S0 %>%
     theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), axis.title.x = element_text(size = 14), legend.position = "top"))
 
 (S0.tab_VIAGEM_LUGAR <- with(dados_S0, table(VIAGEM_LUGAR, VD)))
-#chisq.test(S0.tab_VIAGEM_LUGAR) #tem correlação
-#chisq.test(S0.tab_VIAGEM_LUGAR[c(2,3),])
-#chisq.test(S0.tab_VIAGEM_LUGAR[c(4,5),])
-#chisq.test(S0.tab_VIAGEM_LUGAR[c(1,4),])
 
 #teste efeitos mistos
 S0.mod_VIAGEM_LUGAR <- glmer(VD ~ VIAGEM_LUGAR +
@@ -1527,8 +1504,8 @@ S0.mod_VIAGEM_LUGAR <- glmer(VD ~ VIAGEM_LUGAR +
 summary(S0.mod_VIAGEM_LUGAR)
 addmargins(table(dados_S0$VIAGEM_LUGAR, dados_S0$VD))
 
-lrm(VD ~ VIAGEM_LUGAR, data = dados_S0)
-plot(allEffects(S0.mod_VIAGEM_LUGAR), type = "response")
+# lrm(VD ~ VIAGEM_LUGAR, data = dados_S0)
+# plot(allEffects(S0.mod_VIAGEM_LUGAR), type = "response")
 
 
 ### Viagem vontade ####
@@ -1542,12 +1519,11 @@ S0.prop_LAZER_VIAGEM_VONTADE2 <- dados_S0 %>%
   print()
 
 
-
-(g.S0.prop_LAZER_VIAGEM_VONTADE2 <- ggplot(S0.prop_LAZER_VIAGEM_VONTADE2, aes(x = LAZER_VIAGEM_VONTADE2, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_LAZER_VIAGEM_VONTADE2 <- ggplot(S0.prop_LAZER_VIAGEM_VONTADE2, aes(x = LAZER_VIAGEM_VONTADE2, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "✱ apagamento (N = 5.645)", x = "Lugares que Gostaria de Conhecer", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Lugares que Gostaria de Conhecer", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("nenhum lugar", "destinos \nnacionais", "destinos nacionais \ne internacionais"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1556,9 +1532,6 @@ S0.prop_LAZER_VIAGEM_VONTADE2 <- dados_S0 %>%
 
 
 (S0.tab_LAZER_VIAGEM_VONTADE2 <- with(dados_S0, table(LAZER_VIAGEM_VONTADE2, VD)))
-#chisq.test(S0.tab_LAZER_VIAGEM_VONTADE2) #tem correlação
-#chisq.test(S0.tab_LAZER_VIAGEM_VONTADE2[c(1,2),])
-#chisq.test(S0.tab_LAZER_VIAGEM_VONTADE2[c(2,4),])
 
 
 #teste efeitos mistos
@@ -1583,11 +1556,11 @@ S0.prop_INFANCIA_MEMORIA <- dados_S0 %>%
 
 
 
-(g.S0.prop_INFANCIA_MEMORIA <- ggplot(S0.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop,color = VD, group = VD, label = label)) +
+(g.S0.prop_INFANCIA_MEMORIA <- ggplot(S0.prop_INFANCIA_MEMORIA, aes(x = INFANCIA_MEMORIA, y = prop*100,color = VD, group = VD, label = label)) +
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "✱ apagamento (N = 5.645)", x = "Memória de Infância", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "✱ Apagamento (N = 5.645)", x = "Memória de Infância", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Negativa", "Neutra", "Positiva"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +
@@ -1607,8 +1580,8 @@ S0.mod_INFANCIA_MEMORIA <- glmer(VD ~ INFANCIA_MEMORIA +
 summary(S0.mod_INFANCIA_MEMORIA)
 addmargins(table(dados_S0$INFANCIA_MEMORIA, dados_S0$VD))
 
-lrm(VD ~ INFANCIA_MEMORIA, data = dados_S0)
-plot(allEffects(S0.mod_INFANCIA_MEMORIA), type = "response")
+# lrm(VD ~ INFANCIA_MEMORIA, data = dados_S0)
+# plot(allEffects(S0.mod_INFANCIA_MEMORIA), type = "response")
 
 
 
