@@ -240,26 +240,29 @@ S0.prop_ESTILO <- dados_S0 %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-ggplot(S0.prop_ESTILO, aes(x = ESTILO, y = prop, fill = VD, label = label)) + 
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/S0_estilo.png", width = 5, height = 4.5, units = "in", res = 300)
+(g.S0_estilo <- ggplot(S0.prop_ESTILO, aes(x = ESTILO, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("realização", "apagamento", "Zero Fonético", "Aspirada"))+
+  labs(title = "✱ Apagamento (N = 5.645)", x = "Estilo", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("conversa", "lista de palavra"))+
+  scale_y_continuous(labels = percent_format(accuracy = 1))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização", "apagamento"))+
   theme_minimal()+
-  theme()
+  theme(axis.title.y = element_blank(),
+        axis.text.y  = element_blank(),
+        axis.ticks.y = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(size = 12), #fatores eixo x
+        axis.title.x = element_text(size = 14),  #nome eixo x
+        legend.position = "top"))
+#dev.off()
+
 
 
 (S0.tab_ESTILO <- with(dados_S0, table(ESTILO, VD)))
-#chisq.test(S0.tab_ESTILO)
+chisq.test(S0.tab_ESTILO)
 
-# GENERO ####
-S0.prop_GENERO <- dados_S0 %>%
-  count(VD, GENERO) %>%
-  group_by(GENERO) %>% 
-  mutate(prop = prop.table(n),
-         label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
-  print()
 
 
 png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/7S0_genero.png", width = 5, height = 4.5, units = "in", res = 300)
@@ -456,8 +459,6 @@ plot(allEffects(tempo_residencia_indicesocioS0),
      ylab = "Proporção de apagamento",
      main = "")
 dev.off()
-
-
 
 
 # JUNTAR GRAFICOS ####
@@ -920,7 +921,7 @@ S0.prop_MEGA_SENA2 <- dados_S0 %>%
     geom_line(linewidth = 1.1) +
     geom_point(size = 2.5) +
     geom_text(size = 3.5, color = "Black") +
-    labs(title = "Apagamento (N = 5.645)", x = "Mega-Sena", y = "Proporção de Ocorrência (%)") + 
+    labs(title = "Apagamento (N = 5.645)", x = "Se Ganhasse na Mega-Sena", y = "Proporção de Ocorrência (%)") + 
     scale_x_discrete(labels = c("Gastar", "Voltar p/ \nestado de \norigem", "Ajudar outras \npessoas", "Investir"))+
     scale_color_brewer(palette = "Reds", name = "Variável Resposta", labels = c("realização","apagamento"))+
     scale_y_continuous(limits = c(0, 100)) +

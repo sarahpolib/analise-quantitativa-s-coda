@@ -711,3 +711,15 @@ ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/_
 
 
 
+# ESTILO ####
+g.ESTILO <- (g.AP_estilo | g.S0_estilo | g.HAP_estilo)
+g.ESTILO
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/estilo.png",
+       plot = g.ESTILO,
+       width = 13,
+       height = 5,
+       units = "in",
+       dpi = 300)
+
+
