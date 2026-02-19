@@ -221,22 +221,22 @@ HAP.prop_ESTILO <- dados_HAP %>%
          label = paste0(formatC(prop * 100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-ggplot(HAP.prop_ESTILO, aes(x = ESTILO, y = prop, fill = VD, label = label)) + 
+
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/HAP/HAP_estilo.png", width = 5, height = 4.5, units = "in", res = 300)
+(g.HAP_estilo <- ggplot(HAP.prop_ESTILO, aes(x = ESTILO, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("alveolar/palatal", "aspirada"))+
+  labs(title = "Aspiração (N = 2.244)", x = "Estilo", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("conversa", "lista de palavra"))+
+  scale_y_continuous(labels = percent_format(accuracy = 1))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
+  scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar/palatal", "aspirada"))+
   theme_minimal()+
-  theme(
-    panel.grid.major = element_line(color = alpha("gray70", 0.2), linewidth = 0.5),
-    panel.grid.minor = element_line(color = alpha("gray85", 0.1), linewidth = 0.25),
-    axis.title.x = element_text(size = 9),  # tamanho do título eixo X
-    axis.title.y = element_text(size = 9))
+  theme(axis.title.y = element_blank(), axis.text.y  = element_blank(), axis.ticks.y = element_blank(), axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
+#dev.off()
 
 
 (HAP.tab_ESTILO <- with(dados_HAP, table(ESTILO, VD)))
-#chisq.test(HAP.tab_ESTILO)
+chisq.test(HAP.tab_ESTILO)
 
 
 # GENERO ####

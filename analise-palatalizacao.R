@@ -233,14 +233,18 @@ AP.prop_ESTILO <- dados_AP %>%
          label = paste0(formatC(prop*100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
   print()
 
-ggplot(AP.prop_ESTILO, aes(x = ESTILO, y = prop, fill = VD, label = label)) + 
+#png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/AP/AP_estilo.png", width = 5, height = 4.5, units = "in", res = 300)
+(g.AP_estilo <- ggplot(AP.prop_ESTILO, aes(x = ESTILO, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
-  #labs(x = "Variável Resposta", y = "Proporção de Ocorrência") + 
-  #scale_x_discrete(labels = c("alveolar", "palatal", "Zero Fonético", "Aspirada"))+
+  labs(title = "Palatalização (N = 3.076)", x = "Estilo", y = "Proporção de Ocorrência") + 
+  scale_x_discrete(labels = c("conversa", "lista de palavra"))+
   scale_y_continuous(labels = percent_format(accuracy = 1))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Reds")+
-  theme_minimal()
+  scale_fill_brewer(palette = "Reds", name = "Variável Resposta", labels = c("alveolar", "palatal"))+
+  theme_minimal()+
+  theme(axis.title.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 11), legend.position = "top"))
+#dev.off()
+g.AP_estilo
 
 
 (AP.tab_ESTILO <- with(dados_AP, table(ESTILO, VD)))
