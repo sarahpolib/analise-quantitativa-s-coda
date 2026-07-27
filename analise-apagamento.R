@@ -264,12 +264,22 @@ S0.prop_ESTILO <- dados_S0 %>%
 chisq.test(S0.tab_ESTILO)
 
 
+# GENERO ####
+S0.prop_GENERO <- dados_S0 %>%
+  count(VD, GENERO) %>%
+  group_by(GENERO) %>% 
+  mutate(prop = prop.table(n),
+         label = paste0(formatC(prop*100, format = "f", digits = 1, decimal.mark = ","),                           "%\n(", n, ")")) %>% 
+  print()
+
+
 
 png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/S0/7S0_genero.png", width = 5, height = 4.5, units = "in", res = 300)
 ggplot(S0.prop_GENERO, aes(x = GENERO, y = prop, fill = VD, label = label)) + 
   geom_bar(stat = "identity", color = "white") + 
   labs(x = "Gênero", y = "Proporção de Ocorrência") + 
   scale_x_discrete(labels = c("feminino", "masculino"))+
+  scale_y_continuous(labels = percent_format(accuracy = 1))+
   geom_text(size = 3.5, position = position_stack(vjust = 0.5)) +
   scale_fill_brewer(palette = "Reds", name = "Variável \nResposta", labels = c("realização", "apagamento"))+
   theme_minimal()
@@ -277,6 +287,11 @@ dev.off()
 
 (S0.tab_GENERO <- with(dados_S0, table(GENERO, VD)))
 #chisq.test(S0.tab_GENERO)
+
+
+
+
+
 
 # TEMPO DE RESIDENCIA ####
 S0.prop_TEMPO_RESIDENCIA <- dados_S0 %>% 
@@ -300,6 +315,8 @@ summary(S0.mod_TEMPO_RESIDENCIA)
 lrm(VD ~ TEMPO_RESIDENCIA, data = dados_S0)
 
 plot(allEffects(S0.mod_TEMPO_RESIDENCIA), type = "response")
+
+
 
 
 # IDADE DE MIGRACAO ####
