@@ -527,7 +527,7 @@ png("C:/Users/sarah/Downloads/analiseSclasse/analise-quantitativa/graficos/lazer
 dev.off()
 
 
-#INDICE SOCIO 3 PROCESSOS #######################
+# INDICE SOCIO 3 PROCESSOS #######################
 
 
 # 1) Adicionar nome do grupo a cada data frame
@@ -558,6 +558,142 @@ ggplot(df_all, aes(x = INDICE_SOCIO_POLI, y = prop * 100, color = grupo)) +
   theme_minimal(base_size = 13)
 dev.off()
 
+
+
+#TEMPO_RESIDENCIA 3 PROCESSOS #######################
+AP_TR <- AP.prop_TEMPO_RESIDENCIA %>% filter(VD == "P") %>%   mutate(grupo = "Palatalização")
+S0_TR <- S0.prop_TEMPO_RESIDENCIA %>%   filter(VD == "0") %>%   mutate(grupo = "Apagamento")
+HAP_TR <- HAP.prop_TEMPO_RESIDENCIA %>%  filter(VD == "H") %>%  mutate(grupo = "Aspiração")
+
+df_all_TR <- bind_rows(AP_TR, S0_TR, HAP_TR)
+
+#controlar a ordem
+df_all_TR$grupo <- factor(
+  df_all_TR$grupo,
+  levels = c("Palatalização", "Apagamento", "Aspiração")
+)
+
+
+# 3) Plotar as três linhas
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/3processos_TR.png", width = 6, height = 5, units = "in", res = 300)
+ggplot(df_all_TR, aes(x = TEMPO_RESIDENCIA, y = prop * 100, color = grupo)) +
+  #geom_point(alpha = 0.7) +
+  stat_smooth(method = "lm", se = FALSE, linewidth = 1.1) +
+  labs(
+    x = "Tempo de residência",
+    y = "Proporção (%)",
+    color = "Processo de\n/s/ em coda"
+  ) +
+  scale_color_brewer(palette = "Reds", name = "Processo de\n/s/ em coda", labels = c("Palatalização", "Apagamento", "Aspiração"))+
+  scale_y_continuous(limits = c(0, 60), breaks = seq(0, 60, by = 10))+
+  theme_minimal(base_size = 13)
+dev.off()
+
+
+#IDADE_MIGRACAO 3 PROCESSOS #######################
+
+
+# 1) Adicionar nome do grupo a cada data frame
+AP_IM  <- AP.prop_IDADE_MIGRACAO %>% filter(VD == "P") %>% mutate(grupo = "AP_IM")
+S0_IM  <- S0.prop_IDADE_MIGRACAO%>% filter(VD == "0") %>% mutate(grupo = "S0_IM")
+HAP_IM <- HAP.prop_IDADE_MIGRACAO%>% filter(VD == "H") %>% mutate(grupo = "HAP_IM")
+
+# 2) Empilhar os três
+df_all_IM <- bind_rows(AP_IM, S0_IM, HAP_IM)
+
+df_all_IM$grupo <- factor(
+  df_all_IM$grupo,
+  levels = c("AP_IM", "S0_IM", "HAP_IM"))
+
+
+# 3) Plotar as três linhas
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/3processos_IM.png", width = 6, height = 5, units = "in", res = 300)
+ggplot(df_all_IM, aes(x = IDADE_MIGRACAO, y = prop * 100, color = grupo)) +
+  #geom_point(alpha = 0.7) +
+  stat_smooth(method = "lm", se = FALSE, linewidth = 1.1) +
+  labs(
+    x = "Idade de Migração",
+    y = "Proporção (%)",
+    color = "Processo"
+  ) +
+  scale_color_brewer(palette = "Reds", name = "Processo de\n/s/ em coda", labels = c("Palatalização", "Apagamento", "Aspiração"))+
+  scale_y_continuous(limits = c(0, 60), breaks = seq(0, 60, by = 10))+
+  theme_minimal(base_size = 13)
+dev.off()
+
+
+# GENERO ####
+
+AP_GEN <- dados_AP %>%
+  count(VD, GENERO) %>%
+  group_by(GENERO) %>%
+  mutate(
+    prop = prop.table(n),
+    processo = "Palatalização"
+  ) %>%
+  filter(VD == "P")
+
+S0_GEN <- dados_S0 %>%
+  count(VD, GENERO) %>%
+  group_by(GENERO) %>%
+  mutate(
+    prop = prop.table(n),
+    processo = "Apagamento"
+  ) %>%
+  filter(VD == "0")
+
+HAP_GEN <- dados_HAP %>%
+  count(VD, GENERO) %>%
+  group_by(GENERO) %>%
+  mutate(
+    prop = prop.table(n),
+    processo = "Aspiração"
+  ) %>%
+  filter(VD == "H")
+
+
+#Juntar
+df_genero <- bind_rows(AP_GEN, S0_GEN, HAP_GEN)
+
+df_genero$processo <- factor(
+  df_genero$processo,
+  levels = c("Palatalização", "Apagamento", "Aspiração")
+)
+
+df_genero <- df_genero %>%
+  mutate(
+    label = paste0(
+      round(prop * 100, 1), "%\n(",
+      n, ")"
+    )
+  )
+
+
+#grafico
+
+png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/3processos_genero.png", width = 6, height = 5, units = "in", res = 300)
+ggplot(df_genero,aes(x = GENERO,y = prop * 100,fill = processo)) +
+  geom_col(position = position_dodge(width = 0.8),width = 0.7) +
+  geom_text(aes(label = label),position = position_dodge(width = 0.8),vjust = -0.3,size = 4)+
+  scale_x_discrete(labels = c("Feminino", "Masculino")) +
+  scale_y_continuous(
+    limits = c(0, 60),
+    breaks = seq(0, 60, 10)
+  ) +
+  scale_fill_brewer(
+    palette = "Reds",
+    breaks = c("Palatalização", "Apagamento", "Aspiração")
+  ) +
+  labs(
+    x = "Gênero",
+    y = "Proporção (%)",
+    fill = "Processo de\n/s/ em coda"
+  ) +
+  
+  theme_minimal(base_size = 13)
+dev.off()
 
 ## VARIÁVEIS PARA O ÍNDICE ####
 #Variáveis que demonstraram correlações com pelo menos 1 dos três processos 
