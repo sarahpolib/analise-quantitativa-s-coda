@@ -587,7 +587,8 @@ ggplot(df_all_TR, aes(x = TEMPO_RESIDENCIA, y = prop * 100, color = grupo)) +
   ) +
   scale_color_brewer(palette = "Reds", name = "Processo de\n/s/ em coda", labels = c("Palatalização", "Apagamento", "Aspiração"))+
   scale_y_continuous(limits = c(0, 60), breaks = seq(0, 60, by = 10))+
-  theme_minimal(base_size = 13)
+  theme_minimal(base_size = 13)+
+  theme(axis.title.y = element_blank())
 dev.off()
 
 
@@ -618,10 +619,49 @@ ggplot(df_all_IM, aes(x = IDADE_MIGRACAO, y = prop * 100, color = grupo)) +
     y = "Proporção (%)",
     color = "Processo"
   ) +
-  scale_color_brewer(palette = "Reds", name = "Processo de\n/s/ em coda", labels = c("Palatalização", "Apagamento", "Aspiração"))+
+  scale_color_brewer(palette = "Reds", name = "Processo de\n/s/ em coda", labels = c("*Palatalização", "*Apagamento", "*Aspiração"))+
   scale_y_continuous(limits = c(0, 60), breaks = seq(0, 60, by = 10))+
   theme_minimal(base_size = 13)
 dev.off()
+
+#merge ID E TR
+g.IMTR <- (ggplot(df_all_IM, aes(x = IDADE_MIGRACAO, y = prop * 100, color = grupo)) +
+            #geom_point(alpha = 0.7) +
+            stat_smooth(method = "lm", se = FALSE, linewidth = 1.1) +
+            labs(
+            x = "Idade de Migração",
+            y = "Proporção (%)",
+            color = "Processo"
+            ) +
+            scale_color_brewer(palette = "Reds", name = "Processo     ", labels = c("*Palatalização", "*Apagamento", "*Aspiração"))+
+            scale_y_continuous(limits = c(0, 60), breaks = seq(0, 60, by = 10))+
+            theme_minimal(base_size = 13)+
+             theme(legend.position = "top")
+           
+           |
+          
+             ggplot(df_all_TR, aes(x = TEMPO_RESIDENCIA, y = prop * 100, color = grupo)) +
+            #geom_point(alpha = 0.7) +
+            stat_smooth(method = "lm", se = FALSE, linewidth = 1.1) +
+            labs(
+            x = "Tempo de residência",
+            y = "Proporção (%)",
+            color = "Processo de\n/s/ em coda"
+            ) +
+            scale_color_brewer(palette = "Reds", name = " ", labels = c("Palatalização", "Apagamento", "Aspiração"))+
+            scale_y_continuous(limits = c(0, 60), breaks = seq(0, 60, by = 10))+
+            theme_minimal(base_size = 13)+
+            theme(axis.title.y = element_blank(), legend.position = "top"))
+g.IMTR
+
+
+ggsave(filename = "C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/IMTR.png",
+       plot = g.IMTR,
+       width = 13,
+       height = 7,
+       units = "in",
+       dpi = 300)
+
 
 
 # GENERO ####
@@ -677,14 +717,14 @@ png("C:/Users/sah/Downloads/analise-quantitativa-s-coda/graficos/3processos_gene
 ggplot(df_genero,aes(x = GENERO,y = prop * 100,fill = processo)) +
   geom_col(position = position_dodge(width = 0.8),width = 0.7) +
   geom_text(aes(label = label),position = position_dodge(width = 0.8),vjust = -0.3,size = 4)+
-  scale_x_discrete(labels = c("Feminino", "Masculino")) +
+  scale_x_discrete(labels = c("feminino", "masculino")) +
   scale_y_continuous(
     limits = c(0, 60),
     breaks = seq(0, 60, 10)
   ) +
   scale_fill_brewer(
     palette = "Reds",
-    breaks = c("Palatalização", "Apagamento", "Aspiração")
+    breaks = c("Palatalização", "Apagamento", "Aspiração"), labels =  c("Palatalização", "*Apagamento", "Aspiração")
   ) +
   labs(
     x = "Gênero",
